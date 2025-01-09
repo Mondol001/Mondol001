@@ -44,7 +44,6 @@
             height: 100%;
             padding: 20px;
             transition: 0.3s;
-            z-index: 999;
         }
         .sidebar.active {
             left: 0;
@@ -57,8 +56,8 @@
             background: transparent;
             border: none;
             position: absolute;
-            top: 30px;
-            left: 30px;
+            top: 20px;
+            left: 20px;
             cursor: pointer;
             z-index: 1000;
         }
@@ -121,6 +120,13 @@
             color: white;
         }
 
+        /* Position the sidebar below the toggle button */
+        .sidebar-container {
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
@@ -134,52 +140,54 @@
     <!-- Toggle button to open/close sidebar -->
     <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
 
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Tools</h2>
-            <ul>
-                <li><a href="https://codepen.io" target="_blank">CodePen</a></li>
-                <li><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></li>
-                <li><a href="https://www.prome.ai" target="_blank">Prome AI</a></li>
-                <li><a href="https://temp-mail.org" target="_blank">Temp Mail</a></li>
-            </ul>
-        </div>
+    <!-- Sidebar container -->
+    <div class="sidebar-container">
+        <div class="sidebar" id="sidebar">
+            <div class="category" onclick="toggleCategory(this)">
+                <h2>Tools</h2>
+                <ul>
+                    <li><a href="https://codepen.io" target="_blank">CodePen</a></li>
+                    <li><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></li>
+                    <li><a href="https://www.prome.ai" target="_blank">Prome AI</a></li>
+                    <li><a href="https://temp-mail.org" target="_blank">Temp Mail</a></li>
+                </ul>
+            </div>
 
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Development</h2>
-            <ul>
-                <li><a href="https://github.com" target="_blank">GitHub</a></li>
-                <li><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></li>
-                <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
-            </ul>
-        </div>
+            <div class="category" onclick="toggleCategory(this)">
+                <h2>Development</h2>
+                <ul>
+                    <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                    <li><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></li>
+                    <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
+                </ul>
+            </div>
 
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Shopping</h2>
-            <ul>
-                <li><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></li>
-                <li><a href="https://www.amazon.com" target="_blank">Amazon</a></li>
-                <li><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></li>
-            </ul>
-        </div>
+            <div class="category" onclick="toggleCategory(this)">
+                <h2>Shopping</h2>
+                <ul>
+                    <li><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></li>
+                    <li><a href="https://www.amazon.com" target="_blank">Amazon</a></li>
+                    <li><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></li>
+                </ul>
+            </div>
 
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Education</h2>
-            <ul>
-                <li><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></li>
-                <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
-                <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
-            </ul>
-        </div>
+            <div class="category" onclick="toggleCategory(this)">
+                <h2>Education</h2>
+                <ul>
+                    <li><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></li>
+                    <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
+                    <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
+                </ul>
+            </div>
 
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Social Media</h2>
-            <ul>
-                <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
-                <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
-                <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
-            </ul>
+            <div class="category" onclick="toggleCategory(this)">
+                <h2>Social Media</h2>
+                <ul>
+                    <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                    <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
+                    <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
