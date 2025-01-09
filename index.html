@@ -4,35 +4,180 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mondol Organic Shop - Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Reset and General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: #2d6a4f;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section */
+        .section {
+            padding: 40px 20px;
+            margin: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* Home Section */
+        #home {
+            background-color: #d3f9d8;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 10px;
+            background-color: #e6ffe6;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2d6a4f;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        /* Contact Form */
+        form input, form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #2d6a4f;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        form button:hover {
+            background-color: #1b4d3f;
+        }
+
+    </style>
 </head>
 <body>
     <header>
         <h1>Welcome to Mondol Organic Shop</h1>
         <nav>
             <ul>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
 
     <section id="home" class="section">
-        <h2>Fresh Organic Products</h2>
-        <p>We provide fresh and organic products directly from nature. Our products are grown without the use of harmful chemicals or pesticides, ensuring that you get only the best for your health.</p>
-        <h3>Popular Categories</h3>
-        <ul>
-            <li>Organic Vegetables</li>
-            <li>Fresh Fruits</li>
-            <li>Herbs and Spices</li>
-            <li>Organic Grains and Rice</li>
-        </ul>
-        <button onclick="window.print()">Print Page</button>
+        <div class="container">
+            <h2>Fresh Organic Products</h2>
+            <p>We provide fresh and organic products directly from nature. Our products are grown without the use of harmful chemicals or pesticides, ensuring that you get only the best for your health.</p>
+            <h3>Popular Categories</h3>
+            <ul>
+                <li>Organic Vegetables</li>
+                <li>Fresh Fruits</li>
+                <li>Herbs and Spices</li>
+                <li>Organic Grains and Rice</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>At Mondol Organic Shop, we are committed to providing the highest quality organic products to our customers. Our goal is to promote a healthy lifestyle by offering fresh, chemical-free food that is good for both your health and the environment.</p>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <form id="contactForm">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name" placeholder="Your Name" required><br><br>
+
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" placeholder="Your Email" required><br><br>
+
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" placeholder="Your Message" required></textarea><br><br>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
     </section>
 
     <footer>
         <p>&copy; 2025 Mondol Organic Shop</p>
     </footer>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Thank you for your message! We will get back to you soon.");
+        });
+    </script>
 </body>
 </html>
