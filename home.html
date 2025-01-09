@@ -10,42 +10,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #e9ecef;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .home-container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
-      text-align: center;
-    }
-    h2 {
-      color: #333;
-    }
-    p {
-      font-size: 18px;
-      color: #666;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #FF4D4D;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #e60000;
-    }
+    /* Styles here */
   </style>
 </head>
 <body>
@@ -70,21 +35,19 @@
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Check if user is logged in, otherwise redirect to login page
-    firebase.auth().onAuthStateChanged((user) => {
+    // Redirect to login page if not authenticated
+    firebase.auth().onAuthStateChanged(user => {
       if (!user) {
-        window.location.replace("index.html"); // Redirect to login page if not logged in
+        window.location.replace("index.html");
       }
     });
 
-    // Logout function
+    // Logout logic
     document.getElementById("logoutButton").addEventListener("click", () => {
       auth.signOut().then(() => {
-        sessionStorage.removeItem("userLoggedIn");
-        window.location.replace("index.html"); // Redirect to login page after logout
+        window.location.replace("index.html"); // Redirect after logout
       });
     });
   </script>
-
 </body>
 </html>
