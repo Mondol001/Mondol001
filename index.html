@@ -15,12 +15,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-top: 60px; /* Add some space at the top for header */
         }
         .header {
             text-align: center;
             color: white;
             margin-top: 20px;
-            margin-bottom: 40px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         .header h1 {
@@ -51,8 +51,8 @@
         }
         .sidebar {
             position: absolute;
-            left: -250px;
             top: 0;
+            left: -250px;
             width: 250px;
             background: rgba(0, 0, 0, 0.7);
             height: 100%;
@@ -120,6 +120,14 @@
             text-align: center;
             color: white;
         }
+        /* To shift the categories and links to the right when the sidebar is open */
+        .content {
+            transition: margin-left 0.3s ease;
+            margin-left: 0;
+        }
+        .content.shifted {
+            margin-left: 250px; /* Shift content when sidebar is open */
+        }
     </style>
 </head>
 <body>
@@ -134,6 +142,7 @@
         <input type="text" id="search" placeholder="Search..." onkeyup="searchLinks()">
     </div>
 
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <span class="toggle-btn" onclick="toggleSidebar()">&#9776;</span>
 
@@ -186,11 +195,17 @@
 
     <div id="searchResults" class="search-results"></div>
 
+    <div class="content" id="content">
+        <!-- Content that shifts when the sidebar opens -->
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             function toggleSidebar() {
                 const sidebar = document.getElementById("sidebar");
+                const content = document.getElementById("content");
                 sidebar.classList.toggle("open");
+                content.classList.toggle("shifted");
             }
 
             function toggleCategory(category) {
@@ -200,41 +215,38 @@
                     content.style.display = "none";
                     btn.innerText = "+";
                 } else {
-                    content.style.display = "block";
-                    btn.innerText = "-";
+                    content.style.display = "block"; btn.innerText = "-";
                 }
             }
 
             function searchLinks() {
-                const query = document.getElementById('search').value.toLowerCase();
-                const links = document.querySelectorAll('.link a');
-                const resultsContainer = document.getElementById('searchResults');
-                resultsContainer.innerHTML = '';  // Clear previous results
-
-                let resultsFound = false;
+                let input = document.getElementById('search').value.toLowerCase();
+                let allLinks = document.querySelectorAll('.link a');
+                let results = [];
                 
-                links.forEach(link => {
-                    const text = link.textContent.toLowerCase();
-                    if (text.includes(query)) {
-                        resultsFound = true;
-                        const resultItem = document.createElement('div');
-                        resultItem.classList.add('link');
-                        resultItem.innerHTML = `<a href="${link.href}" target="_blank">${link.textContent}</a>`;
-                        resultsContainer.appendChild(resultItem);
+                allLinks.forEach(link => {
+                    if (link.textContent.toLowerCase().includes(input)) {
+                        results.push(link.textContent);
                     }
                 });
 
-                if (!resultsFound) {
-                    resultsContainer.innerHTML = '<p>No results found</p>';
+                displaySearchResults(results);
+            }
+
+            function displaySearchResults(results) {
+                const resultContainer = document.getElementById('searchResults');
+                if (results.length > 0) {
+                    resultContainer.innerHTML = `<h3>Search Results:</h3><ul>${results.map(result => `<li>${result}</li>`).join('')}</ul>`;
+                } else {
+                    resultContainer.innerHTML = `<h3>No Results Found</h3>`;
                 }
             }
 
-            document.getElementById("search").addEventListener("keyup", searchLinks);
-
+            // Attach functions to global scope
             window.toggleSidebar = toggleSidebar;
             window.toggleCategory = toggleCategory;
+            window.searchLinks = searchLinks;
         });
     </script>
-
 </body>
 </html>
