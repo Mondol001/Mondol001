@@ -6,7 +6,6 @@
     <title>Custom Links Portal</title>
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
-        /* General Reset */
         * {
             margin: 0;
             padding: 0;
@@ -14,43 +13,25 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        :root {
-            --bg-color: #f0f0f0;
-            --text-color: #333;
-            --card-bg: #ffffff;
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #121212;
-            --text-color: #ffffff;
-            --card-bg: #1e1e1e;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
         }
 
         .container {
             padding: 20px;
             max-width: 1200px;
             margin: auto;
-            text-align: center;
         }
 
         .header {
+            text-align: center;
             margin-bottom: 20px;
         }
 
         .header h1 {
             font-size: 2.5rem;
-        }
-
-        .theme-switch {
-            cursor: pointer;
-            font-size: 1.2rem;
-            margin-top: 10px;
         }
 
         .search-box {
@@ -66,6 +47,7 @@
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            font-size: 1rem;
         }
 
         .categories {
@@ -73,59 +55,70 @@
         }
 
         .category {
-            background: var(--card-bg);
+            background: #ffffff;
             border-radius: 10px;
-            margin-bottom: 20px;
-            padding: 15px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
 
         .category h2 {
+            padding: 15px;
+            margin: 0;
+            font-size: 1.5rem;
+            background: #007BFF;
+            color: white;
             cursor: pointer;
-            text-align: center;
+            user-select: none;
         }
 
         .links {
+            display: none;
+            padding: 15px;
+            background: #f9f9f9;
+        }
+
+        .links.expanded {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-            margin-top: 10px;
         }
 
         .link {
-            background: var(--bg-color);
-            padding: 15px;
+            background: #ffffff;
+            padding: 10px;
             text-align: center;
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .link a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .link a.highlight {
+            background: yellow;
         }
 
         .link:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
-
-        .link a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        .link a:hover {
-            color: #007BFF;
-        }
     </style>
 </head>
-<body data-theme="light">
+<body>
 
 <div class="container">
     <!-- Header -->
     <div class="header">
         <h1>Jubaer Hossain</h1>
         <p>Explore My Favorite Links</p>
-        <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
     </div>
 
     <!-- Search Box -->
@@ -140,18 +133,10 @@
         <div class="category">
             <h2 onclick="toggleCategory(this)">Tools</h2>
             <div class="links">
-                <div class="link">
-                    <a href="https://codepen.io" target="_blank" title="CodePen for developers">CodePen</a>
-                </div>
-                <div class="link">
-                    <a href="https://www.cutout.pro" target="_blank" title="Cutout Pro image tools">Cutout Pro</a>
-                </div>
-                <div class="link">
-                    <a href="https://www.prome.ai" target="_blank" title="Prome AI tools">Prome AI</a>
-                </div>
-                <div class="link">
-                    <a href="https://temp-mail.org" target="_blank" title="Temporary email generator">Temp Mail</a>
-                </div>
+                <div class="link"><a href="https://codepen.io" target="_blank">CodePen</a></div>
+                <div class="link"><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></div>
+                <div class="link"><a href="https://www.prome.ai" target="_blank">Prome AI</a></div>
+                <div class="link"><a href="https://temp-mail.org" target="_blank">Temp Mail</a></div>
             </div>
         </div>
 
@@ -159,15 +144,9 @@
         <div class="category">
             <h2 onclick="toggleCategory(this)">Development</h2>
             <div class="links">
-                <div class="link">
-                    <a href="https://github.com" target="_blank" title="GitHub for repositories">GitHub</a>
-                </div>
-                <div class="link">
-                    <a href="https://appinventor.mit.edu" target="_blank" title="MIT App Inventor">MIT App Inventor</a>
-                </div>
-                <div class="link">
-                    <a href="https://stackoverflow.com" target="_blank" title="Get answers on Stack Overflow">Stack Overflow</a>
-                </div>
+                <div class="link"><a href="https://github.com" target="_blank">GitHub</a></div>
+                <div class="link"><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></div>
+                <div class="link"><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></div>
             </div>
         </div>
 
@@ -175,15 +154,9 @@
         <div class="category">
             <h2 onclick="toggleCategory(this)">Shopping</h2>
             <div class="links">
-                <div class="link">
-                    <a href="https://www.daraz.com.bd" target="_blank" title="Daraz online shopping">Daraz</a>
-                </div>
-                <div class="link">
-                    <a href="https://www.amazon.com" target="_blank" title="Amazon shopping">Amazon</a>
-                </div>
-                <div class="link">
-                    <a href="https://www.aliexpress.com" target="_blank" title="AliExpress">AliExpress</a>
-                </div>
+                <div class="link"><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></div>
+                <div class="link"><a href="https://www.amazon.com" target="_blank">Amazon</a></div>
+                <div class="link"><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></div>
             </div>
         </div>
 
@@ -191,15 +164,9 @@
         <div class="category">
             <h2 onclick="toggleCategory(this)">Education</h2>
             <div class="links">
-                <div class="link">
-                    <a href="https://www.educationboardresults.gov.bd" target="_blank" title="Bangladesh Results">Bangladesh Results</a>
-                </div>
-                <div class="link">
-                    <a href="https://www.khanacademy.org" target="_blank" title="Khan Academy">Khan Academy</a>
-                </div>
-                <div class="link">
-                    <a href="https://www.coursera.org" target="_blank" title="Coursera courses">Coursera</a>
-                </div>
+                <div class="link"><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></div>
+                <div class="link"><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></div>
+                <div class="link"><a href="https://www.coursera.org" target="_blank">Coursera</a></div>
             </div>
         </div>
 
@@ -207,15 +174,9 @@
         <div class="category">
             <h2 onclick="toggleCategory(this)">Social Media</h2>
             <div class="links">
-                <div class="link">
-                    <a href="https://www.facebook.com" target="_blank" title="Facebook social network">Facebook</a>
-                </div>
-                <div class="link">
-                    <a href="https://www.instagram.com" target="_blank" title="Instagram">Instagram</a>
-                </div>
-                <div class="link">
-                    <a href="https://www.twitter.com" target="_blank" title="Twitter">Twitter</a>
-                </div>
+                <div class="link"><a href="https://www.facebook.com" target="_blank">Facebook</a></div>
+                <div class="link"><a href="https://www.instagram.com" target="_blank">Instagram</a></div>
+                <div class="link"><a href="https://www.twitter.com" target="_blank">Twitter</a></div>
             </div>
         </div>
 
@@ -223,29 +184,50 @@
 </div>
 
 <script>
-    // Toggle Theme
-    function toggleTheme() {
-        const body = document.body;
-        const currentTheme = body.getAttribute("data-theme");
-        const newTheme = currentTheme === "light" ? "dark" : "light";
-        body.setAttribute("data-theme", newTheme);
-    }
-
-    // Filter Links
-    function filterLinks() {
-        const query = document.getElementById("searchInput").value.toLowerCase();
-        const links = document.querySelectorAll(".link");
-        links.forEach(link => {
-            const text = link.innerText.toLowerCase();
-            link.style.display = text.includes(query) ? "block" : "none";
-        });
-    }
-
-    // Expand/Collapse Categories
+    // Toggle Category
     function toggleCategory(header) {
         const links = header.nextElementSibling;
-        const isVisible = links.style.display !== "none";
-        links.style.display = isVisible ? "none" : "grid";
+        links.classList.toggle("expanded");
+    }
+
+    // Search and Filter Links
+    function filterLinks() {
+        const query = document.getElementById("searchInput").value.toLowerCase();
+        const categories = document.querySelectorAll(".category");
+        let anyResult = false;
+
+        categories.forEach(category => {
+            const links = category.querySelector(".links");
+            const items = links.querySelectorAll(".link");
+            let matchFound = false;
+
+            items.forEach(item => {
+                const link = item.querySelector("a");
+                if (link.textContent.toLowerCase().includes(query)) {
+                    item.style.display = "block";
+                    link.classList.add("highlight");
+                    matchFound = true;
+                } else {
+                    item.style.display = "none";
+                    link.classList.remove("highlight");
+                }
+            });
+
+            if (matchFound) {
+                links.classList.add("expanded");
+                anyResult = true;
+            } else {
+                links.classList.remove("expanded");
+            }
+        });
+
+        // If no result, hide all categories
+        categories.forEach(category => {
+            const links = category.querySelector(".links");
+            if (links.querySelectorAll(".link:not([style='display: none;'])").length === 0) {
+                links.classList.remove("expanded");
+            }
+        });
     }
 </script>
 
