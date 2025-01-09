@@ -32,21 +32,9 @@
             border-radius: 50%;
             border: 5px solid #00ff00;
             margin-top: 15px;
-            animation: flip 2s infinite;
         }
 
-        @keyframes flip {
-            0% {
-                transform: rotateY(0deg);
-            }
-            50% {
-                transform: rotateY(180deg);
-            }
-            100% {
-                transform: rotateY(360deg);
-            }
-        }
-
+        /* Toggle Button */
         .toggle-btn {
             font-size: 30px;
             color: #00ff00;
@@ -60,6 +48,7 @@
             text-shadow: 0px 0px 5px #00ff00;
         }
 
+        /* Sidebar */
         .sidebar {
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
@@ -123,45 +112,40 @@
             color: #0c0c0c;
         }
 
-        .search-container {
-            margin: 20px;
-            display: flex;
-            justify-content: center;
+        /* Add Shortcut Modal */
+        #addShortcutModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
         }
 
-        .search-container input {
+        #addShortcutModal input {
+            margin-bottom: 10px;
             padding: 10px;
+            width: 100%;
             border-radius: 5px;
-            border: 1px solid #00ff00;
-            background-color: #0c0c0c;
+            background: #333;
             color: #00ff00;
-            width: 250px;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
-            transition: 0.3s;
-        }
-
-        .search-container input:focus {
             border: 1px solid #00ff00;
-            outline: none;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
         }
 
-        .search-results {
-            margin-top: 20px;
-            color: #00ff00;
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #00ff00;
+        #addShortcutModal button {
+            padding: 10px;
+            background-color: #00ff00;
+            border: none;
+            color: #0c0c0c;
+            cursor: pointer;
             border-radius: 5px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00cc00;
+        #addShortcutModal button:hover {
+            background-color: #00cc00;
         }
     </style>
 </head>
@@ -174,10 +158,12 @@
         <p><a href="about.html" style="color: #00ff00; text-decoration: none;">About</a> | <a href="contact.html" style="color: #00ff00; text-decoration: none;">Contact</a></p>
     </div>
 
+    <!-- Toggle button to open/close sidebar -->
     <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
 
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div class="category" onclick="toggleCategory(this)">
+        <div class="category">
             <h2>Tools</h2>
             <ul>
                 <li><a href="https://codepen.io" target="_blank">CodePen</a></li>
@@ -186,64 +172,30 @@
                 <li><a href="https://temp-mail.org" target="_blank">Temp Mail</a></li>
             </ul>
         </div>
-
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Development</h2>
-            <ul>
-                <li><a href="https://github.com" target="_blank">GitHub</a></li>
-                <li><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></li>
-                <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
-            </ul>
-        </div>
-
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Shopping</h2>
-            <ul>
-                <li><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></li>
-                <li><a href="https://www.amazon.com" target="_blank">Amazon</a></li>
-                <li><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></li>
-            </ul>
-        </div>
-
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Education</h2>
-            <ul>
-                <li><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></li>
-                <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
-                <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
-            </ul>
-        </div>
-
-        <div class="category" onclick="toggleCategory(this)">
-            <h2>Social Media</h2>
-            <ul>
-                <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
-                <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
-                <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
-            </ul>
-        </div>
     </div>
 
-    <!-- Add Shortcuts Section -->
-    <div class="header">
-        <h2>Add Custom Shortcut</h2>
-        <input type="text" id="shortcutName" placeholder="Enter Shortcut Name" style="color: #00ff00; background-color: #0c0c0c;">
-        <input type="text" id="shortcutURL" placeholder="Enter Shortcut URL" style="color: #00ff00; background-color: #0c0c0c;">
-        <button onclick="addShortcut()">Add Shortcut</button>
-    </div>
+    <!-- Add Shortcut Button -->
+    <button onclick="openModal()">Add Shortcut</button>
 
-    <!-- Search Results -->
-    <div class="search-results" id="searchResults"></div>
+    <!-- Add Shortcut Modal -->
+    <div id="addShortcutModal">
+        <input type="text" id="shortcutName" placeholder="Enter Shortcut Name">
+        <input type="url" id="shortcutURL" placeholder="Enter URL">
+        <button onclick="addShortcut()">OK</button>
+    </div>
 
     <script>
+        // Toggle sidebar visibility
         function toggleSidebar() {
-            document.getElementById('sidebar').class document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebar').classList.toggle('active');
         }
 
-        function toggleCategory(category) {
-            category.classList.toggle('active');
+        // Open Add Shortcut Modal
+        function openModal() {
+            document.getElementById('addShortcutModal').style.display = 'block';
         }
 
+        // Add Shortcut to Sidebar
         function addShortcut() {
             const name = document.getElementById('shortcutName').value;
             const url = document.getElementById('shortcutURL').value;
@@ -260,30 +212,13 @@
                 `;
                 sidebar.appendChild(newCategory);
 
-                // Clear the input fields after adding
+                // Clear the input fields and close the modal after adding
                 document.getElementById('shortcutName').value = '';
                 document.getElementById('shortcutURL').value = '';
+                document.getElementById('addShortcutModal').style.display = 'none';
             } else {
                 alert('Please provide both name and URL!');
             }
-        }
-
-        // Search functionality (if needed in future)
-        function searchFunction() {
-            let input = document.getElementById("searchBar");
-            let filter = input.value.toUpperCase();
-            let resultContainer = document.getElementById("searchResults");
-
-            resultContainer.innerHTML = '';
-            const links = document.querySelectorAll(".category a");
-
-            links.forEach(link => {
-                if (link.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    let resultItem = document.createElement('div');
-                    resultItem.innerHTML = `<a href="${link.href}" target="_blank">${link.innerHTML}</a>`;
-                    resultContainer.appendChild(resultItem);
-                }
-            });
         }
     </script>
 
