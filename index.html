@@ -30,6 +30,13 @@
             flex-direction: column;
             border-right: 2px solid #33ff33;
             box-shadow: 5px 0 15px rgba(0, 0, 0, 0.8);
+            position: absolute;
+            left: -300px;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar.open {
+            left: 0;
         }
 
         .sidebar h1 {
@@ -83,6 +90,7 @@
         .content {
             flex: 1;
             padding: 20px;
+            margin-left: 20px;
             overflow-y: auto;
         }
 
@@ -136,7 +144,6 @@
             font-size: 1.5rem;
             color: #33ff33;
             cursor: pointer;
-            margin-left: 10px;
             transition: transform 0.3s ease;
         }
 
@@ -144,11 +151,24 @@
             transform: rotate(180deg);
         }
 
+        .toggle-menu-btn {
+            font-size: 2rem;
+            color: #33ff33;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .description {
+            margin-top: 30px;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <h1>Custom Links</h1>
         <div class="category">
             <div class="category-header">
@@ -214,10 +234,14 @@
     </div>
 
     <div class="content">
+        <div class="toggle-menu-btn" onclick="toggleSidebar()">&#9776;</div>
         <div class="search-box">
             <input type="text" id="search" placeholder="Search links..." onkeyup="searchLinks()">
         </div>
         <div class="search-results" id="searchResults"></div>
+        <div class="description">
+            <p>এই সাইটে বিভিন্ন ক্যাটাগরির লিঙ্ক রয়েছে, যেখানে আপনি আপনার পছন্দ অনুযায়ী সরাসরি অ্যাক্সেস পেতে পারেন। সার্চ ফিচার ব্যবহার করে আপনি যেকোনো নির্দিষ্ট লিঙ্ক খুঁজে বের করতে পারবেন।</p>
+        </div>
     </div>
 
     <script>
@@ -233,26 +257,34 @@
             }
         }
 
-        function searchLinks() {
-            const query = document.getElementById("search").value.toLowerCase();
-            const searchResults = document.getElementById("searchResults");
-            searchResults.innerHTML = ''; // Clear previous search results
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("open");
+        }
 
-            if (query.length === 0) return; // No search query, return
+        function searchLinks() {function searchLinks() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const links = document.querySelectorAll('.link a');
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '';  // Clear previous results
 
-            const allLinks = document.querySelectorAll(".link");
-
-            allLinks.forEach(link => {
-                if (link.innerText.toLowerCase().includes(query)) {
-                    const resultDiv = document.createElement("div");
-                    resultDiv.classList.add("link");
-                    resultDiv.innerHTML = `<a href="${link.href}" target="_blank">${link.innerText}</a>`;
-                    searchResults.appendChild(resultDiv);
+            let resultsFound = false;
+            
+            links.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    resultsFound = true;
+                    const resultItem = document.createElement('div');
+                    resultItem.classList.add('link');
+                    resultItem.innerHTML = `<a href="${link.href}" target="_blank">${link.textContent}</a>`;
+                    resultsContainer.appendChild(resultItem);
                 }
             });
+
+            if (!resultsFound) {
+                resultsContainer.innerHTML = '<p>No results found</p>';
+            }
         }
     </script>
-
 </body>
 </html>
-``
