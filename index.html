@@ -176,14 +176,17 @@
     <div class="search-results" id="searchResults"></div>
 
     <script>
+        // Toggle sidebar visibility
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
+        // Toggle category expand/collapse
         function toggleCategory(category) {
             category.classList.toggle('active');
         }
 
+        // Search links
         function searchLinks() {
             let input = document.getElementById('search').value.toLowerCase();
             let allLinks = document.querySelectorAll('.category a');
@@ -191,17 +194,21 @@
 
             allLinks.forEach(link => {
                 if (link.textContent.toLowerCase().includes(input)) {
-                    results.push(link.textContent);
+                    results.push({
+                        text: link.textContent,
+                        url: link.href
+                    });
                 }
             });
 
             displaySearchResults(results);
         }
 
+        // Display search results
         function displaySearchResults(results) {
             const resultContainer = document.getElementById('searchResults');
             if (results.length > 0) {
-                resultContainer.innerHTML = `<h3>Search Results:</h3><ul>${results.map(result => `<li>${result}</li>`).join('')}</ul>`;
+                resultContainer.innerHTML = `<h3>Search Results:</h3><ul>${results.map(result => `<li><a href="${result.url}" target="_blank">${result.text}</a></li>`).join('')}</ul>`;
             } else {
                 resultContainer.innerHTML = `<h3>No Results Found</h3>`;
             }
