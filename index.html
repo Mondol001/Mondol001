@@ -30,14 +30,16 @@
         .flip-container {
             perspective: 1000px; /* Set the perspective for 3D effect */
             margin: 0 auto;
+            width: 150px;
+            height: 150px;
         }
 
         .flipper {
-            width: 150px;
-            height: 150px;
+            width: 100%;
+            height: 100%;
             transform-style: preserve-3d;
             transform: rotateY(0deg);
-            animation: flip 2s infinite; /* Animation for flipping the image */
+            animation: flip 10s infinite; /* Animation for flipping the image */
             border-radius: 50%;
             position: relative;
         }
@@ -55,7 +57,7 @@
             }
         }
 
-        /* Front face of the flip (image) */
+        /* Front face of the flip (your image) */
         .front, .back {
             position: absolute;
             top: 0;
@@ -82,24 +84,12 @@
         .header img {
             width: 150px;
             height: 150px;
+            border-radius: 50%;
+            border: 5px solid #00ff00;
             margin-top: 15px;
         }
 
-        .header h1 {
-            color: #00ff00;
-            text-shadow: 0px 0px 5px #00ff00;
-        }
-
-        .header p {
-            color: #00ff00;
-        }
-
-        .header a {
-            color: #00ff00;
-            text-decoration: none;
-        }
-
-        /* Sidebar and other styles remain as they are */
+        /* Sidebar and other styles remain unchanged */
     </style>
 </head>
 <body>
@@ -117,7 +107,7 @@
         </div>
         <h1>Jubaer Hossain</h1>
         <p>Explore my favorite websites!</p>
-        <p><a href="about.html">About</a> | <a href="contact.html">Contact</a></p>
+        <p><a href="about.html" style="color: #00ff00; text-decoration: none;">About</a> | <a href="contact.html" style="color: #00ff00; text-decoration: none;">Contact</a></p>
     </div>
 
     <!-- Toggle button to open/close sidebar -->
