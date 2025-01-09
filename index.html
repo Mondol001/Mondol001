@@ -32,7 +32,7 @@
             border-radius: 50%;
             border: 5px solid #00ff00;
             margin-top: 15px;
-            animation: flip 2s infinite; /* Animation for flipping the image */
+            animation: flip 2s infinite;
         }
 
         @keyframes flip {
@@ -90,7 +90,7 @@
         }
 
         .category:hover {
-            background: rgba(0, 255, 0, 0.4); /* Neon green hover */
+            background: rgba(0, 255, 0, 0.4);
         }
 
         .category h2 {
@@ -123,34 +123,46 @@
             color: #0c0c0c;
         }
 
-        .add-shortcut-container {
-            margin-top: 20px;
-            text-align: center;
+        .search-container {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
         }
 
-        .add-shortcut-container input {
+        .search-container input {
             padding: 10px;
-            margin: 5px;
             border-radius: 5px;
             border: 1px solid #00ff00;
             background-color: #0c0c0c;
             color: #00ff00;
+            width: 250px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+            transition: 0.3s;
         }
 
-        .add-shortcut-container button {
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #00ff00;
-            border: none;
-            cursor: pointer;
-            color: #0c0c0c;
+        .search-container input:focus {
+            border: 1px solid #00ff00;
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
         }
 
-        .add-shortcut-container button:hover {
-            background-color: #0c0c0c;
+        .search-results {
+            margin-top: 20px;
             color: #00ff00;
         }
 
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
     </style>
 </head>
 <body>
@@ -162,12 +174,10 @@
         <p><a href="about.html" style="color: #00ff00; text-decoration: none;">About</a> | <a href="contact.html" style="color: #00ff00; text-decoration: none;">Contact</a></p>
     </div>
 
-    <!-- Toggle button to open/close sidebar -->
     <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
 
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div class="category">
+        <div class="category" onclick="toggleCategory(this)">
             <h2>Tools</h2>
             <ul>
                 <li><a href="https://codepen.io" target="_blank">CodePen</a></li>
@@ -177,7 +187,7 @@
             </ul>
         </div>
 
-        <div class="category">
+        <div class="category" onclick="toggleCategory(this)">
             <h2>Development</h2>
             <ul>
                 <li><a href="https://github.com" target="_blank">GitHub</a></li>
@@ -186,7 +196,7 @@
             </ul>
         </div>
 
-        <div class="category">
+        <div class="category" onclick="toggleCategory(this)">
             <h2>Shopping</h2>
             <ul>
                 <li><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></li>
@@ -195,7 +205,7 @@
             </ul>
         </div>
 
-        <div class="category">
+        <div class="category" onclick="toggleCategory(this)">
             <h2>Education</h2>
             <ul>
                 <li><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></li>
@@ -204,7 +214,7 @@
             </ul>
         </div>
 
-        <div class="category">
+        <div class="category" onclick="toggleCategory(this)">
             <h2>Social Media</h2>
             <ul>
                 <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
@@ -212,42 +222,70 @@
                 <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
             </ul>
         </div>
-
-        <!-- Add Shortcut Section -->
-        <div class="add-shortcut-container">
-            <input type="text" id="shortcutName" placeholder="Shortcut Name">
-            <input type="url" id="shortcutURL" placeholder="URL">
-            <button onclick="addShortcut()">Add Shortcut</button>
-        </div>
     </div>
 
+    <!-- Add Shortcuts Section -->
+    <div class="header">
+        <h2>Add Custom Shortcut</h2>
+        <input type="text" id="shortcutName" placeholder="Enter Shortcut Name" style="color: #00ff00; background-color: #0c0c0c;">
+        <input type="text" id="shortcutURL" placeholder="Enter Shortcut URL" style="color: #00ff00; background-color: #0c0c0c;">
+        <button onclick="addShortcut()">Add Shortcut</button>
+    </div>
+
+    <!-- Search Results -->
+    <div class="search-results" id="searchResults"></div>
+
     <script>
-        // Toggle sidebar visibility
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebar').class document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // Add a custom shortcut button
+        function toggleCategory(category) {
+            category.classList.toggle('active');
+        }
+
         function addShortcut() {
-            let name = document.getElementById('shortcutName').value;
-            let url = document.getElementById('shortcutURL').value;
+            const name = document.getElementById('shortcutName').value;
+            const url = document.getElementById('shortcutURL').value;
 
             if (name && url) {
-                const category = document.createElement('div');
-                category.classList.add('category');
-                category.innerHTML = `
+                const sidebar = document.getElementById('sidebar');
+                const newCategory = document.createElement('div');
+                newCategory.classList.add('category');
+                newCategory.innerHTML = `
                     <h2>${name}</h2>
                     <ul>
                         <li><a href="${url}" target="_blank">${name}</a></li>
                     </ul>
                 `;
-                document.getElementById('sidebar').appendChild(category);
-                document.getElementById('shortcutName').value = '';  // Clear input fields
+                sidebar.appendChild(newCategory);
+
+                // Clear the input fields after adding
+                document.getElementById('shortcutName').value = '';
                 document.getElementById('shortcutURL').value = '';
             } else {
-                alert('Please enter both name and URL');
+                alert('Please provide both name and URL!');
             }
         }
+
+        // Search functionality (if needed in future)
+        function searchFunction() {
+            let input = document.getElementById("searchBar");
+            let filter = input.value.toUpperCase();
+            let resultContainer = document.getElementById("searchResults");
+
+            resultContainer.innerHTML = '';
+            const links = document.querySelectorAll(".category a");
+
+            links.forEach(link => {
+                if (link.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    let resultItem = document.createElement('div');
+                    resultItem.innerHTML = `<a href="${link.href}" target="_blank">${link.innerHTML}</a>`;
+                    resultContainer.appendChild(resultItem);
+                }
+            });
+        }
     </script>
+
 </body>
 </html>
