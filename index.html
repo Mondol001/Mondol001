@@ -3,212 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mih Mondol Custom Links</title>
-    <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
-    <style>
-        body {
-            font-family: 'Courier New', monospace;
-            margin: 0;
-            padding: 0;
-            background: #0c0c0c;
-            color: #00ff00; /* Neon Green */
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .header {
-            text-align: center;
-            color: #00ff00;
-            margin-top: 20px;
-            margin-bottom: 40px;
-            text-shadow: 0px 0px 5px #00ff00;
-        }
-
-        .header img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid #00ff00;
-            margin-top: 15px;
-        }
-
-        /* Sidebar Toggle Button */
-        .toggle-btn {
-            font-size: 30px;
-            color: #00ff00;
-            background: transparent;
-            border: none;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            cursor: pointer;
-            z-index: 1000;
-            text-shadow: 0px 0px 5px #00ff00;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
-            position: fixed;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-            transition: top 0.3s;
-        }
-
-        .sidebar.active {
-            top: 0;
-        }
-
-        /* Sidebar links */
-        .sidebar a {
-            display: block;
-            color: #00ff00;
-            font-size: 18px;
-            text-decoration: none;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar a:hover {
-            background-color: #00cc00;
-        }
-
-        /* Button styling for shortcut */
-        .shortcut-button {
-            background-color: #00ff00;
-            border: none;
-            color: #0c0c0c;
-            padding: 12px;
-            font-size: 16px;
-            width: 100%;
-            margin-bottom: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .shortcut-button:hover {
-            background-color: #00cc00;
-        }
-
-        /* Add Shortcut Modal */
-        #addShortcutModal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
-        }
-
-        #addShortcutModal input {
-            margin-bottom: 10px;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            background: #333;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-        }
-
-        #addShortcutModal button {
-            padding: 10px;
-            background-color: #00ff00;
-            border: none;
-            color: #0c0c0c;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        #addShortcutModal button:hover {
-            background-color: #00cc00;
-        }
-
-    </style>
+    <title>Mondol Organic Shop</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <h1>Welcome to Mondol Organic Shop</h1>
+        <nav>
+            <ul>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="header">
-        <img src="https://i.imgur.com/IcJVIOG.jpeg" alt="Your Photo">
-        <h1>Jubaer Hossain</h1>
-        <p>Explore my favorite websites!</p>
-    </div>
+    <section id="products">
+        <h2>Our Products</h2>
+        <div class="product">
+            <img src="product1.jpg" alt="Product 1">
+            <p>Organic Rice - $20</p>
+        </div>
+        <div class="product">
+            <img src="product2.jpg" alt="Product 2">
+            <p>Fresh Vegetables - $15</p>
+        </div>
+    </section>
 
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-    </div>
+    <section id="about">
+        <h2>About Us</h2>
+        <p>Mondol Organic Shop offers the best organic products directly from farmers.</p>
+    </section>
 
-    <!-- Toggle button to open/close sidebar -->
-    <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <form action="mailto:contact@mondolshop.com" method="POST" enctype="text/plain">
+            <input type="text" name="name" placeholder="Your Name" required><br>
+            <input type="email" name="email" placeholder="Your Email" required><br>
+            <textarea name="message" placeholder="Your Message" required></textarea><br>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <button class="shortcut-button" onclick="openModal()">Add Shortcut</button>
-        <div id="shortcutButtonsContainer"></div> <!-- Dynamically added shortcut buttons will appear here -->
-    </div>
+    <footer>
+        <p>&copy; 2025 Mondol Organic Shop</p>
+    </footer>
 
-    <!-- Add Shortcut Modal -->
-    <div id="addShortcutModal">
-        <input type="text" id="shortcutName" placeholder="Enter Shortcut Name">
-        <input type="url" id="shortcutURL" placeholder="Enter URL">
-        <button onclick="addShortcut()">OK</button>
-    </div>
-
-    <script>
-        // Toggle sidebar visibility
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
-        }
-
-        // Open Add Shortcut Modal
-        function openModal() {
-            document.getElementById('addShortcutModal').style.display = 'block';
-        }
-
-        // Add Shortcut to Sidebar
-        function addShortcut() {
-            const name = document.getElementById('shortcutName').value;
-            const url = document.getElementById('shortcutURL').value;
-
-            if (name && url) {
-                const container = document.getElementById('shortcutButtonsContainer');
-
-                // Create new shortcut button
-                const newButton = document.createElement('button');
-                newButton.classList.add('shortcut-button');
-                newButton.innerHTML = name;
-                newButton.onclick = function() {
-                    window.open(url, '_blank');
-                };
-
-                // Append new shortcut button under "Add Shortcut"
-                container.appendChild(newButton);
-
-                // Clear the input fields and close the modal after adding
-                document.getElementById('shortcutName').value = '';
-                document.getElementById('shortcutURL').value = '';
-                document.getElementById('addShortcutModal').style.display = 'none';
-            } else {
-                alert('Please provide both name and URL!');
-            }
-        }
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
