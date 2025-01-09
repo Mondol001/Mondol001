@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Links Portal</title>
+    <title>Custom Links - Hacker UI</title>
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
         * {
@@ -13,223 +13,241 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            transition: background 0.3s, color 0.3s;
+            font-family: "Courier New", Courier, monospace;
+            background: black;
+            color: #33ff33;
+            overflow: hidden;
+            display: flex;
         }
 
-        .container {
+        .sidebar {
+            width: 300px;
+            background: #1a1a1a;
+            color: #33ff33;
             padding: 20px;
-            max-width: 1200px;
-            margin: auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid #33ff33;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.8);
         }
 
-        .header {
+        .sidebar h1 {
             text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .category {
             margin-bottom: 20px;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 10px;
+            background: #333333;
+            border-radius: 5px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .category-header:hover {
+            background: #444444;
+        }
+
+        .category-header span {
+            font-weight: bold;
+        }
+
+        .category-content {
+            display: none;
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .category-content a {
+            display: block;
+            padding: 5px 0;
+            color: #33ff33;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .category-content a:hover {
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
         }
 
         .search-box {
-            margin: 20px auto;
-            max-width: 500px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .search-box input {
             width: 100%;
             padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
             font-size: 1rem;
-        }
-
-        .categories {
-            margin-top: 20px;
-        }
-
-        .category {
-            background: #ffffff;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .category h2 {
-            padding: 15px;
-            margin: 0;
-            font-size: 1.5rem;
-            background: #007BFF;
-            color: white;
-            cursor: pointer;
-            user-select: none;
+            color: black;
+            border: none;
+            border-radius: 5px;
         }
 
         .links {
-            display: none;
-            padding: 15px;
-            background: #f9f9f9;
-        }
-
-        .links.expanded {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
         }
 
         .link {
-            background: #ffffff;
-            padding: 10px;
+            background: #1a1a1a;
+            padding: 15px;
             text-align: center;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .link a {
-            text-decoration: none;
-            color: #007BFF;
-            font-weight: bold;
-            display: block;
-            transition: color 0.3s ease;
-        }
-
-        .link a.highlight {
-            background: yellow;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
         }
 
         .link:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
         }
+
+        .link a {
+            color: #33ff33;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .link a:hover {
+            background: #33ff33;
+            color: black;
+        }
+
+        .toggle-btn {
+            font-size: 1.5rem;
+            color: #33ff33;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            transform: rotate(180deg);
+        }
+
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Header -->
-    <div class="header">
-        <h1>Jubaer Hossain</h1>
-        <p>Explore My Favorite Links</p>
-    </div>
-
-    <!-- Search Box -->
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search for links..." oninput="filterLinks()">
-    </div>
-
-    <!-- Categories -->
-    <div class="categories">
-
-        <!-- Tools -->
+    <div class="sidebar">
+        <h1>Custom Links</h1>
         <div class="category">
-            <h2 onclick="toggleCategory(this)">Tools</h2>
-            <div class="links">
-                <div class="link"><a href="https://codepen.io" target="_blank">CodePen</a></div>
-                <div class="link"><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></div>
-                <div class="link"><a href="https://www.prome.ai" target="_blank">Prome AI</a></div>
-                <div class="link"><a href="https://temp-mail.org" target="_blank">Temp Mail</a></div>
+            <div class="category-header">
+                <span>Tools</span>
+                <span class="toggle-btn" onclick="toggleCategory('tools')">+</span>
+            </div>
+            <div class="category-content" id="tools">
+                <a href="https://codepen.io" target="_blank">CodePen</a>
+                <a href="https://www.cutout.pro" target="_blank">Cutout Pro</a>
+                <a href="https://www.prome.ai" target="_blank">Prome AI</a>
+                <a href="https://temp-mail.org" target="_blank">Temp Mail</a>
             </div>
         </div>
 
-        <!-- Development -->
         <div class="category">
-            <h2 onclick="toggleCategory(this)">Development</h2>
-            <div class="links">
-                <div class="link"><a href="https://github.com" target="_blank">GitHub</a></div>
-                <div class="link"><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></div>
-                <div class="link"><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></div>
+            <div class="category-header">
+                <span>Development</span>
+                <span class="toggle-btn" onclick="toggleCategory('development')">+</span>
+            </div>
+            <div class="category-content" id="development">
+                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a>
+                <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
             </div>
         </div>
 
-        <!-- Shopping -->
         <div class="category">
-            <h2 onclick="toggleCategory(this)">Shopping</h2>
-            <div class="links">
-                <div class="link"><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></div>
-                <div class="link"><a href="https://www.amazon.com" target="_blank">Amazon</a></div>
-                <div class="link"><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></div>
+            <div class="category-header">
+                <span>Shopping</span>
+                <span class="toggle-btn" onclick="toggleCategory('shopping')">+</span>
+            </div>
+            <div class="category-content" id="shopping">
+                <a href="https://www.daraz.com.bd" target="_blank">Daraz</a>
+                <a href="https://www.amazon.com" target="_blank">Amazon</a>
+                <a href="https://www.aliexpress.com" target="_blank">AliExpress</a>
             </div>
         </div>
 
-        <!-- Education -->
         <div class="category">
-            <h2 onclick="toggleCategory(this)">Education</h2>
-            <div class="links">
-                <div class="link"><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></div>
-                <div class="link"><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></div>
-                <div class="link"><a href="https://www.coursera.org" target="_blank">Coursera</a></div>
+            <div class="category-header">
+                <span>Education</span>
+                <span class="toggle-btn" onclick="toggleCategory('education')">+</span>
+            </div>
+            <div class="category-content" id="education">
+                <a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a>
+                <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a>
+                <a href="https://www.coursera.org" target="_blank">Coursera</a>
             </div>
         </div>
 
-        <!-- Social Media -->
         <div class="category">
-            <h2 onclick="toggleCategory(this)">Social Media</h2>
-            <div class="links">
-                <div class="link"><a href="https://www.facebook.com" target="_blank">Facebook</a></div>
-                <div class="link"><a href="https://www.instagram.com" target="_blank">Instagram</a></div>
-                <div class="link"><a href="https://www.twitter.com" target="_blank">Twitter</a></div>
+            <div class="category-header">
+                <span>Social Media</span>
+                <span class="toggle-btn" onclick="toggleCategory('social')">+</span>
+            </div>
+            <div class="category-content" id="social">
+                <a href="https://www.facebook.com" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                <a href="https://www.twitter.com" target="_blank">Twitter</a>
             </div>
         </div>
 
     </div>
-</div>
 
-<script>
-    // Toggle Category
-    function toggleCategory(header) {
-        const links = header.nextElementSibling;
-        links.classList.toggle("expanded");
-    }
+    <div class="content">
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Search links..." onkeyup="searchLinks()">
+        </div>
+        <div class="links" id="links"></div>
+    </div>
 
-    // Search and Filter Links
-    function filterLinks() {
-        const query = document.getElementById("searchInput").value.toLowerCase();
-        const categories = document.querySelectorAll(".category");
-        let anyResult = false;
+    <script>
+        function toggleCategory(category) {
+            const content = document.getElementById(category);
+            const btn = document.querySelector(`#${category} ~ .category-header .toggle-btn`);
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                btn.innerText = "+";
+            } else {
+                content.style.display = "block";
+                btn.innerText = "-";
+            }
+        }
 
-        categories.forEach(category => {
-            const links = category.querySelector(".links");
-            const items = links.querySelectorAll(".link");
-            let matchFound = false;
-
-            items.forEach(item => {
-                const link = item.querySelector("a");
-                if (link.textContent.toLowerCase().includes(query)) {
-                    item.style.display = "block";
-                    link.classList.add("highlight");
-                    matchFound = true;
+        function searchLinks() {
+            const query = document.getElementById("search").value.toLowerCase();
+            const links = document.querySelectorAll(".category-content a");
+            links.forEach(link => {
+                if (link.innerText.toLowerCase().includes(query)) {
+                    link.style.display = "block";
                 } else {
-                    item.style.display = "none";
-                    link.classList.remove("highlight");
+                    link.style.display = "none";
                 }
             });
+        }
 
-            if (matchFound) {
-                links.classList.add("expanded");
-                anyResult = true;
-            } else {
-                links.classList.remove("expanded");
-            }
-        });
-
-        // If no result, hide all categories
-        categories.forEach(category => {
-            const links = category.querySelector(".links");
-            if (links.querySelectorAll(".link:not([style='display: none;'])").length === 0) {
-                links.classList.remove("expanded");
-            }
-        });
-    }
-</script>
+        // Initialize with all links displayed
+        searchLinks();
+    </script>
 
 </body>
 </html>
