@@ -171,9 +171,9 @@
     <div class="sidebar" id="sidebar">
         <h1>Custom Links</h1>
         <div class="category">
-            <div class="category-header">
+            <div class="category-header" onclick="toggleCategory('tools')">
                 <span>Tools</span>
-                <span class="toggle-btn" onclick="toggleCategory('tools')">+</span>
+                <span class="toggle-btn">+</span>
             </div>
             <div class="category-content" id="tools">
                 <a href="https://codepen.io" class="link" target="_blank">CodePen</a>
@@ -184,9 +184,9 @@
         </div>
 
         <div class="category">
-            <div class="category-header">
+            <div class="category-header" onclick="toggleCategory('development')">
                 <span>Development</span>
-                <span class="toggle-btn" onclick="toggleCategory('development')">+</span>
+                <span class="toggle-btn">+</span>
             </div>
             <div class="category-content" id="development">
                 <a href="https://github.com" class="link" target="_blank">GitHub</a>
@@ -196,9 +196,9 @@
         </div>
 
         <div class="category">
-            <div class="category-header">
+            <div class="category-header" onclick="toggleCategory('shopping')">
                 <span>Shopping</span>
-                <span class="toggle-btn" onclick="toggleCategory('shopping')">+</span>
+                <span class="toggle-btn">+</span>
             </div>
             <div class="category-content" id="shopping">
                 <a href="https://www.daraz.com.bd" class="link" target="_blank">Daraz</a>
@@ -208,9 +208,9 @@
         </div>
 
         <div class="category">
-            <div class="category-header">
+            <div class="category-header" onclick="toggleCategory('education')">
                 <span>Education</span>
-                <span class="toggle-btn" onclick="toggleCategory('education')">+</span>
+                <span class="toggle-btn">+</span>
             </div>
             <div class="category-content" id="education">
                 <a href="https://www.educationboardresults.gov.bd" class="link" target="_blank">Bangladesh Results</a>
@@ -220,9 +220,9 @@
         </div>
 
         <div class="category">
-            <div class="category-header">
+            <div class="category-header" onclick="toggleCategory('social')">
                 <span>Social Media</span>
-                <span class="toggle-btn" onclick="toggleCategory('social')">+</span>
+                <span class="toggle-btn">+</span>
             </div>
             <div class="category-content" id="social">
                 <a href="https://www.facebook.com" class="link" target="_blank">Facebook</a>
@@ -247,7 +247,7 @@
     <script>
         function toggleCategory(category) {
             const content = document.getElementById(category);
-            const btn = document.querySelector(`#${category} ~ .category-header .toggle-btn`);
+            const btn = content.previousElementSibling.querySelector('.toggle-btn');
             if (content.style.display === "block") {
                 content.style.display = "none";
                 btn.innerText = "+";
@@ -258,11 +258,11 @@
         }
 
         function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
+            const sidebar = document.getElementById("sidebar const sidebar = document.getElementById("sidebar");
             sidebar.classList.toggle("open");
         }
 
-        function searchLinks() {function searchLinks() {
+        function searchLinks() {
             const query = document.getElementById('search').value.toLowerCase();
             const links = document.querySelectorAll('.link a');
             const resultsContainer = document.getElementById('searchResults');
@@ -286,5 +286,6 @@
             }
         }
     </script>
+
 </body>
 </html>
