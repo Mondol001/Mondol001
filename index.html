@@ -10,54 +10,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #f0f4f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .login-container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
-    }
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .message {
-      color: red;
-      text-align: center;
-    }
+    /* Styles here */
   </style>
 </head>
 <body>
-
   <div class="login-container">
     <h2>Login</h2>
     <form id="loginForm">
@@ -82,31 +38,27 @@
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    // Check if the user is already logged in
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        window.location.replace("home.html");
+      }
+    });
+
     document.getElementById("loginForm").addEventListener("submit", (event) => {
       event.preventDefault();
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
       auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          console.log("Logged in successfully");
-          sessionStorage.setItem("userLoggedIn", "true");
-          window.location.replace("home.html"); // Redirect to home page
+        .then(() => {
+          window.location.replace("home.html"); // Redirect after login
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
           document.getElementById("message").textContent = errorMessage;
-          console.error(`Error: ${errorCode} - ${errorMessage}`);
         });
     });
-
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        window.location.replace("home.html"); // Redirect to home page if logged in
-      }
-    });
   </script>
-
 </body>
 </html>
