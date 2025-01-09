@@ -4,38 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mondol Organic Shop</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background-color: #3e8e41;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+        }
+
+        /* Navigation */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section */
+        .section {
+            padding: 40px;
+            margin: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        #home {
+            background-color: #dfffd9;
+            text-align: center;
+        }
+
+        #about {
+            background-color: #e6ffe6;
+        }
+
+        #contact {
+            background-color: #f9f9f9;
+        }
+
+        /* Contact Form */
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #3e8e41;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        form button:hover {
+            background-color: #2f6f2f;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #3e8e41;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Welcome to Mondol Organic Shop</h1>
         <nav>
             <ul>
-                <li><a href="#products">Products</a></li>
+                <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="products">
-        <h2>Our Products</h2>
-        <div class="product">
-            <img src="product1.jpg" alt="Product 1">
-            <p>Organic Rice - $20</p>
-        </div>
-        <div class="product">
-            <img src="product2.jpg" alt="Product 2">
-            <p>Fresh Vegetables - $15</p>
-        </div>
+    <section id="home" class="section">
+        <h2>Welcome to the best Organic Shop</h2>
+        <p>We provide fresh and organic products directly from nature!</p>
+        <button onclick="window.print()">Print Page</button>
     </section>
 
-    <section id="about">
+    <section id="about" class="section">
         <h2>About Us</h2>
-        <p>Mondol Organic Shop offers the best organic products directly from farmers.</p>
+        <p>Mondol Organic Shop is committed to providing fresh, organic products that are healthy for you and the environment. Our mission is to bring healthy food to your table directly from nature, ensuring that all products are sustainably sourced.</p>
     </section>
 
-    <section id="contact">
+    <section id="contact" class="section">
         <h2>Contact Us</h2>
         <form action="mailto:contact@mondolshop.com" method="POST" enctype="text/plain">
             <input type="text" name="name" placeholder="Your Name" required><br>
@@ -49,6 +141,11 @@
         <p>&copy; 2025 Mondol Organic Shop</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // You can add more JavaScript here if needed
+            console.log("Welcome to Mondol Organic Shop!");
+        });
+    </script>
 </body>
 </html>
