@@ -7,10 +7,11 @@
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Courier New', monospace;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            background: #0c0c0c;
+            color: #00ff00; /* Neon Green */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -18,41 +19,23 @@
         }
         .header {
             text-align: center;
-            color: white;
+            color: #00ff00;
             margin-top: 20px;
             margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 0px 0px 5px #00ff00;
         }
         .header img {
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            border: 5px solid white;
+            border: 5px solid #00ff00;
             margin-top: 15px;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            padding: 20px;
-            transition: 0.3s;
-        }
-        .sidebar.active {
-            left: 0;
         }
 
         /* Toggle Button */
         .toggle-btn {
             font-size: 30px;
-            color: white;
+            color: #00ff00;
             background: transparent;
             border: none;
             position: absolute;
@@ -60,22 +43,47 @@
             left: 20px;
             cursor: pointer;
             z-index: 1000;
+            text-shadow: 0px 0px 5px #00ff00;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 70px;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .sidebar.active {
+            left: 0;
         }
 
         /* Categories */
         .category {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
             margin-bottom: 20px;
-            padding: 20px;
+            padding: 15px;
             cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .category:hover {
+            background: rgba(0, 255, 0, 0.4); /* Neon green hover */
         }
 
         .category h2 {
             font-size: 1.8rem;
-            color: white;
+            color: #00ff00;
             margin-bottom: 15px;
         }
 
@@ -91,14 +99,16 @@
 
         .category a {
             text-decoration: none;
-            color: white;
+            color: #00ff00;
             padding: 8px;
             display: block;
             border-radius: 5px;
+            transition: 0.3s;
         }
 
         .category a:hover {
-            background-color: #74ebd5;
+            background-color: #00ff00;
+            color: #0c0c0c;
         }
 
         /* Search Bar */
@@ -111,21 +121,37 @@
         .search-container input {
             padding: 10px;
             border-radius: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #00ff00;
+            background-color: #0c0c0c;
+            color: #00ff00;
             width: 250px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+            transition: 0.3s;
+        }
+
+        .search-container input:focus {
+            border: 1px solid #00ff00;
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
         }
 
         .search-results {
             margin-top: 20px;
-            color: white;
+            color: #00ff00;
         }
 
-        /* Position the sidebar below the toggle button */
-        .sidebar-container {
-            position: fixed;
-            top: 70px;
-            left: 20px;
-            z-index: 999;
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc00;
         }
     </style>
 </head>
@@ -140,54 +166,52 @@
     <!-- Toggle button to open/close sidebar -->
     <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
 
-    <!-- Sidebar container -->
-    <div class="sidebar-container">
-        <div class="sidebar" id="sidebar">
-            <div class="category" onclick="toggleCategory(this)">
-                <h2>Tools</h2>
-                <ul>
-                    <li><a href="https://codepen.io" target="_blank">CodePen</a></li>
-                    <li><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></li>
-                    <li><a href="https://www.prome.ai" target="_blank">Prome AI</a></li>
-                    <li><a href="https://temp-mail.org" target="_blank">Temp Mail</a></li>
-                </ul>
-            </div>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Tools</h2>
+            <ul>
+                <li><a href="https://codepen.io" target="_blank">CodePen</a></li>
+                <li><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></li>
+                <li><a href="https://www.prome.ai" target="_blank">Prome AI</a></li>
+                <li><a href="https://temp-mail.org" target="_blank">Temp Mail</a></li>
+            </ul>
+        </div>
 
-            <div class="category" onclick="toggleCategory(this)">
-                <h2>Development</h2>
-                <ul>
-                    <li><a href="https://github.com" target="_blank">GitHub</a></li>
-                    <li><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></li>
-                    <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
-                </ul>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Development</h2>
+            <ul>
+                <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                <li><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></li>
+                <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
+            </ul>
+        </div>
 
-            <div class="category" onclick="toggleCategory(this)">
-                <h2>Shopping</h2>
-                <ul>
-                    <li><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></li>
-                    <li><a href="https://www.amazon.com" target="_blank">Amazon</a></li>
-                    <li><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></li>
-                </ul>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Shopping</h2>
+            <ul>
+                <li><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></li>
+                <li><a href="https://www.amazon.com" target="_blank">Amazon</a></li>
+                <li><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></li>
+            </ul>
+        </div>
 
-            <div class="category" onclick="toggleCategory(this)">
-                <h2>Education</h2>
-                <ul>
-                    <li><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></li>
-                    <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
-                    <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
-                </ul>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Education</h2>
+            <ul>
+                <li><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></li>
+                <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
+                <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
+            </ul>
+        </div>
 
-            <div class="category" onclick="toggleCategory(this)">
-                <h2>Social Media</h2>
-                <ul>
-                    <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
-                    <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
-                    <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
-                </ul>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Social Media</h2>
+            <ul>
+                <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
+                <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
+            </ul>
         </div>
     </div>
 
