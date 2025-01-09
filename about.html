@@ -42,34 +42,55 @@
             background: #00ff00;
             color: #0c0c0c;
         }
-        .about-image {
-            max-width: 200px;
-            height: auto;
-            border-radius: 50%;
-            border: 5px solid #00ff00;
-            margin-top: 20px;
-        }
         /* Logo Style */
         .logo {
-            max-width: 100px; /* Adjust size as per requirement */
+            max-width: 100px;
             height: auto;
             margin-top: 20px;
             border-radius: 50%;
+        }
+
+        /* Styling for the developer text */
+        .developer {
+            font-weight: bold;
+            color: #00ff00;
+            text-decoration: underline;
+            font-size: 1.2rem;
+        }
+
+        /* Footer style for copyright */
+        .footer {
+            margin-top: 40px;
+            font-size: 1rem;
+            color: #00ff00;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #00ff00;
+            padding: 0 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Logo -->
-        <img src="https://i.imgur.com/Fyo9Rk7.png" alt="Logo" class="logo"> <!-- Updated logo link -->
+        <img src="https://i.imgur.com/Fyo9Rk7.png" alt="Logo" class="logo">
 
         <h1>এই ওয়েবসাইট সম্পর্কে</h1>
-        <img src="https://i.imgur.com/IcJVIOG.jpeg" alt="Your Image" class="about-image">
         <p>আমাদের ওয়েবসাইটে স্বাগতম! এই প্ল্যাটফর্মটি আপনাকে বিভিন্ন টুল, রিসোর্স এবং তথ্য প্রদান করতে ডিজাইন করা হয়েছে একটি ব্যবহারকারী-বান্ধব ইন্টারফেসে। আপনি ডেভেলপমেন্ট, শপিং, শিক্ষা এবং আরো অনেক ক্যাটেগরি এক্সপ্লোর করতে পারবেন!</p>
         <p>আমাদের লক্ষ্য হল একটি হাব তৈরি করা যেখানে আপনি দ্রুত প্রয়োজনীয় লিঙ্ক এবং রিসোর্সে প্রবেশ করতে পারবেন, আপনার সময় বাঁচাবে এবং আপনার অনলাইন অভিজ্ঞতাকে সহজ করবে।</p>
-        <p>এই ওয়েবসাইটটি ডেভেলপ করেছেন <strong>জুবায়ের হোসেন</strong>, এবং এটি সরলতা ও কার্যকারিতা নিয়ে তৈরি, কিছুটা আভিজ্ঞান সহ।</p>
+        <p>এই ওয়েবসাইটটি ডেভেলপ করেছেন <span class="developer">জুবায়ের হোসেন</span>, এবং এটি সরলতা ও কার্যকারিতা নিয়ে তৈরি, কিছুটা আভিজ্ঞান সহ।</p>
         <p>যদি আপনার কোন পরামর্শ বা প্রশ্ন থাকে, তাহলে আমাদের কন্টাক্ট পেজে যোগাযোগ করতে পারেন।</p>
+
+        <!-- Links for Home and Contact -->
         <a href="index.html">হোমপেজে ফিরে যান</a>
+        <a href="contact.html">কন্টাক্ট</a>
+    </div>
+
+    <!-- Footer with copyright -->
+    <div class="footer">
+        <p>&copy; 2025 জুবায়ের হোসেন | সকল অধিকার সংরক্ষিত</p>
     </div>
 </body>
 </html>
