@@ -30,28 +30,38 @@
             border: 5px solid white;
             margin-top: 15px;
         }
-        .categories {
-            width: 90%;
-            max-width: 1200px;
-            display: flex;
-            justify-content: space-between;
-            flex-direction: row;
-        }
+
+        /* Sidebar */
         .sidebar {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 200px;
             position: absolute;
-            top: 20px;
+            top: 0;
             left: -250px;
+            width: 250px;
+            height: 100%;
+            padding: 20px;
             transition: 0.3s;
         }
         .sidebar.active {
             left: 0;
         }
+
+        /* Toggle Button */
+        .toggle-btn {
+            font-size: 30px;
+            color: white;
+            background: transparent;
+            border: none;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
         .category {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -59,24 +69,25 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             padding: 20px;
+            cursor: pointer;
         }
+
         .category h2 {
             font-size: 1.8rem;
             color: white;
             margin-bottom: 15px;
-            cursor: pointer;
         }
+
         .category ul {
             display: none;
             list-style-type: none;
             padding: 0;
         }
-        .category ul li {
-            margin: 10px 0;
-        }
+
         .category.active ul {
             display: block;
         }
+
         .category a {
             text-decoration: none;
             color: white;
@@ -84,30 +95,28 @@
             display: block;
             border-radius: 5px;
         }
+
         .category a:hover {
             background-color: #74ebd5;
         }
+
+        /* Search Bar */
         .search-container {
             margin: 20px;
             display: flex;
             justify-content: center;
         }
+
         .search-container input {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
             width: 250px;
         }
+
         .search-results {
             margin-top: 20px;
             color: white;
-        }
-        .toggle-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 30px;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -119,8 +128,10 @@
         <p>Explore my favorite websites!</p>
     </div>
 
-    <div class="toggle-btn" onclick="toggleSidebar()">&#9776;</div>
+    <!-- Toggle button to open/close sidebar -->
+    <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
 
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="category" onclick="toggleCategory(this)">
             <h2>Tools</h2>
@@ -169,10 +180,12 @@
         </div>
     </div>
 
+    <!-- Search Bar -->
     <div class="search-container">
         <input type="text" id="search" onkeyup="searchLinks()" placeholder="Search links...">
     </div>
 
+    <!-- Search Results -->
     <div class="search-results" id="searchResults"></div>
 
     <script>
