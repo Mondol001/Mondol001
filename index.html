@@ -170,6 +170,22 @@
                 postList.appendChild(li);
             });
         }
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+const registerForm = document.getElementById('registerForm');
+registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+            alert("User registered successfully!");
+        })
+        .catch(error => {
+            alert("Error: " + error.message);
+        });
+});
     </script>
 </body>
 </html> 
