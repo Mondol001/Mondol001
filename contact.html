@@ -1,150 +1,49 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>যোগাযোগ করুন</title>
-    <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
-    <style>
-        body {
-            font-family: 'Courier New', monospace;
-            margin: 0;
-            padding: 0;
-            background: #0c0c0c;
-            color: #00ff00;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
-        h1 {
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ff00;
-        }
-        p {
-            line-height: 1.8;
-            font-size: 1.1rem;
-        }
-        a {
-            color: #0c0c0c;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            border: 1px solid #00ff00;
-            border-radius: 8px;
-            background-color: #00ff00;
-            font-size: 1.1rem;
-            transition: 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 255, 0, 0.6); /* Adding shadow */
-        }
-        a:hover {
-            background: #009900;
-            color: #00ff00;
-            box-shadow: 0 6px 15px rgba(0, 255, 0, 0.8); /* Shadow on hover */
-        }
-        /* Logo Style */
-        .logo {
-            max-width: 100px;
-            height: auto;
-            margin-top: 20px;
-            border-radius: 50%;
-        }
-
-        /* Developer Box */
-        .developer-box {
-            background-color: #333333;
-            border: 2px solid #00ff00;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px 0;
-            color: #00ff00;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 255, 0, 0.6);
-        }
-
-        /* Footer style for copyright */
-        .footer {
-            margin-top: 40px;
-            font-size: 1rem;
-            color: #00ff00;
-        }
-
-        .footer a {
-            text-decoration: none;
-            color: #00ff00;
-            padding: 0 5px;
-        }
-
-        /* Form styling */
-        form {
-            background: #333333;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 255, 0, 0.6);
-            margin-top: 20px;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #00ff00;
-            background-color: #0c0c0c;
-            color: #00ff00;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        input[type="submit"] {
-            background-color: #00ff00;
-            color: #0c0c0c;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        input[type="submit"]:hover {
-            background-color: #009900;
-            color: #00ff00;
-        }
-    </style>
+    <title>Mondol Organic Shop - Contact</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Logo -->
-        <img src="https://i.imgur.com/Fyo9Rk7.png" alt="Logo" class="logo">
+    <header>
+        <h1>Contact Mondol Organic Shop</h1>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <h1>যোগাযোগ করুন</h1>
-        <p>আপনার কোন প্রশ্ন বা পরামর্শ থাকলে, নিচের ফর্মটি ব্যবহার করে আমাদের সাথে যোগাযোগ করুন। আমরা যত দ্রুত সম্ভব উত্তর দেবো।</p>
+    <section id="contact" class="section">
+        <h2>Get in Touch</h2>
+        <p>Have questions or feedback? We'd love to hear from you! Feel free to reach out to us using the contact form below, or get in touch with us via email or phone.</p>
 
-        <!-- Contact Form -->
-        <form action="submit_form.php" method="post">
-            <label for="name">নাম:</label>
-            <input type="text" id="name" name="name" required>
+        <h3>Contact Form</h3>
+        <form action="mailto:contact@mondolshop.com" method="POST" enctype="text/plain">
+            <label for="name">Name</label><br>
+            <input type="text" id="name" name="name" placeholder="Your Name" required><br><br>
 
-            <label for="email">ইমেইল:</label>
-            <input type="email" id="email" name="email" required>
+            <label for="email">Email</label><br>
+            <input type="email" id="email" name="email" placeholder="Your Email" required><br><br>
 
-            <label for="message">বার্তা:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
+            <label for="message">Message</label><br>
+            <textarea id="message" name="message" placeholder="Your Message" required></textarea><br><br>
 
-            <input type="submit" value="পাঠান">
+            <button type="submit">Send Message</button>
         </form>
 
-        <!-- Developer Box -->
-        <div class="developer-box">
-            এই ওয়েবসাইটটি ডেভেলপ করেছেন <strong>জুবায়ের হোসেন</strong>, এবং এটি সরলতা ও কার্যকারিতা নিয়ে তৈরি, কিছুটা আভিজ্ঞান সহ।
-        </div>
+        <h3>Our Address</h3>
+        <p>Mondol Organic Shop, 123 Organic Street, Dhaka, Bangladesh</p>
+        <p>Email: contact@mondolshop.com</p>
+        <p>Phone: +880 1234 5678</p>
+    </section>
 
-        <p>যদি আপনার আরো প্রশ্ন থাকে, তাহলে হোমপেজে ফিরে যান বা আমাদের সাথে যোগাযোগ করুন।</p>
-
-        <!-- Links for Home and About -->
-        <a href="index.html">হোমপেজে ফিরে যান</a>
-        <a href="about.html">এই ওয়েবসাইট সম্পর্কে</a>
-    </div>
-
-    <!-- Footer with copyright -->
-    <div class="footer">
-        <p>&copy; 2025 জুবায়ের হোসেন | সকল অধিকার সংরক্ষিত</p>
-    </div>
+    <footer>
+        <p>&copy; 2025 Mondol Organic Shop</p>
+    </footer>
 </body>
 </html>
