@@ -99,7 +99,7 @@
             border-radius: 5px;
         }
 
-        .links {
+        .search-results {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
@@ -156,10 +156,10 @@
                 <span class="toggle-btn" onclick="toggleCategory('tools')">+</span>
             </div>
             <div class="category-content" id="tools">
-                <a href="https://codepen.io" target="_blank">CodePen</a>
-                <a href="https://www.cutout.pro" target="_blank">Cutout Pro</a>
-                <a href="https://www.prome.ai" target="_blank">Prome AI</a>
-                <a href="https://temp-mail.org" target="_blank">Temp Mail</a>
+                <a href="https://codepen.io" class="link" target="_blank">CodePen</a>
+                <a href="https://www.cutout.pro" class="link" target="_blank">Cutout Pro</a>
+                <a href="https://www.prome.ai" class="link" target="_blank">Prome AI</a>
+                <a href="https://temp-mail.org" class="link" target="_blank">Temp Mail</a>
             </div>
         </div>
 
@@ -169,9 +169,9 @@
                 <span class="toggle-btn" onclick="toggleCategory('development')">+</span>
             </div>
             <div class="category-content" id="development">
-                <a href="https://github.com" target="_blank">GitHub</a>
-                <a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a>
-                <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
+                <a href="https://github.com" class="link" target="_blank">GitHub</a>
+                <a href="https://appinventor.mit.edu" class="link" target="_blank">MIT App Inventor</a>
+                <a href="https://stackoverflow.com" class="link" target="_blank">Stack Overflow</a>
             </div>
         </div>
 
@@ -181,9 +181,9 @@
                 <span class="toggle-btn" onclick="toggleCategory('shopping')">+</span>
             </div>
             <div class="category-content" id="shopping">
-                <a href="https://www.daraz.com.bd" target="_blank">Daraz</a>
-                <a href="https://www.amazon.com" target="_blank">Amazon</a>
-                <a href="https://www.aliexpress.com" target="_blank">AliExpress</a>
+                <a href="https://www.daraz.com.bd" class="link" target="_blank">Daraz</a>
+                <a href="https://www.amazon.com" class="link" target="_blank">Amazon</a>
+                <a href="https://www.aliexpress.com" class="link" target="_blank">AliExpress</a>
             </div>
         </div>
 
@@ -193,9 +193,9 @@
                 <span class="toggle-btn" onclick="toggleCategory('education')">+</span>
             </div>
             <div class="category-content" id="education">
-                <a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a>
-                <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a>
-                <a href="https://www.coursera.org" target="_blank">Coursera</a>
+                <a href="https://www.educationboardresults.gov.bd" class="link" target="_blank">Bangladesh Results</a>
+                <a href="https://www.khanacademy.org" class="link" target="_blank">Khan Academy</a>
+                <a href="https://www.coursera.org" class="link" target="_blank">Coursera</a>
             </div>
         </div>
 
@@ -205,9 +205,9 @@
                 <span class="toggle-btn" onclick="toggleCategory('social')">+</span>
             </div>
             <div class="category-content" id="social">
-                <a href="https://www.facebook.com" target="_blank">Facebook</a>
-                <a href="https://www.instagram.com" target="_blank">Instagram</a>
-                <a href="https://www.twitter.com" target="_blank">Twitter</a>
+                <a href="https://www.facebook.com" class="link" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com" class="link" target="_blank">Instagram</a>
+                <a href="https://www.twitter.com" class="link" target="_blank">Twitter</a>
             </div>
         </div>
 
@@ -217,7 +217,7 @@
         <div class="search-box">
             <input type="text" id="search" placeholder="Search links..." onkeyup="searchLinks()">
         </div>
-        <div class="links" id="links"></div>
+        <div class="search-results" id="searchResults"></div>
     </div>
 
     <script>
@@ -235,19 +235,24 @@
 
         function searchLinks() {
             const query = document.getElementById("search").value.toLowerCase();
-            const links = document.querySelectorAll(".category-content a");
-            links.forEach(link => {
+            const searchResults = document.getElementById("searchResults");
+            searchResults.innerHTML = ''; // Clear previous search results
+
+            if (query.length === 0) return; // No search query, return
+
+            const allLinks = document.querySelectorAll(".link");
+
+            allLinks.forEach(link => {
                 if (link.innerText.toLowerCase().includes(query)) {
-                    link.style.display = "block";
-                } else {
-                    link.style.display = "none";
+                    const resultDiv = document.createElement("div");
+                    resultDiv.classList.add("link");
+                    resultDiv.innerHTML = `<a href="${link.href}" target="_blank">${link.innerText}</a>`;
+                    searchResults.appendChild(resultDiv);
                 }
             });
         }
-
-        // Initialize with all links displayed
-        searchLinks();
     </script>
 
 </body>
 </html>
+``
