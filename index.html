@@ -67,49 +67,22 @@
             left: 0;
         }
 
-        .category {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
-            margin-bottom: 20px;
-            padding: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .category:hover {
-            background: rgba(0, 255, 0, 0.4);
-        }
-
-        .category h2 {
-            font-size: 1.8rem;
-            color: #00ff00;
-            margin-bottom: 15px;
-        }
-
-        .category ul {
-            display: none;
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .category.active ul {
-            display: block;
-        }
-
-        .category a {
-            text-decoration: none;
-            color: #00ff00;
-            padding: 8px;
-            display: block;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
-        .category a:hover {
+        /* Button styling */
+        .shortcut-button {
             background-color: #00ff00;
+            border: none;
             color: #0c0c0c;
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .shortcut-button:hover {
+            background-color: #00cc00;
         }
 
         /* Add Shortcut Modal */
@@ -163,15 +136,7 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div class="category">
-            <h2>Tools</h2>
-            <ul>
-                <li><a href="https://codepen.io" target="_blank">CodePen</a></li>
-                <li><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></li>
-                <li><a href="https://www.prome.ai" target="_blank">Prome AI</a></li>
-                <li><a href="https://temp-mail.org" target="_blank">Temp Mail</a></li>
-            </ul>
-        </div>
+        <!-- Shortcut buttons will be added here dynamically -->
     </div>
 
     <!-- Add Shortcut Button -->
@@ -202,15 +167,15 @@
 
             if (name && url) {
                 const sidebar = document.getElementById('sidebar');
-                const newCategory = document.createElement('div');
-                newCategory.classList.add('category');
-                newCategory.innerHTML = `
-                    <h2>${name}</h2>
-                    <ul>
-                        <li><a href="${url}" target="_blank">${name}</a></li>
-                    </ul>
-                `;
-                sidebar.appendChild(newCategory);
+                const newButton = document.createElement('button');
+                newButton.classList.add('shortcut-button');
+                newButton.innerHTML = name;
+                newButton.onclick = function() {
+                    window.open(url, '_blank');
+                };
+
+                // Append new shortcut button to sidebar
+                sidebar.appendChild(newButton);
 
                 // Clear the input fields and close the modal after adding
                 document.getElementById('shortcutName').value = '';
