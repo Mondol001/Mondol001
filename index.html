@@ -4,44 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .login-container {
-      border: 1px solid #ccc;
-      padding: 20px;
-      border-radius: 8px;
-      width: 300px;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
+    body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .login-container { border: 1px solid #ccc; padding: 20px; border-radius: 8px; width: 300px; }
+    input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; }
+    button { width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #45a049; }
   </style>
 </head>
 <body>
@@ -56,7 +26,6 @@
   </div>
 
   <script>
-    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCRY38WsLJGjWqjRTtQkSF_Lfe-KyEzBmg",
       authDomain: "mihmondol.firebaseapp.com",
@@ -67,26 +36,21 @@
       measurementId: "G-W4Q2TG8F34"
     };
 
-    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Login function
     document.getElementById("loginForm").addEventListener("submit", (event) => {
-      event.preventDefault(); // Prevent form submission
+      event.preventDefault(); 
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
       auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          // Successful login
           console.log("Logged in successfully");
-
-          // Redirect to home page
-          window.location.href = "contract.html";  // Replace with your home page URL
+          sessionStorage.setItem("userLoggedIn", "true");
+          window.location.replace("home.html"); // Replace instead of href
         })
         .catch((error) => {
-          // Handle errors
           const errorCode = error.code;
           const errorMessage = error.message;
           document.getElementById("message").textContent = errorMessage;
@@ -94,10 +58,9 @@
         });
     });
 
-    // Firebase Auth State Listener
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        window.location.href = "home.html";  // If already logged in, redirect to home
+        window.location.replace("home.html");
       }
     });
   </script>
