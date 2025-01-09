@@ -3,105 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mih Mondol Blog</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            text-align: center;
-        }
-        header {
-            background-color: #222;
-            color: white;
-            padding: 10px 0;
-        }
-        main {
-            margin: 20px auto;
-            max-width: 600px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input, textarea, button {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        footer {
-            margin-top: 20px;
-            font-size: 14px;
-        }
-    </style>
-    <!-- Firebase JS SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+    <title>Firebase App</title>
 </head>
 <body>
-    <header>
-        <h1>Mih Mondol Blog</h1>
-    </header>
+    <!-- Login Form -->
+    <div id="login-section" class="active">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
 
-    <main>
-        <!-- Login Form -->
-        <div id="login-section">
-            <h2>Log In</h2>
-            <form id="loginForm">
-                <input type="email" id="loginEmail" placeholder="Email" required>
-                <input type="password" id="loginPassword" placeholder="Password" required>
-                <button type="submit">Log In</button>
-            </form>
-        </div>
+    <!-- Post Section (Visible After Login) -->
+    <div id="post-section">
+        <h2>Post Data</h2>
+        <form id="postForm">
+            <input type="text" id="postContent" placeholder="Post Content" required>
+            <button type="submit">Post</button>
+        </form>
+        <button id="logoutButton">Logout</button>
+    </div>
 
-        <!-- Blog Post Section -->
-        <div id="post-section" style="display:none;">
-            <h2>Create a Post</h2>
-            <form id="postForm">
-                <input type="text" id="postTitle" placeholder="Post Title" required>
-                <textarea id="postContent" placeholder="Write your content here..." required></textarea>
-                <button type="submit">Save Post</button>
-            </form>
-
-            <h2>Your Posts</h2>
-            <ul id="postList"></ul>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Mih Mondol Blog | Enayetpur, Sirajganj</p>
-    </footer>
-
-    <script>
-        // Import and Configure Firebase
+    <script type="module">
+        // Import Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+        
+        // Firebase Config
         const firebaseConfig = {
-            apiKey: "AIzaSyCjMqJyMBXx_ErcYJNZXovJYmhzusbsq-U",
-            authDomain: "mih-mondol.firebaseapp.com",
-            projectId: "mih-mondol",
-            storageBucket: "mih-mondol.appspot.com",
-            messagingSenderId: "278616856764",
-            appId: "1:278616856764:web:452c36d6959d1a8645d8b9",
-            measurementId: "G-GCDGFCWX8L"
+          apiKey: "AIzaSyCRY38WsLJGjWqjRTtQkSF_Lfe-KyEzBmg",
+          authDomain: "mihmondol.firebaseapp.com",
+          projectId: "mihmondol",
+          storageBucket: "mihmondol.firebasestorage.app",
+          messagingSenderId: "859234656771",
+          appId: "1:859234656771:web:376ab52abe7b2ac6d1a436",
+          measurementId: "G-W4Q2TG8F34"
         };
 
         // Initialize Firebase
@@ -109,12 +48,8 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Login Form
+        // Login form handler
         const loginForm = document.getElementById('loginForm');
-        const loginSection = document.getElementById('login-section');
-        const postSection = document.getElementById('post-section');
-
-        // Handle Login
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -123,69 +58,45 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
                     alert("Logged in successfully!");
-                    loginSection.style.display = "none";
-                    postSection.style.display = "block";
-                    loadPosts();
+                    document.getElementById('login-section').classList.remove('active');
+                    document.getElementById('post-section').classList.add('active');
                 })
                 .catch(error => {
-                    alert(error.message);
+                    alert("Error: " + error.message);
                 });
         });
 
-        // Post Form
+        // Logout button handler
+        const logoutButton = document.getElementById('logoutButton');
+        logoutButton.addEventListener('click', () => {
+            signOut(auth)
+                .then(() => {
+                    alert("Logged out successfully!");
+                    document.getElementById('post-section').classList.remove('active');
+                    document.getElementById('login-section').classList.add('active');
+                })
+                .catch(error => {
+                    alert("Error: " + error.message);
+                });
+        });
+
+        // Post data to Firestore
         const postForm = document.getElementById('postForm');
-
-        // Save Post
-        postForm.addEventListener('submit', (e) => {
+        postForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const title = document.getElementById('postTitle').value;
-            const content = document.getElementById('postContent').value;
+            const postContent = document.getElementById('postContent').value;
 
-            addDoc(collection(db, "posts"), {
-                title: title,
-                content: content,
-                timestamp: new Date()
-            })
-            .then(() => {
-                alert("Post saved!");
-                loadPosts();
-            })
-            .catch(error => {
-                alert(error.message);
-            });
+            try {
+                const userId = auth.currentUser.uid; // Get the current logged-in user's UID
+                await setDoc(doc(db, "posts", userId), {
+                    content: postContent,
+                    timestamp: new Date(),
+                });
+                alert("Post added successfully!");
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
         });
-
-        // Load Posts
-        async function loadPosts() {
-            const postList = document.getElementById('postList');
-            postList.innerHTML = ""; // Clear previous posts
-
-            const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
-            const querySnapshot = await getDocs(q);
-
-            querySnapshot.forEach(doc => {
-                const post = doc.data();
-                const li = document.createElement('li');
-                li.textContent = `${post.title} - ${post.content}`;
-                postList.appendChild(li);
-            });
-        }
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-
-const registerForm = document.getElementById('registerForm');
-registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('registerEmail').value;
-    const password = document.getElementById('registerPassword').value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            alert("User registered successfully!");
-        })
-        .catch(error => {
-            alert("Error: " + error.message);
-        });
-});
     </script>
 </body>
-</html> 
+</html>
