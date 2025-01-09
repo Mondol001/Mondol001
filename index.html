@@ -136,11 +136,9 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <!-- Shortcut buttons will be added here dynamically -->
+        <button class="shortcut-button" onclick="openModal()">Add Shortcut</button>
+        <div id="shortcutButtonsContainer"></div> <!-- Dynamically added shortcut buttons will appear here -->
     </div>
-
-    <!-- Add Shortcut Button -->
-    <button onclick="openModal()">Add Shortcut</button>
 
     <!-- Add Shortcut Modal -->
     <div id="addShortcutModal">
@@ -166,7 +164,9 @@
             const url = document.getElementById('shortcutURL').value;
 
             if (name && url) {
-                const sidebar = document.getElementById('sidebar');
+                const container = document.getElementById('shortcutButtonsContainer');
+
+                // Create new shortcut button
                 const newButton = document.createElement('button');
                 newButton.classList.add('shortcut-button');
                 newButton.innerHTML = name;
@@ -174,8 +174,8 @@
                     window.open(url, '_blank');
                 };
 
-                // Append new shortcut button to sidebar
-                sidebar.appendChild(newButton);
+                // Append new shortcut button under "Add Shortcut"
+                container.appendChild(newButton);
 
                 // Clear the input fields and close the modal after adding
                 document.getElementById('shortcutName').value = '';
