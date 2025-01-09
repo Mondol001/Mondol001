@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Links</title>
+    <title>Mih Mondol Custom Links</title>
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
         body {
@@ -15,16 +15,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 60px; /* Add some space at the top for header */
         }
         .header {
             text-align: center;
             color: white;
             margin-top: 20px;
+            margin-bottom: 40px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        .header h1 {
-            font-size: 2.5rem;
         }
         .header img {
             width: 150px;
@@ -33,100 +30,84 @@
             border: 5px solid white;
             margin-top: 15px;
         }
-        .search-container {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            width: 80%;
-            max-width: 500px;
-        }
-        .search-container input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+        .categories {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
         }
         .sidebar {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 200px;
             position: absolute;
-            top: 0;
+            top: 20px;
             left: -250px;
-            width: 250px;
-            background: rgba(0, 0, 0, 0.7);
-            height: 100%;
             transition: 0.3s;
-            padding-top: 60px;
-            overflow-y: auto;
-            z-index: 999;
         }
-        .sidebar.open {
+        .sidebar.active {
             left: 0;
         }
-        .sidebar .toggle-btn {
+        .category {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .category h2 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .category ul {
+            display: none;
+            list-style-type: none;
+            padding: 0;
+        }
+        .category ul li {
+            margin: 10px 0;
+        }
+        .category.active ul {
+            display: block;
+        }
+        .category a {
+            text-decoration: none;
+            color: white;
+            padding: 8px;
+            display: block;
+            border-radius: 5px;
+        }
+        .category a:hover {
+            background-color: #74ebd5;
+        }
+        .search-container {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .search-container input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 250px;
+        }
+        .search-results {
+            margin-top: 20px;
+            color: white;
+        }
+        .toggle-btn {
             position: absolute;
             top: 20px;
             left: 20px;
             font-size: 30px;
             cursor: pointer;
-        }
-        .sidebar a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-            transition: 0.3s;
-        }
-        .sidebar a:hover {
-            background-color: #575757;
-        }
-        .category {
-            background: rgba(255, 255, 255, 0.2);
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .category h3 {
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-        }
-        .category-content {
-            display: none;
-            padding: 10px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            margin-top: 10px;
-        }
-        .link a {
-            display: block;
-            text-decoration: none;
-            color: #74ebd5;
-            padding: 10px;
-            background: white;
-            margin: 5px 0;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-        .link a:hover {
-            background: #74ebd5;
-            color: white;
-        }
-        .search-results {
-            margin-top: 20px;
-            text-align: center;
-            color: white;
-        }
-        /* To shift the categories and links to the right when the sidebar is open */
-        .content {
-            transition: margin-left 0.3s ease;
-            margin-left: 0;
-        }
-        .content.shifted {
-            margin-left: 250px; /* Shift content when sidebar is open */
         }
     </style>
 </head>
@@ -138,115 +119,93 @@
         <p>Explore my favorite websites!</p>
     </div>
 
-    <div class="search-container">
-        <input type="text" id="search" placeholder="Search..." onkeyup="searchLinks()">
-    </div>
+    <div class="toggle-btn" onclick="toggleSidebar()">&#9776;</div>
 
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <span class="toggle-btn" onclick="toggleSidebar()">&#9776;</span>
-
-        <div class="category">
-            <h3 onclick="toggleCategory('tools')">Tools</h3>
-            <div id="tools" class="category-content">
-                <div class="link"><a href="https://codepen.io" target="_blank">CodePen</a></div>
-                <div class="link"><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></div>
-                <div class="link"><a href="https://www.prome.ai" target="_blank">Prome AI</a></div>
-                <div class="link"><a href="https://temp-mail.org" target="_blank">Temp Mail</a></div>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Tools</h2>
+            <ul>
+                <li><a href="https://codepen.io" target="_blank">CodePen</a></li>
+                <li><a href="https://www.cutout.pro" target="_blank">Cutout Pro</a></li>
+                <li><a href="https://www.prome.ai" target="_blank">Prome AI</a></li>
+                <li><a href="https://temp-mail.org" target="_blank">Temp Mail</a></li>
+            </ul>
         </div>
 
-        <div class="category">
-            <h3 onclick="toggleCategory('development')">Development</h3>
-            <div id="development" class="category-content">
-                <div class="link"><a href="https://github.com" target="_blank">GitHub</a></div>
-                <div class="link"><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></div>
-                <div class="link"><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></div>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Development</h2>
+            <ul>
+                <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                <li><a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a></li>
+                <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
+            </ul>
         </div>
 
-        <div class="category">
-            <h3 onclick="toggleCategory('shopping')">Shopping</h3>
-            <div id="shopping" class="category-content">
-                <div class="link"><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></div>
-                <div class="link"><a href="https://www.amazon.com" target="_blank">Amazon</a></div>
-                <div class="link"><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></div>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Shopping</h2>
+            <ul>
+                <li><a href="https://www.daraz.com.bd" target="_blank">Daraz</a></li>
+                <li><a href="https://www.amazon.com" target="_blank">Amazon</a></li>
+                <li><a href="https://www.aliexpress.com" target="_blank">AliExpress</a></li>
+            </ul>
         </div>
 
-        <div class="category">
-            <h3 onclick="toggleCategory('education')">Education</h3>
-            <div id="education" class="category-content">
-                <div class="link"><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></div>
-                <div class="link"><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></div>
-                <div class="link"><a href="https://www.coursera.org" target="_blank">Coursera</a></div>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Education</h2>
+            <ul>
+                <li><a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a></li>
+                <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
+                <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
+            </ul>
         </div>
 
-        <div class="category">
-            <h3 onclick="toggleCategory('social')">Social Media</h3>
-            <div id="social" class="category-content">
-                <div class="link"><a href="https://www.facebook.com" target="_blank">Facebook</a></div>
-                <div class="link"><a href="https://www.instagram.com" target="_blank">Instagram</a></div>
-                <div class="link"><a href="https://www.twitter.com" target="_blank">Twitter</a></div>
-            </div>
+        <div class="category" onclick="toggleCategory(this)">
+            <h2>Social Media</h2>
+            <ul>
+                <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
+                <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
+            </ul>
         </div>
     </div>
 
-    <div id="searchResults" class="search-results"></div>
-
-    <div class="content" id="content">
-        <!-- Content that shifts when the sidebar opens -->
+    <div class="search-container">
+        <input type="text" id="search" onkeyup="searchLinks()" placeholder="Search links...">
     </div>
+
+    <div class="search-results" id="searchResults"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            function toggleSidebar() {
-                const sidebar = document.getElementById("sidebar");
-                const content = document.getElementById("content");
-                sidebar.classList.toggle("open");
-                content.classList.toggle("shifted");
-            }
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
 
-            function toggleCategory(category) {
-                const content = document.getElementById(category);
-                const btn = content.previousElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                    btn.innerText = "+";
-                } else {
-                    content.style.display = "block"; btn.innerText = "-";
+        function toggleCategory(category) {
+            category.classList.toggle('active');
+        }
+
+        function searchLinks() {
+            let input = document.getElementById('search').value.toLowerCase();
+            let allLinks = document.querySelectorAll('.category a');
+            let results = [];
+
+            allLinks.forEach(link => {
+                if (link.textContent.toLowerCase().includes(input)) {
+                    results.push(link.textContent);
                 }
+            });
+
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            const resultContainer = document.getElementById('searchResults');
+            if (results.length > 0) {
+                resultContainer.innerHTML = `<h3>Search Results:</h3><ul>${results.map(result => `<li>${result}</li>`).join('')}</ul>`;
+            } else {
+                resultContainer.innerHTML = `<h3>No Results Found</h3>`;
             }
-
-            function searchLinks() {
-                let input = document.getElementById('search').value.toLowerCase();
-                let allLinks = document.querySelectorAll('.link a');
-                let results = [];
-                
-                allLinks.forEach(link => {
-                    if (link.textContent.toLowerCase().includes(input)) {
-                        results.push(link.textContent);
-                    }
-                });
-
-                displaySearchResults(results);
-            }
-
-            function displaySearchResults(results) {
-                const resultContainer = document.getElementById('searchResults');
-                if (results.length > 0) {
-                    resultContainer.innerHTML = `<h3>Search Results:</h3><ul>${results.map(result => `<li>${result}</li>`).join('')}</ul>`;
-                } else {
-                    resultContainer.innerHTML = `<h3>No Results Found</h3>`;
-                }
-            }
-
-            // Attach functions to global scope
-            window.toggleSidebar = toggleSidebar;
-            window.toggleCategory = toggleCategory;
-            window.searchLinks = searchLinks;
-        });
+        }
     </script>
 </body>
 </html>
