@@ -67,7 +67,23 @@
             left: 0;
         }
 
-        /* Button styling */
+        /* Sidebar links */
+        .sidebar a {
+            display: block;
+            color: #00ff00;
+            font-size: 18px;
+            text-decoration: none;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #00cc00;
+        }
+
+        /* Button styling for shortcut */
         .shortcut-button {
             background-color: #00ff00;
             border: none;
@@ -128,14 +144,19 @@
         <img src="https://i.imgur.com/IcJVIOG.jpeg" alt="Your Photo">
         <h1>Jubaer Hossain</h1>
         <p>Explore my favorite websites!</p>
-        <p><a href="about.html" style="color: #00ff00; text-decoration: none;">About</a> | <a href="contact.html" style="color: #00ff00; text-decoration: none;">Contact</a></p>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
     </div>
 
     <!-- Toggle button to open/close sidebar -->
     <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
 
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
+    <!-- Main Content -->
+    <div class="main-content">
         <button class="shortcut-button" onclick="openModal()">Add Shortcut</button>
         <div id="shortcutButtonsContainer"></div> <!-- Dynamically added shortcut buttons will appear here -->
     </div>
