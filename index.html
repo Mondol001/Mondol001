@@ -73,18 +73,18 @@
     <script>
         // Firebase configuration
         const firebaseConfig = {
-            apiKey: "আপনার_API_KEY",
-            authDomain: "আপনার_PROJECT_ID.firebaseapp.com",
-            databaseURL: "https://আপনার_PROJECT_ID.firebaseio.com",
-            projectId: "আপনার_PROJECT_ID",
-            storageBucket: "আপনার_PROJECT_ID.appspot.com",
-            messagingSenderId: "আপনার_SENDER_ID",
-            appId: "আপনার_APP_ID"
-        };
+  apiKey: "AIzaSyD-WhTe1Kqx4IRaeg_w9s-diHKPE6i6uaE",
+  authDomain: "data-entry-app-3923a.firebaseapp.com",
+  projectId: "data-entry-app-3923a",
+  storageBucket: "data-entry-app-3923a.firebasestorage.app",
+  messagingSenderId: "638964410595",
+  appId: "1:638964410595:web:80c8ffa7fe8fc1a48cbdd6",
+  measurementId: "G-01NQ8H9KB7"
+};
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
         // Database reference
         const dataRef = database.ref("entries");
