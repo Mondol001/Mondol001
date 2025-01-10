@@ -3,108 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Data Entry Form</title>
+    <title>Firebase Data Entry</title>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            padding: 20px;
-            background-color: #f7f7f7;
         }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
         form {
-            width: 300px;
+            max-width: 400px;
             margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            border-radius: 5px;
         }
-
-        label {
+        input, button {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input {
+            margin-bottom: 10px;
             width: 100%;
             padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Firebase Data Entry Form</h1>
+    <h1>Data Entry Form</h1>
     <form id="dataEntryForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
+        <input type="text" id="name" placeholder="Enter your name" required>
+        <input type="email" id="email" placeholder="Enter your email" required>
         <button type="submit">Submit</button>
     </form>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"></script>
     <script>
         // Firebase configuration
         const firebaseConfig = {
-  apiKey: "AIzaSyD-WhTe1Kqx4IRaeg_w9s-diHKPE6i6uaE",
-  authDomain: "data-entry-app-3923a.firebaseapp.com",
-  projectId: "data-entry-app-3923a",
-  storageBucket: "data-entry-app-3923a.firebasestorage.app",
-  messagingSenderId: "638964410595",
-  appId: "1:638964410595:web:80c8ffa7fe8fc1a48cbdd6",
-  measurementId: "G-01NQ8H9KB7"
-};
+            apiKey: "AIzaSyD-WhTe1Kqx4IRaeg_w9s-diHKPE6i6uaE",
+            authDomain: "data-entry-app-3923a.firebaseapp.com",
+            databaseURL: "https://data-entry-app-3923a-default-rtdb.firebaseio.com",
+            projectId: "data-entry-app-3923a",
+            storageBucket: "data-entry-app-3923a.appspot.com",
+            messagingSenderId: "638964410595",
+            appId: "1:638964410595:web:80c8ffa7fe8fc1a48cbdd6",
+            measurementId: "G-01NQ8H9KB7"
+        };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-        // Database reference
-        const dataRef = database.ref("entries");
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
         // Form submission handling
-        const form = document.getElementById("dataEntryForm");
-        form.addEventListener("submit", (e) => {
+        const form = document.getElementById('dataEntryForm');
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
 
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-
-            dataRef.push({
+            // Push data to Realtime Database
+            database.ref('entries').push({
                 name: name,
                 email: email
             }).then(() => {
-                alert("Data submitted successfully!");
+                alert('Data submitted successfully!');
                 form.reset();
             }).catch((error) => {
-                console.error("Error submitting data: ", error);
+                console.error('Error writing to database:', error);
             });
         });
     </script>
