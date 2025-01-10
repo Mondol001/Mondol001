@@ -3,10 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry Form</title>
+    <title>Firebase Data Entry Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Data Entry Form</h1>
+    <h1>Firebase Data Entry Form</h1>
     <form id="dataEntryForm">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
@@ -17,9 +67,46 @@
         <button type="submit">Submit</button>
     </form>
 
-    <!-- ফায়ারবেস SDK যোগ করা -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"></script>
-    <script src="app.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "আপনার_API_KEY",
+            authDomain: "আপনার_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://আপনার_PROJECT_ID.firebaseio.com",
+            projectId: "আপনার_PROJECT_ID",
+            storageBucket: "আপনার_PROJECT_ID.appspot.com",
+            messagingSenderId: "আপনার_SENDER_ID",
+            appId: "আপনার_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
+
+        // Database reference
+        const dataRef = database.ref("entries");
+
+        // Form submission handling
+        const form = document.getElementById("dataEntryForm");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+
+            dataRef.push({
+                name: name,
+                email: email
+            }).then(() => {
+                alert("Data submitted successfully!");
+                form.reset();
+            }).catch((error) => {
+                console.error("Error submitting data: ", error);
+            });
+        });
+    </script>
 </body>
 </html>
