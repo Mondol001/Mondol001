@@ -16,6 +16,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: margin-left 0.3s;
         }
         .header {
             display: flex;
@@ -103,6 +104,44 @@
             width: 80%;
             max-width: 800px;
         }
+
+        /* Sidebar */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #333;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 12px 16px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: #00ff00;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #00ff00;
+            color: #111;
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 2rem;
+            color: #fff;
+            margin: 10px;
+            cursor: pointer;
+        }
+
         .toggle-categories {
             position: absolute;
             top: 20px;
@@ -192,6 +231,16 @@
         <h1>MK Learning Points (beginners)</h1>
     </div>
 
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" id="close-btn">×</span>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="services.html">Services</a>
+        <a href="portfolio.html">Portfolio</a>
+    </div>
+
     <!-- Navigation Links (Home, About, Contact) -->
     <div class="nav-links">
         <a href="index.html">Home</a>
@@ -214,24 +263,23 @@
     </div>
 
     <script>
-        const categoriesContainer = document.querySelector('.categories');
-        const toggleButton = document.querySelector('.toggle-categories');
-        const searchInput = document.getElementById('search');
-        const searchResultsContainer = document.getElementById('search-results');
-
         // Toggle Sidebar
+        const toggleButton = document.querySelector('.toggle-categories');
+        const sidebar = document.getElementById('sidebar');
+        const closeButton = document.getElementById('close-btn');
+
         toggleButton.addEventListener('click', () => {
-            categoriesContainer.classList.toggle('active');
+            sidebar.style.left = '0';
         });
 
-        // Close Sidebar on outside click
-        document.addEventListener('click', (e) => {
-            if (!categoriesContainer.contains(e.target) && e.target !== toggleButton) {
-                categoriesContainer.classList.remove('active');
-            }
+        closeButton.addEventListener('click', () => {
+            sidebar.style.left = '-250px';
         });
 
         // Search Links
+        const searchInput = document.getElementById('search');
+        const searchResultsContainer = document.getElementById('search-results');
+
         function searchLinks() {
             const query = searchInput.value.toLowerCase();
             const links = document.querySelectorAll('.links a');
