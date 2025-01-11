@@ -17,48 +17,48 @@
             flex-direction: column;
             align-items: center;
         }
+
         .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            text-align: center;
             margin-top: 20px;
             margin-bottom: 20px;
-            width: 100%;
-            background-color: #222;
-            padding: 10px 0;
         }
+
         .header img {
             width: 100px;
             height: 100px;
-            border-radius: 50%;
-            border: 5px solid white;
-            margin-right: 15px;
+            margin-top: 15px;
+            border-radius: 0%; /* No round circle */
         }
+
         .header h1 {
             font-size: 2.5rem;
             color: #00ff00;
-            margin: 0;
+            margin-top: 10px;
         }
-        .nav-links {
+
+        .nav-buttons {
             display: flex;
             justify-content: center;
-            width: 100%;
-            background-color: #333;
+            margin-top: 10px;
         }
-        .nav-links a {
-            text-decoration: none;
+
+        .nav-buttons button {
+            background: #222;
             color: #00ff00;
-            padding: 14px 20px;
-            display: block;
+            border: 2px solid #00ff00;
+            padding: 10px 20px;
             font-size: 1.2rem;
-            text-align: center;
-            flex: 1;
-            transition: background 0.3s ease;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
         }
-        .nav-links a:hover {
-            background-color: #00ff00;
+
+        .nav-buttons button:hover {
+            background: #00ff00;
             color: #111;
         }
+
         .categories {
             display: flex;
             flex-direction: column;
@@ -72,21 +72,26 @@
             transition: all 0.3s ease;
             z-index: 1000;
         }
+
         .categories.active {
             left: 0;
         }
+
         .category {
             margin-bottom: 20px;
         }
+
         .category h2 {
             font-size: 1.5rem;
             margin: 10px 0;
             cursor: pointer;
         }
+
         .links {
             display: none;
             padding-left: 20px;
         }
+
         .links a {
             text-decoration: none;
             color: #00ff00;
@@ -95,13 +100,16 @@
             padding: 5px 0;
             transition: all 0.3s;
         }
+
         .links a:hover {
             color: #fff;
             padding-left: 10px;
         }
+
         .category.active .links {
             display: block;
         }
+
         .search-bar {
             width: 60%;
             max-width: 600px;
@@ -113,33 +121,41 @@
             border-radius: 5px;
             margin-bottom: 20px;
         }
+
         .search-bar:focus {
             outline: none;
         }
+
         .search-results {
             width: 80%;
             max-width: 800px;
             margin: 20px 0;
         }
+
         .search-results h3 {
             font-size: 2rem;
             margin-bottom: 20px;
         }
+
         .search-results ul {
             list-style: none;
             padding-left: 0;
         }
+
         .search-results li {
             font-size: 1.5rem;
             margin-bottom: 10px;
         }
+
         .search-results li a {
             color: #00ff00;
             text-decoration: none;
         }
+
         .search-results li a:hover {
             color: #fff;
         }
+
         .toggle-categories {
             position: absolute;
             top: 20px;
@@ -150,54 +166,47 @@
             background: none;
             border: none;
         }
-        .nav-buttons {
-            margin: 20px;
-        }
-        .nav-buttons button {
-            background: #222;
-            color: #00ff00;
-            border: 2px solid #00ff00;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            margin: 0 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .nav-buttons button:hover {
-            background: #00ff00;
-            color: #111;
-        }
-        .developer-info {
+
+        .dev-info {
             background-color: #222;
             color: #00ff00;
-            padding: 20px;
-            margin-top: 30px;
-            border-radius: 10px;
             width: 80%;
-            max-width: 800px;
+            max-width: 900px;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .dev-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .dev-info p {
+            font-size: 1.2rem;
+        }
+
+        .dev-info a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+
+        .dev-info a:hover {
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
+        <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Photo">
         <h1>MK Learning Points (beginners)</h1>
     </div>
 
-    <!-- Navigation Links -->
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-    </div>
-
-    <!-- Developer Information Box -->
-    <div class="developer-info">
-        <h2>Developer Information</h2>
-        <p><strong>Name:</strong> Jubaer Hossain</p>
-        <p><strong>Email:</strong> example@example.com</p>
-        <p><strong>GitHub:</strong> <a href="https://github.com" target="_blank">https://github.com</a></p>
+    <div class="nav-buttons">
+        <button onclick="navigateTo('index.html')">Home</button>
+        <button onclick="navigateTo('about.html')">About</button>
+        <button onclick="navigateTo('contact.html')">Contact</button>
     </div>
 
     <button class="toggle-categories">☰</button>
@@ -250,6 +259,13 @@
     
     <div class="search-results" id="search-results"></div>
 
+    <div class="dev-info">
+        <h3>Developer Information</h3>
+        <p>Name: Jubaer Hossain</p>
+        <p>Email: <a href="mailto:jubaerhossain@example.com">jubaerhossain@example.com</a></p>
+        <p>GitHub: <a href="https://github.com/jubaerhossain" target="_blank">GitHub Profile</a></p>
+    </div>
+
     <script>
         const categoriesContainer = document.querySelector('.categories');
         const toggleButton = document.querySelector('.toggle-categories');
@@ -269,30 +285,36 @@
         });
 
         // Expand/Collapse Categories
-        function toggleCategory(header) {
-            const parent = header.parentElement;
-            parent.classList.toggle('active');
+        function toggleCategory(category) {
+            const links = category.nextElementSibling;
+            links.style.display = links.style.display === 'block' ? 'none' : 'block';
+            category.classList.toggle('active');
         }
 
-        // Search Links
+        // Search Functionality
         function searchLinks() {
             const query = searchInput.value.toLowerCase();
-            const links = document.querySelectorAll('.links a');
-            const results = [];
+            const categories = document.querySelectorAll('.category');
+            let resultsHTML = '<h3>Search Results:</h3><ul>';
+            let foundResults = false;
 
-            links.forEach(link => {
-                if (query && link.textContent.toLowerCase().includes(query)) {
-                    results.push({ text: link.textContent, url: link.href });
-                }
+            categories.forEach(category => {
+                const links = category.querySelectorAll('.links a');
+                links.forEach(link => {
+                    if (link.textContent.toLowerCase().includes(query)) {
+                        resultsHTML += `<li><a href="${link.href}" target="_blank">${link.textContent}</a></li>`;
+                        foundResults = true;
+                    }
+                });
             });
 
-            if (results.length > 0) {
-                searchResultsContainer.innerHTML = `<h3>Search Results:</h3><ul>${results
-                    .map(r => `<li><a href="${r.url}" target="_blank">${r.text}</a></li>`)
-                    .join('')}</ul>`;
-            } else {
-                searchResultsContainer.innerHTML = '';
-            }
+            resultsHTML += '</ul>';
+            searchResultsContainer.innerHTML = foundResults ? resultsHTML : '<p>No results found.</p>';
+        }
+
+        // Navigation function (for home, about, contact)
+        function navigateTo(page) {
+            window.location.href = page;
         }
     </script>
 </body>
