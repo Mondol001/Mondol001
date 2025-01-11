@@ -17,94 +17,49 @@
             flex-direction: column;
             align-items: center;
         }
-
-        /* Header Styling */
         .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
             width: 100%;
             background-color: #222;
-            padding: 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            padding: 10px 0;
+            position: relative;
         }
-
         .header img {
-            width: 50px;
-            height: 50px;
-            margin-left: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin-right: 15px;
         }
-
         .header h1 {
-            font-size: 1.8rem;
+            font-size: 2.5rem;
             color: #00ff00;
             margin: 0;
-            text-align: center;
         }
-
-        .header nav {
+        .nav-links {
             display: flex;
-            gap: 20px;
-            margin-right: 20px;
+            justify-content: center;
+            width: 100%;
+            background-color: #333;
         }
-
-        .header nav a {
+        .nav-links a {
             text-decoration: none;
             color: #00ff00;
+            padding: 14px 20px;
+            display: block;
             font-size: 1.2rem;
-            font-weight: bold;
-            padding: 5px 10px;
-            transition: all 0.3s ease;
+            text-align: center;
+            flex: 1;
+            transition: background 0.3s ease;
         }
-
-        .header nav a:hover {
+        .nav-links a:hover {
             background-color: #00ff00;
             color: #111;
-            border-radius: 5px;
         }
-
-        /* Main content area */
-        .content {
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 80px; /* Adjusting for fixed header */
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* Search Bar */
-        .search-bar {
-            width: 80%;
-            max-width: 600px;
-            padding: 10px;
-            background-color: #222;
-            color: #00ff00;
-            border: none;
-            font-size: 1.2rem;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .search-bar:focus {
-            outline: none;
-        }
-
-        /* Developer Info Box */
-        .developer-box {
-            width: 100%;
-            max-width: 800px;
-            background-color: #222;
-            color: #00ff00;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        /* Categories Sidebar */
         .categories {
             display: flex;
             flex-direction: column;
@@ -118,27 +73,21 @@
             transition: all 0.3s ease;
             z-index: 1000;
         }
-
         .categories.active {
             left: 0;
         }
-
-        /* Category items */
         .category {
             margin-bottom: 20px;
         }
-
         .category h2 {
             font-size: 1.5rem;
             margin: 10px 0;
             cursor: pointer;
         }
-
         .links {
             display: none;
             padding-left: 20px;
         }
-
         .links a {
             text-decoration: none;
             color: #00ff00;
@@ -147,17 +96,51 @@
             padding: 5px 0;
             transition: all 0.3s;
         }
-
         .links a:hover {
             color: #fff;
             padding-left: 10px;
         }
-
         .category.active .links {
             display: block;
         }
-
-        /* Toggle Categories Button */
+        .search-bar {
+            width: 60%;
+            max-width: 600px;
+            padding: 10px;
+            background-color: #222;
+            color: #00ff00;
+            border: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .search-bar:focus {
+            outline: none;
+        }
+        .search-results {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px 0;
+        }
+        .search-results h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .search-results ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .search-results li {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .search-results li a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        .search-results li a:hover {
+            color: #fff;
+        }
         .toggle-categories {
             position: absolute;
             top: 20px;
@@ -168,50 +151,57 @@
             background: none;
             border: none;
         }
-
-        /* Footer */
-        .footer {
-            width: 100%;
-            background-color: #111;
-            padding: 10px 0;
-            color: #00ff00;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
+        .nav-buttons {
+            margin: 20px;
         }
-
+        .nav-buttons button {
+            background: #222;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .nav-buttons button:hover {
+            background: #00ff00;
+            color: #111;
+        }
+        .developer-info {
+            background-color: #222;
+            color: #00ff00;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header with Navigation -->
     <div class="header">
-        <img src="https://i.imgur.com/VfM3TXY.png" alt="Your Photo">
+        <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
         <h1>MK Learning Points (beginners)</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </nav>
+        <button class="toggle-categories">☰</button>
     </div>
 
-    <!-- Main content area -->
-    <div class="content">
-        <input type="text" class="search-bar" id="search" placeholder="Search..." onkeyup="searchLinks()">
-        
-        <div class="search-results" id="search-results"></div>
-
-        <!-- Developer Info Box -->
-        <div class="developer-box">
-            <h2>Developer Information</h2>
-            <p>Name: Jubaer Hossain</p>
-            <p>Email: example@email.com</p>
-            <p>Location: Bangladesh</p>
-        </div>
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
     </div>
 
-    <!-- Categories Sidebar -->
+    <!-- Developer Information Box -->
+    <div class="developer-info">
+        <h2>Developer Information</h2>
+        <p><strong>Name:</strong> Jubaer Hossain</p>
+        <p><strong>Email:</strong> example@example.com</p>
+        <p><strong>GitHub:</strong> <a href="https://github.com" target="_blank">https://github.com</a></p>
+    </div>
+
     <div class="categories">
         <div class="category">
             <h2 onclick="toggleCategory(this)">Tools</h2>
@@ -222,13 +212,43 @@
                 <a href="https://temp-mail.org" target="_blank">Temp Mail</a>
             </div>
         </div>
-        <!-- Additional categories go here -->
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Development</h2>
+            <div class="links">
+                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a>
+                <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
+            </div>
+        </div>
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Shopping</h2>
+            <div class="links">
+                <a href="https://www.daraz.com.bd" target="_blank">Daraz</a>
+                <a href="https://www.amazon.com" target="_blank">Amazon</a>
+                <a href="https://www.aliexpress.com" target="_blank">AliExpress</a>
+            </div>
+        </div>
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Education</h2>
+            <div class="links">
+                <a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a>
+                <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a>
+                <a href="https://www.coursera.org" target="_blank">Coursera</a>
+            </div>
+        </div>
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Social Media</h2>
+            <div class="links">
+                <a href="https://www.facebook.com" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                <a href="https://www.twitter.com" target="_blank">Twitter</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>&copy; 2025 MK Learning Points (beginners). All rights reserved.</p>
-    </div>
+    <input type="text" class="search-bar" id="search" placeholder="Search..." onkeyup="searchLinks()">
+    
+    <div class="search-results" id="search-results"></div>
 
     <script>
         const categoriesContainer = document.querySelector('.categories');
@@ -241,37 +261,30 @@
             categoriesContainer.classList.toggle('active');
         });
 
-        // Close Sidebar on outside click
-        document.addEventListener('click', (e) => {
-            if (!categoriesContainer.contains(e.target) && e.target !== toggleButton) {
-                categoriesContainer.classList.remove('active');
-            }
-        });
-
-        // Expand/Collapse Categories
-        function toggleCategory(header) {
-            const parent = header.parentElement;
-            parent.classList.toggle('active');
+        // Toggle Category Links
+        function toggleCategory(categoryElement) {
+            categoryElement.nextElementSibling.classList.toggle('active');
         }
 
-        // Search Links
+        // Search Functionality
         function searchLinks() {
             const query = searchInput.value.toLowerCase();
-            const links = document.querySelectorAll('.links a');
-            const results = [];
+            const categories = document.querySelectorAll('.category');
+            let results = '';
 
-            links.forEach(link => {
-                if (query && link.textContent.toLowerCase().includes(query)) {
-                    results.push({ text: link.textContent, url: link.href });
-                }
+            categories.forEach(category => {
+                const links = category.querySelectorAll('.links a');
+                links.forEach(link => {
+                    if (link.textContent.toLowerCase().includes(query)) {
+                        results += `<li><a href="${link.href}" target="_blank">${link.textContent}</a></li>`;
+                    }
+                });
             });
 
-            if (results.length > 0) {
-                searchResultsContainer.innerHTML = `<h3>Search Results:</h3><ul>${results
-                    .map(r => `<li><a href="${r.url}" target="_blank">${r.text}</a></li>`)
-                    .join('')}</ul>`;
+            if (results) {
+                searchResultsContainer.innerHTML = `<h3>Search Results:</h3><ul>${results}</ul>`;
             } else {
-                searchResultsContainer.innerHTML = '';
+                searchResultsContainer.innerHTML = '<h3>No results found.</h3>';
             }
         }
     </script>
