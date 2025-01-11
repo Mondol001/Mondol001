@@ -184,41 +184,40 @@
     <div class="search-results" id="search-results"></div>
 
     <script>
-        const categories = document.querySelectorAll('.category');
-        const searchResultsContainer = document.getElementById('search-results');
-        const searchInput = document.getElementById('search');
         const categoriesContainer = document.querySelector('.categories');
         const toggleButton = document.querySelector('.toggle-categories');
+        const searchInput = document.getElementById('search');
+        const searchResultsContainer = document.getElementById('search-results');
 
-        function toggleCategory(category) {
-            category.classList.toggle('active');
-        }
-
+        // Toggle Sidebar
         toggleButton.addEventListener('click', () => {
             categoriesContainer.classList.toggle('active');
         });
 
+        // Expand/Collapse Categories
+        function toggleCategory(header) {
+            const parent = header.parentElement;
+            parent.classList.toggle('active');
+        }
+
+        // Search Links
         function searchLinks() {
-            const searchQuery = searchInput.value.toLowerCase();
-            const allLinks = document.querySelectorAll('.links a');
+            const query = searchInput.value.toLowerCase();
+            const links = document.querySelectorAll('.links a');
             const results = [];
 
-            allLinks.forEach(link => {
-                const linkText = link.textContent.toLowerCase();
-                const linkUrl = link.href;
-                if (searchQuery === 'all' || linkText.includes(searchQuery)) {
-                    results.push({ text: linkText, url: linkUrl });
+            links.forEach(link => {
+                if (query === 'all' || link.textContent.toLowerCase().includes(query)) {
+                    results.push({ text: link.textContent, url: link.href });
                 }
             });
 
-            displaySearchResults(results);
-        }
-
-        function displaySearchResults(results) {
             if (results.length > 0) {
-                searchResultsContainer.innerHTML = `<h3>Search Results:</h3><ul>${results.map(result => `<li><a href="${result.url}" target="_blank">${result.text}</a></li>`).join('')}</ul>`;
+                searchResultsContainer.innerHTML = `<h3>Search Results:</h3><ul>${results
+                    .map(r => `<li><a href="${r.url}" target="_blank">${r.text}</a></li>`)
+                    .join('')}</ul>`;
             } else {
-                searchResultsContainer.innerHTML = `<h3>No Results Found</h3>`;
+                searchResultsContainer.innerHTML = '';
             }
         }
     </script>
