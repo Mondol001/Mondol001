@@ -22,26 +22,21 @@
             background-color: #222;
             color: #00ff00;
             display: flex;
-            justify-content: flex-start;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
             padding: 20px;
-            margin-top: 10px;
-            position: relative;
         }
         .header img {
             width: 100px;
             height: 100px;
             border-radius: 50%;
             border: 5px solid white;
-            margin-left: 15px;
-            position: absolute;
-            top: 50px;  /* Adjust this value to control the vertical position */
+            margin-top: 10px;
         }
         .header h1 {
             font-size: 2rem;
-            margin-left: 120px;  /* Add some space to the left so it doesn't overlap with the image */
-            position: absolute;
-            top: 50px;  /* Adjust this value to control the vertical position */
+            margin-top: 10px;
         }
         .nav-links {
             width: 100%;
@@ -125,15 +120,15 @@
 <body>
 
     <div class="header">
-        <!-- Hamburger Menu -->
+        <!-- Hamburger Menu (Left side) -->
         <button class="toggle-categories">☰</button>
-        <!-- Image (Positioned to the right of the Hamburger Menu) -->
+        <!-- Developer Image -->
         <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
         <!-- Website Title -->
         <h1>MK Learning Points (beginners)</h1>
     </div>
 
-    <!-- Navigation Links -->
+    <!-- Navigation Links (Home, About, Contact) -->
     <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
