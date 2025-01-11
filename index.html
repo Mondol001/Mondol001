@@ -17,6 +17,8 @@
             flex-direction: column;
             align-items: center;
         }
+
+        /* Header styling */
         .header {
             display: flex;
             justify-content: center;
@@ -28,17 +30,19 @@
             padding: 10px 0;
         }
         .header img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            border: 5px solid white;
+            border: 3px solid white;
             margin-right: 15px;
         }
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: #00ff00;
             margin: 0;
         }
+
+        /* Navigation Links */
         .nav-links {
             display: flex;
             justify-content: center;
@@ -59,10 +63,12 @@
             background-color: #00ff00;
             color: #111;
         }
+
+        /* Categories Sidebar */
         .categories {
             display: flex;
             flex-direction: column;
-            position: fixed;
+            position: absolute;
             left: -300px;
             top: 0;
             background-color: rgba(0, 0, 0, 0.9);
@@ -102,6 +108,20 @@
         .category.active .links {
             display: block;
         }
+
+        /* Hamburger menu styling */
+        .toggle-categories {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2rem;
+            color: #00ff00;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* Search bar styling */
         .search-bar {
             width: 60%;
             max-width: 600px;
@@ -116,58 +136,8 @@
         .search-bar:focus {
             outline: none;
         }
-        .search-results {
-            width: 80%;
-            max-width: 800px;
-            margin: 20px 0;
-        }
-        .search-results h3 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-        .search-results ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        .search-results li {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .search-results li a {
-            color: #00ff00;
-            text-decoration: none;
-        }
-        .search-results li a:hover {
-            color: #fff;
-        }
-        .toggle-categories {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 2rem;
-            color: #00ff00;
-            cursor: pointer;
-            background: none;
-            border: none;
-            z-index: 1500;
-        }
-        .nav-buttons {
-            margin: 20px;
-        }
-        .nav-buttons button {
-            background: #222;
-            color: #00ff00;
-            border: 2px solid #00ff00;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            margin: 0 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .nav-buttons button:hover {
-            background: #00ff00;
-            color: #111;
-        }
+
+        /* Developer Information */
         .developer-info {
             background-color: #222;
             color: #00ff00;
@@ -177,124 +147,165 @@
             width: 80%;
             max-width: 800px;
         }
+
+        /* Main container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        /* Top row with hamburger and picture */
+        .top-row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .top-row .toggle-categories {
+            margin-right: 20px;
+        }
+
+        .top-row img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        /* Website name */
+        .website-name {
+            color: #00ff00;
+            font-size: 1.5rem;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
-        <h1>MK Learning Points (beginners)</h1>
-    </div>
+    <div class="container">
+        <!-- Top row: Hamburger and Picture -->
+        <div class="top-row">
+            <button class="toggle-categories">☰</button>
+            <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
+            <div class="website-name">MK Learning Points</div>
+        </div>
 
-    <!-- Navigation Links -->
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-    </div>
+        <!-- Header -->
+        <div class="header">
+            <h1>MK Learning Points (beginners)</h1>
+        </div>
 
-    <!-- Developer Information Box -->
-    <div class="developer-info">
-        <h2>Developer Information</h2>
-        <p><strong>Name:</strong> Jubaer Hossain</p>
-        <p><strong>Email:</strong> example@example.com</p>
-        <p><strong>GitHub:</strong> <a href="https://github.com" target="_blank">https://github.com</a></p>
-    </div>
+        <!-- Search Bar -->
+        <input type="text" class="search-bar" id="search" placeholder="Search..." onkeyup="searchLinks()">
+        
+        <!-- Developer Information Box -->
+        <div class="developer-info">
+            <h2>Developer Information</h2>
+            <p><strong>Name:</strong> Jubaer Hossain</p>
+            <p><strong>Email:</strong> example@example.com</p>
+            <p><strong>GitHub:</strong> <a href="https://github.com" target="_blank">https://github.com</a></p>
+        </div>
 
-    <button class="toggle-categories">☰</button>
-    
-    <div class="categories">
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Tools</h2>
-            <div class="links">
-                <a href="https://codepen.io" target="_blank">CodePen</a>
-                <a href="https://www.cutout.pro" target="_blank">Cutout Pro</a>
-                <a href="https://www.prome.ai" target="_blank">Prome AI</a>
-                <a href="https://temp-mail.org" target="_blank">Temp Mail</a>
+        <!-- Categories Sidebar -->
+        <div class="categories">
+            <div class="category">
+                <h2 onclick="toggleCategory(this)">Tools</h2>
+                <div class="links">
+                    <a href="https://codepen.io" target="_blank">CodePen</a>
+                    <a href="https://www.cutout.pro" target="_blank">Cutout Pro</a>
+                    <a href="https://www.prome.ai" target="_blank">Prome AI</a>
+                    <a href="https://temp-mail.org" target="_blank">Temp Mail</a>
+                </div>
+            </div>
+            <div class="category">
+                <h2 onclick="toggleCategory(this)">Development</h2>
+                <div class="links">
+                    <a href="https://github.com" target="_blank">GitHub</a>
+                    <a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a>
+                    <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
+                </div>
+            </div>
+            <div class="category">
+                <h2 onclick="toggleCategory(this)">Shopping</h2>
+                <div class="links">
+                    <a href="https://www.daraz.com.bd" target="_blank">Daraz</a>
+                    <a href="https://www.amazon.com" target="_blank">Amazon</a>
+                    <a href="https://www.aliexpress.com" target="_blank">AliExpress</a>
+                </div>
+            </div>
+            <div class="category">
+                <h2 onclick="toggleCategory(this)">Education</h2>
+                <div class="links">
+                    <a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a>
+                    <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a>
+                    <a href="https://www.coursera.org" target="_blank">Coursera</a>
+                </div>
+            </div>
+            <div class="category">
+                <h2 onclick="toggleCategory(this)">Social Media</h2>
+                <div class="links">
+                    <a href="https://www.facebook.com" target="_blank">Facebook</a>
+                    <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                    <a href="https://www.twitter.com" target="_blank">Twitter</a>
+                </div>
             </div>
         </div>
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Development</h2>
-            <div class="links">
-                <a href="https://github.com" target="_blank">GitHub</a>
-                <a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a>
-                <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
-            </div>
-        </div>
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Shopping</h2>
-            <div class="links">
-                <a href="https://www.daraz.com.bd" target="_blank">Daraz</a>
-                <a href="https://www.amazon.com" target="_blank">Amazon</a>
-                <a href="https://www.aliexpress.com" target="_blank">AliExpress</a>
-            </div>
-        </div>
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Education</h2>
-            <div class="links">
-                <a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a>
-                <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a>
-                <a href="https://www.coursera.org" target="_blank">Coursera</a>
-            </div>
-        </div>
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Social Media</h2>
-            <div class="links">
-                <a href="https://www.facebook.com" target="_blank">Facebook</a>
-                <a href="https://www.instagram.com" target="_blank">Instagram</a>
-                <a href="https://www.twitter.com" target="_blank">Twitter</a>
-            </div>
-        </div>
-    </div>
 
-    <input type="text" class="search-bar" id="search" placeholder="Search..." onkeyup="searchLinks()">
-    
-    <div class="search-results" id="search-results"></div>
+    </div>
 
     <script>
         const categoriesContainer = document.querySelector('.categories');
         const toggleButton = document.querySelector('.toggle-categories');
-        
-        // সাইডবার টগল করা
-        toggleButton.addEventListener('click', function() {
+
+        // Toggle Sidebar
+        toggleButton.addEventListener('click', () => {
             categoriesContainer.classList.toggle('active');
         });
 
-        // ক্যাটাগরি এক্সপ্যান্ড করা
-        function toggleCategory(categoryElement) {
-            const links = categoryElement.nextElementSibling;
-            const allCategories = document.querySelectorAll('.category');
-            allCategories.forEach(cat => {
-                if (cat !== categoryElement.parentElement) {
-                    cat.classList.remove('active');
-                    cat.querySelector('.links').style.display = 'none';
-                }
-            });
-            if (links.style.display === 'block') {
-                links.style.display = 'none';
-            } else {
-                links.style.display = 'block';
+        // Close Sidebar on outside click
+        document.addEventListener('click', (e) => {
+            if (!categoriesContainer.contains(e.target) && e.target !== toggleButton) {
+                categoriesContainer.classList.remove('active');
             }
+        });
+
+        // Expand/Collapse Categories
+        function toggleCategory(header) {
+            const parent = header.parentElement;
+            parent.classList.toggle('active');
         }
 
-        // সার্চ ফিচার
+        // Search functionality
         function searchLinks() {
-            const query = document.getElementById('search').value.toLowerCase();
-            const allLinks = document.querySelectorAll('.links a');
-            const resultsContainer = document.getElementById('search-results');
-            resultsContainer.innerHTML = '';
-
-            allLinks.forEach(link => {
+            const query = searchInput.value.toLowerCase();
+            const links = document.querySelectorAll('.links a');
+            let results = [];
+            links.forEach(link => {
                 if (link.textContent.toLowerCase().includes(query)) {
-                    const listItem = document.createElement('li');
-                    const linkClone = link.cloneNode(true);
-                    listItem.appendChild(linkClone);
-                    resultsContainer.appendChild(listItem);
+                    results.push(link);
+                    link.style.display = 'block';
+                } else {
+                    link.style.display = 'none';
                 }
             });
 
-            if (resultsContainer.children.length === 0) {
-                resultsContainer.innerHTML = '<p>No results found</p>';
+            searchResultsContainer.innerHTML = '';
+            if (results.length > 0) {
+                results.forEach(link => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `<a href="${link.href}" target="_blank">${link.textContent}</a>`;
+                    searchResultsContainer.appendChild(div);
+                });
+            } else {
+                searchResultsContainer.innerHTML = 'No results found';
             }
         }
     </script>
