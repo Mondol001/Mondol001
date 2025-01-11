@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker UI with Search</title>
+    <title>Hacker UI with Sidebar and Navigation</title>
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
         body {
@@ -38,10 +38,10 @@
             flex-direction: column;
             position: absolute;
             left: -300px;
-            top: 70px;
+            top: 0;
             background-color: rgba(0, 0, 0, 0.9);
             width: 250px;
-            height: calc(100% - 70px);
+            height: 100%;
             padding: 20px;
             transition: all 0.3s ease;
             z-index: 1000;
@@ -124,6 +124,23 @@
             background: none;
             border: none;
         }
+        .nav-buttons {
+            margin: 20px;
+        }
+        .nav-buttons button {
+            background: #222;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .nav-buttons button:hover {
+            background: #00ff00;
+            color: #111;
+        }
     </style>
 </head>
 <body>
@@ -131,6 +148,11 @@
     <div class="header">
         <img src="https://i.imgur.com/IcJVIOG.jpeg" alt="Your Photo">
         <h1>Jubaer Hossain</h1>
+    </div>
+
+    <div class="nav-buttons">
+        <button onclick="navigateTo('about.html')">About</button>
+        <button onclick="navigateTo('contact.html')">Contact</button>
     </div>
 
     <button class="toggle-categories">☰</button>
@@ -143,38 +165,6 @@
                 <a href="https://www.cutout.pro" target="_blank">Cutout Pro</a>
                 <a href="https://www.prome.ai" target="_blank">Prome AI</a>
                 <a href="https://temp-mail.org" target="_blank">Temp Mail</a>
-            </div>
-        </div>
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Development</h2>
-            <div class="links">
-                <a href="https://github.com" target="_blank">GitHub</a>
-                <a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a>
-                <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
-            </div>
-        </div>
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Shopping</h2>
-            <div class="links">
-                <a href="https://www.daraz.com.bd" target="_blank">Daraz</a>
-                <a href="https://www.amazon.com" target="_blank">Amazon</a>
-                <a href="https://www.aliexpress.com" target="_blank">AliExpress</a>
-            </div>
-        </div>
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Education</h2>
-            <div class="links">
-                <a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a>
-                <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a>
-                <a href="https://www.coursera.org" target="_blank">Coursera</a>
-            </div>
-        </div>
-        <div class="category">
-            <h2 onclick="toggleCategory(this)">Social Media</h2>
-            <div class="links">
-                <a href="https://www.facebook.com" target="_blank">Facebook</a>
-                <a href="https://www.instagram.com" target="_blank">Instagram</a>
-                <a href="https://www.twitter.com" target="_blank">Twitter</a>
             </div>
         </div>
     </div>
@@ -194,6 +184,13 @@
             categoriesContainer.classList.toggle('active');
         });
 
+        // Close Sidebar on outside click
+        document.addEventListener('click', (e) => {
+            if (!categoriesContainer.contains(e.target) && e.target !== toggleButton) {
+                categoriesContainer.classList.remove('active');
+            }
+        });
+
         // Expand/Collapse Categories
         function toggleCategory(header) {
             const parent = header.parentElement;
@@ -207,7 +204,7 @@
             const results = [];
 
             links.forEach(link => {
-                if (query === 'all' || link.textContent.toLowerCase().includes(query)) {
+                if (query && link.textContent.toLowerCase().includes(query)) {
                     results.push({ text: link.textContent, url: link.href });
                 }
             });
@@ -219,6 +216,11 @@
             } else {
                 searchResultsContainer.innerHTML = '';
             }
+        }
+
+        // Navigation
+        function navigateTo(page) {
+            window.location.href = page;
         }
     </script>
 </body>
