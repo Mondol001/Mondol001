@@ -18,53 +18,46 @@
             align-items: center;
         }
         .header {
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-top: 20px;
             margin-bottom: 20px;
+            width: 100%;
+            background-color: #222;
+            padding: 10px 0;
         }
         .header img {
-            width: 150px;
-            height: 150px;
-            border: none;
-            margin-top: 15px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin-right: 15px;
         }
         .header h1 {
             font-size: 2.5rem;
             color: #00ff00;
+            margin: 0;
         }
-        .nav-buttons {
-            margin: 20px;
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            background-color: #333;
         }
-        .nav-buttons button {
-            background: #222;
+        .nav-links a {
+            text-decoration: none;
             color: #00ff00;
-            border: 2px solid #00ff00;
-            padding: 10px 20px;
+            padding: 14px 20px;
+            display: block;
             font-size: 1.2rem;
-            margin: 0 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .nav-buttons button:hover {
-            background: #00ff00;
-            color: #111;
-        }
-        .developer-box {
-            background-color: #222;
-            color: #00ff00;
-            width: 80%;
-            max-width: 800px;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 30px;
             text-align: center;
+            flex: 1;
+            transition: background 0.3s ease;
         }
-        .developer-box h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        .developer-box p {
-            font-size: 1.2rem;
+        .nav-links a:hover {
+            background-color: #00ff00;
+            color: #111;
         }
         .categories {
             display: flex;
@@ -157,18 +150,54 @@
             background: none;
             border: none;
         }
+        .nav-buttons {
+            margin: 20px;
+        }
+        .nav-buttons button {
+            background: #222;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .nav-buttons button:hover {
+            background: #00ff00;
+            color: #111;
+        }
+        .developer-info {
+            background-color: #222;
+            color: #00ff00;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="https://i.imgur.com/VfM3TXY.png" alt="Your Photo">
+        <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
         <h1>MK Learning Points (beginners)</h1>
     </div>
 
-    <div class="nav-buttons">
-        <button onclick="navigateTo('about.html')">About</button>
-        <button onclick="navigateTo('contact.html')">Contact</button>
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Developer Information Box -->
+    <div class="developer-info">
+        <h2>Developer Information</h2>
+        <p><strong>Name:</strong> Jubaer Hossain</p>
+        <p><strong>Email:</strong> example@example.com</p>
+        <p><strong>GitHub:</strong> <a href="https://github.com" target="_blank">https://github.com</a></p>
     </div>
 
     <button class="toggle-categories">☰</button>
@@ -221,14 +250,6 @@
     
     <div class="search-results" id="search-results"></div>
 
-    <div class="developer-box">
-        <h2>About the Developer</h2>
-        <p>Name: Jubaer Hossain</p>
-        <p>Web Developer | Tech Enthusiast | Learner</p>
-        <p>Email: example@example.com</p>
-        <p>GitHub: <a href="https://github.com" target="_blank">github.com/jubaerhossain</a></p>
-    </div>
-
     <script>
         const categoriesContainer = document.querySelector('.categories');
         const toggleButton = document.querySelector('.toggle-categories');
@@ -272,11 +293,6 @@
             } else {
                 searchResultsContainer.innerHTML = '';
             }
-        }
-
-        // Navigation
-        function navigateTo(page) {
-            window.location.href = page;
         }
     </script>
 </body>
