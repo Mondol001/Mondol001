@@ -65,6 +65,24 @@
         button:hover {
             background: #fff;
         }
+        .contact-options {
+            margin-top: 30px;
+        }
+        .contact-option {
+            margin-bottom: 20px;
+        }
+        .contact-option a {
+            display: inline-block;
+            background: #00ff00;
+            color: #111;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+        .contact-option a:hover {
+            background: #fff;
+        }
         .back-btn {
             display: inline-block;
             margin-top: 20px;
@@ -83,7 +101,8 @@
 <body>
     <div class="container">
         <h1>Contact Me</h1>
-        <p>If you have any questions, suggestions, or just want to say hello, feel free to fill out the form below. I'll get back to you as soon as possible!</p>
+        <p>If you have any questions, suggestions, or just want to say hello, feel free to fill out the form below or use one of the direct options to contact me.</p>
+
         <form>
             <div class="form-group">
                 <label for="name">Your Name</label>
@@ -99,6 +118,17 @@
             </div>
             <button type="submit">Send Message</button>
         </form>
+
+        <div class="contact-options">
+            <div class="contact-option">
+                <h2>Direct Options:</h2>
+                <a href="mailto: mohammadiaqub@gmail.com">Direct Email Me</a>
+            </div>
+            <div class="contact-option">
+                <a href="https://wa.me/8801841246223" target="_blank">WhatsApp</a>
+            </div>
+        </div>
+
         <a href="index.html" class="back-btn">Back to Home</a>
     </div>
 </body>
