@@ -32,6 +32,40 @@
             font-size: 2.5rem;
             color: #00ff00;
         }
+        .nav-buttons {
+            margin: 20px;
+        }
+        .nav-buttons button {
+            background: #222;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .nav-buttons button:hover {
+            background: #00ff00;
+            color: #111;
+        }
+        .developer-box {
+            background-color: #222;
+            color: #00ff00;
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .developer-box h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .developer-box p {
+            font-size: 1.2rem;
+        }
         .categories {
             display: flex;
             flex-direction: column;
@@ -123,23 +157,6 @@
             background: none;
             border: none;
         }
-        .nav-buttons {
-            margin: 20px;
-        }
-        .nav-buttons button {
-            background: #222;
-            color: #00ff00;
-            border: 2px solid #00ff00;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            margin: 0 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .nav-buttons button:hover {
-            background: #00ff00;
-            color: #111;
-        }
     </style>
 </head>
 <body>
@@ -203,6 +220,14 @@
     <input type="text" class="search-bar" id="search" placeholder="Search..." onkeyup="searchLinks()">
     
     <div class="search-results" id="search-results"></div>
+
+    <div class="developer-box">
+        <h2>About the Developer</h2>
+        <p>Name: Jubaer Hossain</p>
+        <p>Web Developer | Tech Enthusiast | Learner</p>
+        <p>Email: example@example.com</p>
+        <p>GitHub: <a href="https://github.com" target="_blank">github.com/jubaerhossain</a></p>
+    </div>
 
     <script>
         const categoriesContainer = document.querySelector('.categories');
