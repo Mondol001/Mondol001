@@ -3,185 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker Blog</title>
+    <title>Hacker UI with Search</title>
+    <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
         body {
-            background-color: #0f0f0f;
-            color: #00ff00;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Courier New', monospace;
             margin: 0;
             padding: 0;
+            background: #111;
+            color: #00ff00;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
-        header {
+        .header {
             text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin-top: 15px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #00ff00;
+        }
+        .categories {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            left: -300px;
+            top: 70px;
+            background-color: rgba(0, 0, 0, 0.9);
+            width: 250px;
+            height: calc(100% - 70px);
             padding: 20px;
-            background: #1a1a1a;
-            border-bottom: 2px solid #00ff00;
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
-
-        header h1 {
-            margin: 0;
-            font-size: 3rem;
+        .categories.active {
+            left: 0;
         }
-
-        header p {
-            font-size: 1.2rem;
-            color: #00aa00;
+        .category {
+            margin-bottom: 20px;
         }
-
-        nav {
-            background: #121212;
-            border-bottom: 1px solid #00ff00;
+        .category h2 {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            cursor: pointer;
         }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 10px;
-            text-align: center;
+        .links {
+            display: none;
+            padding-left: 20px;
         }
-
-        nav ul li {
-            display: inline-block;
-            margin: 0 15px;
-        }
-
-        nav ul li a {
+        .links a {
             text-decoration: none;
             color: #00ff00;
-            font-weight: bold;
-            transition: color 0.3s ease-in-out;
-        }
-
-        nav ul li a:hover {
-            color: #00aa00;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        section {
-            margin-bottom: 40px;
-        }
-
-        h2 {
-            font-size: 2rem;
-            border-bottom: 1px solid #00ff00;
-            padding-bottom: 5px;
-        }
-
-        article {
-            margin-bottom: 20px;
-            padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #00ff00;
-            border-radius: 5px;
-        }
-
-        article h3 {
-            margin: 0 0 10px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #1a1a1a;
-            border-top: 2px solid #00ff00;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        /* Contact Form */
-        form {
-            background: #1a1a1a;
-            padding: 20px;
-            border: 1px solid #00ff00;
-            border-radius: 5px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        form label {
+            font-size: 1.2rem;
             display: block;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
+            padding: 5px 0;
+            transition: all 0.3s;
         }
-
-        form input, form textarea, form button {
-            width: 100%;
-            margin-bottom: 15px;
+        .links a:hover {
+            color: #fff;
+            padding-left: 10px;
+        }
+        .category.active .links {
+            display: block;
+        }
+        .search-bar {
+            width: 60%;
+            max-width: 600px;
             padding: 10px;
-            border: 1px solid #00ff00;
-            background: #0f0f0f;
+            background-color: #222;
             color: #00ff00;
+            border: none;
+            font-size: 1.2rem;
             border-radius: 5px;
-            font-size: 1rem;
+            margin-bottom: 20px;
         }
-
-        form button {
+        .search-bar:focus {
+            outline: none;
+        }
+        .search-results {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px 0;
+        }
+        .search-results h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .search-results ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .search-results li {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .search-results li a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        .search-results li a:hover {
+            color: #fff;
+        }
+        .toggle-categories {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2rem;
+            color: #00ff00;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s ease-in-out;
-        }
-
-        form button:hover {
-            background: #00aa00;
+            background: none;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Hacker Blog</h1>
-        <p>Exploring the world of hacking, coding, and technology.</p>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#posts">Posts</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-    <main>
-        <section id="home">
-            <h2>Home</h2>
-            <p>Welcome to my Hacker Blog! Dive into the world of ethical hacking, programming, and technological innovations. Stay tuned for amazing tutorials, tips, and tricks.</p>
-        </section>
-        <section id="posts">
-            <h2>Posts</h2>
-            <article>
-                <h3>How to Set Up a Penetration Testing Environment</h3>
-                <p>Learn how to create a safe and secure penetration testing lab on your local system...</p>
-            </article>
-            <article>
-                <h3>Top 10 Programming Languages for Hackers</h3>
-                <p>Discover the programming languages every ethical hacker should master...</p>
-            </article>
-        </section>
-        <section id="about">
-            <h2>About</h2>
-            <p>I am a tech enthusiast and ethical hacker. My goal is to share knowledge and help others understand the fascinating world of technology.</p>
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <form>
-                <label for="name">Your Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name">
-                <label for="email">Your Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email">
-                <label for="message">Your Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="Enter your message"></textarea>
-                <button type="submit">Send</button>
-            </form>
-        </section>
-    </main>
-    <footer>
-        <p>© 2025 Hacker Blog. All Rights Reserved.</p>
-    </footer>
+
+    <div class="header">
+        <img src="https://i.imgur.com/IcJVIOG.jpeg" alt="Your Photo">
+        <h1>Jubaer Hossain</h1>
+    </div>
+
+    <button class="toggle-categories">☰</button>
+    
+    <div class="categories">
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Tools</h2>
+            <div class="links">
+                <a href="https://codepen.io" target="_blank">CodePen</a>
+                <a href="https://www.cutout.pro" target="_blank">Cutout Pro</a>
+                <a href="https://www.prome.ai" target="_blank">Prome AI</a>
+                <a href="https://temp-mail.org" target="_blank">Temp Mail</a>
+            </div>
+        </div>
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Development</h2>
+            <div class="links">
+                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a>
+                <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
+            </div>
+        </div>
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Shopping</h2>
+            <div class="links">
+                <a href="https://www.daraz.com.bd" target="_blank">Daraz</a>
+                <a href="https://www.amazon.com" target="_blank">Amazon</a>
+                <a href="https://www.aliexpress.com" target="_blank">AliExpress</a>
+            </div>
+        </div>
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Education</h2>
+            <div class="links">
+                <a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a>
+                <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a>
+                <a href="https://www.coursera.org" target="_blank">Coursera</a>
+            </div>
+        </div>
+        <div class="category">
+            <h2 onclick="toggleCategory(this)">Social Media</h2>
+            <div class="links">
+                <a href="https://www.facebook.com" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                <a href="https://www.twitter.com" target="_blank">Twitter</a>
+            </div>
+        </div>
+    </div>
+
+    <input type="text" class="search-bar" id="search" placeholder="Search..." onkeyup="searchLinks()">
+    
+    <div class="search-results" id="search-results"></div>
+
+    <script>
+        const categories = document.querySelectorAll('.category');
+        const searchResultsContainer = document.getElementById('search-results');
+        const searchInput = document.getElementById('search');
+        const categoriesContainer = document.querySelector('.categories');
+        const toggleButton = document.querySelector('.toggle-categories');
+
+        function toggleCategory(category) {
+            category.classList.toggle('active');
+        }
+
+        toggleButton.addEventListener('click', () => {
+            categoriesContainer.classList.toggle('active');
+        });
+
+        function searchLinks() {
+            const searchQuery = searchInput.value.toLowerCase();
+            const allLinks = document.querySelectorAll('.links a');
+            const results = [];
+
+            allLinks.forEach(link => {
+                const linkText = link.textContent.toLowerCase();
+                const linkUrl = link.href;
+                if (searchQuery === 'all' || linkText.includes(searchQuery)) {
+                    results.push({ text: linkText, url: linkUrl });
+                }
+            });
+
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            if (results.length > 0) {
+                searchResultsContainer.innerHTML = `<h3>Search Results:</h3><ul>${results.map(result => `<li><a href="${result.url}" target="_blank">${result.text}</a></li>`).join('')}</ul>`;
+            } else {
+                searchResultsContainer.innerHTML = `<h3>No Results Found</h3>`;
+            }
+        }
+    </script>
 </body>
 </html>
