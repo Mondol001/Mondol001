@@ -26,11 +26,10 @@
             width: 100%;
             background-color: #222;
             padding: 10px 0;
-            position: relative;
         }
         .header img {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             border: 5px solid white;
             margin-right: 15px;
@@ -63,7 +62,7 @@
         .categories {
             display: flex;
             flex-direction: column;
-            position: absolute;
+            position: fixed;
             left: -300px;
             top: 0;
             background-color: rgba(0, 0, 0, 0.9);
@@ -112,7 +111,7 @@
             border: none;
             font-size: 1.2rem;
             border-radius: 5px;
-            margin: 20px 0;
+            margin-bottom: 20px;
         }
         .search-bar:focus {
             outline: none;
@@ -142,7 +141,7 @@
             color: #fff;
         }
         .toggle-categories {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
             font-size: 2rem;
@@ -150,6 +149,7 @@
             cursor: pointer;
             background: none;
             border: none;
+            z-index: 1500;
         }
         .nav-buttons {
             margin: 20px;
@@ -184,7 +184,6 @@
     <div class="header">
         <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
         <h1>MK Learning Points (beginners)</h1>
-        <button class="toggle-categories">☰</button>
     </div>
 
     <!-- Navigation Links -->
@@ -202,6 +201,8 @@
         <p><strong>GitHub:</strong> <a href="https://github.com" target="_blank">https://github.com</a></p>
     </div>
 
+    <button class="toggle-categories">☰</button>
+    
     <div class="categories">
         <div class="category">
             <h2 onclick="toggleCategory(this)">Tools</h2>
@@ -253,38 +254,47 @@
     <script>
         const categoriesContainer = document.querySelector('.categories');
         const toggleButton = document.querySelector('.toggle-categories');
-        const searchInput = document.getElementById('search');
-        const searchResultsContainer = document.getElementById('search-results');
-
-        // Toggle Sidebar
-        toggleButton.addEventListener('click', () => {
+        
+        // সাইডবার টগল করা
+        toggleButton.addEventListener('click', function() {
             categoriesContainer.classList.toggle('active');
         });
 
-        // Toggle Category Links
+        // ক্যাটাগরি এক্সপ্যান্ড করা
         function toggleCategory(categoryElement) {
-            categoryElement.nextElementSibling.classList.toggle('active');
+            const links = categoryElement.nextElementSibling;
+            const allCategories = document.querySelectorAll('.category');
+            allCategories.forEach(cat => {
+                if (cat !== categoryElement.parentElement) {
+                    cat.classList.remove('active');
+                    cat.querySelector('.links').style.display = 'none';
+                }
+            });
+            if (links.style.display === 'block') {
+                links.style.display = 'none';
+            } else {
+                links.style.display = 'block';
+            }
         }
 
-        // Search Functionality
+        // সার্চ ফিচার
         function searchLinks() {
-            const query = searchInput.value.toLowerCase();
-            const categories = document.querySelectorAll('.category');
-            let results = '';
+            const query = document.getElementById('search').value.toLowerCase();
+            const allLinks = document.querySelectorAll('.links a');
+            const resultsContainer = document.getElementById('search-results');
+            resultsContainer.innerHTML = '';
 
-            categories.forEach(category => {
-                const links = category.querySelectorAll('.links a');
-                links.forEach(link => {
-                    if (link.textContent.toLowerCase().includes(query)) {
-                        results += `<li><a href="${link.href}" target="_blank">${link.textContent}</a></li>`;
-                    }
-                });
+            allLinks.forEach(link => {
+                if (link.textContent.toLowerCase().includes(query)) {
+                    const listItem = document.createElement('li');
+                    const linkClone = link.cloneNode(true);
+                    listItem.appendChild(linkClone);
+                    resultsContainer.appendChild(listItem);
+                }
             });
 
-            if (results) {
-                searchResultsContainer.innerHTML = `<h3>Search Results:</h3><ul>${results}</ul>`;
-            } else {
-                searchResultsContainer.innerHTML = '<h3>No results found.</h3>';
+            if (resultsContainer.children.length === 0) {
+                resultsContainer.innerHTML = '<p>No results found</p>';
             }
         }
     </script>
