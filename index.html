@@ -17,43 +17,37 @@
             flex-direction: column;
             align-items: center;
         }
-
-        /* Header styling */
         .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            margin-bottom: 20px;
             width: 100%;
             background-color: #222;
-            padding: 10px 0;
+            color: #00ff00;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            margin-top: 10px;
         }
         .header img {
-            width: 60px;
-            height: 60px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            border: 3px solid white;
+            border: 5px solid white;
             margin-right: 15px;
         }
         .header h1 {
             font-size: 2rem;
-            color: #00ff00;
             margin: 0;
         }
-
-        /* Navigation Links */
         .nav-links {
-            display: flex;
-            justify-content: center;
             width: 100%;
             background-color: #333;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
         }
         .nav-links a {
             text-decoration: none;
             color: #00ff00;
             padding: 14px 20px;
-            display: block;
             font-size: 1.2rem;
             text-align: center;
             flex: 1;
@@ -63,53 +57,53 @@
             background-color: #00ff00;
             color: #111;
         }
-
-        /* Categories Sidebar */
-        .categories {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            left: -300px;
-            top: 0;
-            background-color: rgba(0, 0, 0, 0.9);
-            width: 250px;
-            height: 100%;
-            padding: 20px;
-            transition: all 0.3s ease;
-            z-index: 1000;
+        .search-bar {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+            background-color: #222;
+            color: #00ff00;
+            border: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            margin-top: 20px;
         }
-        .categories.active {
-            left: 0;
+        .search-bar:focus {
+            outline: none;
         }
-        .category {
+        .search-results {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px 0;
+        }
+        .search-results h3 {
+            font-size: 2rem;
             margin-bottom: 20px;
         }
-        .category h2 {
+        .search-results ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .search-results li {
             font-size: 1.5rem;
-            margin: 10px 0;
-            cursor: pointer;
+            margin-bottom: 10px;
         }
-        .links {
-            display: none;
-            padding-left: 20px;
-        }
-        .links a {
-            text-decoration: none;
+        .search-results li a {
             color: #00ff00;
-            font-size: 1.2rem;
-            display: block;
-            padding: 5px 0;
-            transition: all 0.3s;
+            text-decoration: none;
         }
-        .links a:hover {
+        .search-results li a:hover {
             color: #fff;
-            padding-left: 10px;
         }
-        .category.active .links {
-            display: block;
+        .developer-info {
+            background-color: #222;
+            color: #00ff00;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
         }
-
-        /* Hamburger menu styling */
         .toggle-categories {
             position: absolute;
             top: 20px;
@@ -120,150 +114,45 @@
             background: none;
             border: none;
         }
-
-        /* Search bar styling */
-        .search-bar {
-            width: 60%;
-            max-width: 600px;
-            padding: 10px;
-            background-color: #222;
-            color: #00ff00;
-            border: none;
-            font-size: 1.2rem;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .search-bar:focus {
-            outline: none;
-        }
-
-        /* Developer Information */
-        .developer-info {
-            background-color: #222;
-            color: #00ff00;
-            padding: 20px;
-            margin-top: 30px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 800px;
-        }
-
-        /* Main container */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            width: 100%;
-            padding: 0 10px;
-        }
-
-        /* Top row with hamburger and picture */
-        .top-row {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .top-row .toggle-categories {
-            margin-right: 20px;
-        }
-
-        .top-row img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 3px solid white;
-        }
-
-        /* Website name */
-        .website-name {
-            color: #00ff00;
-            font-size: 1.5rem;
-            margin-left: 10px;
-            font-weight: bold;
-        }
-
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Top row: Hamburger and Picture -->
-        <div class="top-row">
-            <button class="toggle-categories">☰</button>
-            <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
-            <div class="website-name">MK Learning Points</div>
-        </div>
+    <div class="header">
+        <!-- Hamburger Menu -->
+        <button class="toggle-categories">☰</button>
+        <!-- Image -->
+        <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
+        <!-- Website Title -->
+        <h1>MK Learning Points (beginners)</h1>
+    </div>
 
-        <!-- Header -->
-        <div class="header">
-            <h1>MK Learning Points (beginners)</h1>
-        </div>
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
 
-        <!-- Search Bar -->
-        <input type="text" class="search-bar" id="search" placeholder="Search..." onkeyup="searchLinks()">
-        
-        <!-- Developer Information Box -->
-        <div class="developer-info">
-            <h2>Developer Information</h2>
-            <p><strong>Name:</strong> Jubaer Hossain</p>
-            <p><strong>Email:</strong> example@example.com</p>
-            <p><strong>GitHub:</strong> <a href="https://github.com" target="_blank">https://github.com</a></p>
-        </div>
+    <!-- Search Bar -->
+    <input type="text" class="search-bar" id="search" placeholder="Search..." onkeyup="searchLinks()">
 
-        <!-- Categories Sidebar -->
-        <div class="categories">
-            <div class="category">
-                <h2 onclick="toggleCategory(this)">Tools</h2>
-                <div class="links">
-                    <a href="https://codepen.io" target="_blank">CodePen</a>
-                    <a href="https://www.cutout.pro" target="_blank">Cutout Pro</a>
-                    <a href="https://www.prome.ai" target="_blank">Prome AI</a>
-                    <a href="https://temp-mail.org" target="_blank">Temp Mail</a>
-                </div>
-            </div>
-            <div class="category">
-                <h2 onclick="toggleCategory(this)">Development</h2>
-                <div class="links">
-                    <a href="https://github.com" target="_blank">GitHub</a>
-                    <a href="https://appinventor.mit.edu" target="_blank">MIT App Inventor</a>
-                    <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
-                </div>
-            </div>
-            <div class="category">
-                <h2 onclick="toggleCategory(this)">Shopping</h2>
-                <div class="links">
-                    <a href="https://www.daraz.com.bd" target="_blank">Daraz</a>
-                    <a href="https://www.amazon.com" target="_blank">Amazon</a>
-                    <a href="https://www.aliexpress.com" target="_blank">AliExpress</a>
-                </div>
-            </div>
-            <div class="category">
-                <h2 onclick="toggleCategory(this)">Education</h2>
-                <div class="links">
-                    <a href="https://www.educationboardresults.gov.bd" target="_blank">Bangladesh Results</a>
-                    <a href="https://www.khanacademy.org" target="_blank">Khan Academy</a>
-                    <a href="https://www.coursera.org" target="_blank">Coursera</a>
-                </div>
-            </div>
-            <div class="category">
-                <h2 onclick="toggleCategory(this)">Social Media</h2>
-                <div class="links">
-                    <a href="https://www.facebook.com" target="_blank">Facebook</a>
-                    <a href="https://www.instagram.com" target="_blank">Instagram</a>
-                    <a href="https://www.twitter.com" target="_blank">Twitter</a>
-                </div>
-            </div>
-        </div>
+    <!-- Search Results -->
+    <div class="search-results" id="search-results"></div>
 
+    <!-- Developer Information -->
+    <div class="developer-info">
+        <h2>Developer Information</h2>
+        <p><strong>Name:</strong> Jubaer Hossain</p>
+        <p><strong>Email:</strong> example@example.com</p>
+        <p><strong>GitHub:</strong> <a href="https://github.com" target="_blank">https://github.com</a></p>
     </div>
 
     <script>
         const categoriesContainer = document.querySelector('.categories');
         const toggleButton = document.querySelector('.toggle-categories');
+        const searchInput = document.getElementById('search');
+        const searchResultsContainer = document.getElementById('search-results');
 
         // Toggle Sidebar
         toggleButton.addEventListener('click', () => {
@@ -277,35 +166,24 @@
             }
         });
 
-        // Expand/Collapse Categories
-        function toggleCategory(header) {
-            const parent = header.parentElement;
-            parent.classList.toggle('active');
-        }
-
-        // Search functionality
+        // Search Links
         function searchLinks() {
             const query = searchInput.value.toLowerCase();
             const links = document.querySelectorAll('.links a');
-            let results = [];
+            const results = [];
+
             links.forEach(link => {
-                if (link.textContent.toLowerCase().includes(query)) {
-                    results.push(link);
-                    link.style.display = 'block';
-                } else {
-                    link.style.display = 'none';
+                if (query && link.textContent.toLowerCase().includes(query)) {
+                    results.push({ text: link.textContent, url: link.href });
                 }
             });
 
-            searchResultsContainer.innerHTML = '';
             if (results.length > 0) {
-                results.forEach(link => {
-                    const div = document.createElement('div');
-                    div.innerHTML = `<a href="${link.href}" target="_blank">${link.textContent}</a>`;
-                    searchResultsContainer.appendChild(div);
-                });
+                searchResultsContainer.innerHTML = `<h3>Search Results:</h3><ul>${results
+                    .map(r => `<li><a href="${r.url}" target="_blank">${r.text}</a></li>`)
+                    .join('')}</ul>`;
             } else {
-                searchResultsContainer.innerHTML = 'No results found';
+                searchResultsContainer.innerHTML = '';
             }
         }
     </script>
