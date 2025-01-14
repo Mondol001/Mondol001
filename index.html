@@ -20,112 +20,113 @@
         }
 
         /* Header Section */
-.header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 40px;
-    background-color: rgba(0, 0, 0, 0.9);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+        .header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-.header img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
+        .header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
 
-.header h1 {
-    font-size: 2rem;
-    color: #00ff00;
-    margin: 10px 0;
-}
+        .header h1 {
+            font-size: 2rem;
+            color: #00ff00;
+            margin: 10px 0;
+        }
 
-/* Navigation Menu */
-.nav-links-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    position: relative;
-}
+        /* Navigation Menu */
+        .nav-links-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
 
-.nav-links {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-.nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1rem;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    display: flex;
-    align-items: center;
-}
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
 
-.nav-links a i {
-    margin-right: 8px;
-}
+        .nav-links a i {
+            margin-right: 8px;
+        }
 
-.nav-links a:hover {
-    background-color: #00ff00;
-    color: #111;
-}
+        .nav-links a:hover {
+            background-color: #00ff00;
+            color: #111;
+        }
 
-/* Three-Line Menu */
-.three-line-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    position: absolute;
-    right: 20px;
-    top: 0;
-}
+        /* Three-Line Menu */
+        .three-line-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 0;
+        }
 
-.three-line-menu div {
-    width: 25px;
-    height: 3px;
-    background-color: #fff;
-    transition: background-color 0.3s;
-}
+        .three-line-menu div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            transition: background-color 0.3s;
+        }
 
-.three-line-menu:hover div {
-    background-color: #00ff00;
-}
+        .three-line-menu:hover div {
+            background-color: #00ff00;
+        }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        background-color: #222;
-        padding: 15px;
-        border-radius: 5px;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        z-index: 999;
-    }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background-color: #222;
+                padding: 15px;
+                border-radius: 5px;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                z-index: 999;
+            }
 
-    .nav-links.active {
-        display: flex;
-    }
+            .nav-links.active {
+                display: flex;
+            }
 
-    .nav-links a {
-        padding: 10px;
-        font-size: 1.2rem;
-    }
-}
+            .nav-links a {
+                padding: 10px;
+                font-size: 1.2rem;
+            }
+        }
+
         /* Link Grid Section */
         .link-grid {
             display: grid;
@@ -137,6 +138,7 @@
             background: rgba(0, 0, 0, 0.8);
             border-radius: 10px;
         }
+
         .link-grid a {
             display: block;
             padding: 15px;
@@ -148,6 +150,7 @@
             border-radius: 8px;
             transition: all 0.3s ease;
         }
+
         .link-grid a:hover {
             background-color: #00ff00;
             color: #111;
@@ -165,57 +168,57 @@
     </style>
 </head>
 <body>
+    <!-- Header Section -->
+    <div class="header">
+        <img src="https://i.imgur.com/VfM3TXY.png" alt="MK Logo">
+        <h1>MK Learning Points</h1>
 
-    <!-- HTML: Header Section -->
-<div class="header">
-    <img src="https://i.imgur.com/VfM3TXY.png" alt="MK Logo">
-    <h1>MK Learning Points</h1>
-
-    <!-- Navigation Menu -->
-    <div class="nav-links-container">
-        <div class="three-line-menu" onclick="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="nav-links">
-            <a href="#home"><i class="fas fa-home"></i>Home</a>
-            <a href="#about"><i class="fas fa-info-circle"></i>About</a>
-            <a href="#services"><i class="fas fa-cogs"></i>Services</a>
-            <a href="#contact"><i class="fas fa-phone-alt"></i>Contact</a>
+        <!-- Navigation Menu -->
+        <div class="nav-links-container">
+            <div class="three-line-menu" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="nav-links">
+                <a href="#home"><i class="fas fa-home"></i>Home</a>
+                <a href="#about"><i class="fas fa-info-circle"></i>About</a>
+                <a href="#services"><i class="fas fa-cogs"></i>Services</a>
+                <a href="#contact"><i class="fas fa-phone-alt"></i>Contact</a>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Link Grid Section -->
-  <div class="link-grid">
-    <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-    <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
-    <a href="https://mail.google.com" target="_blank"><i class="fas fa-envelope"></i> Gmail</a>
-    <a href="https://new.movielinkbd.live/" target="_blank"><i class="fas fa-film"></i> Movie Link BD</a>
-    <a href="https://discoveryftp.net/" target="_blank"><i class="fas fa-server"></i> Discovery FTP</a>
-    <a href="http://10.16.100.244/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 1</a>
-    <a href="http://172.16.50.4/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 2</a>
-    <a href="http://cdn.bossbd.net/" target="_blank"><i class="fas fa-cloud-download-alt"></i> Boss BD</a>
-    <a href="https://crazyctg.com/" target="_blank"><i class="fas fa-film"></i> Crazy CTG</a>
-    <a href="http://ctgmovies.com/" target="_blank"><i class="fas fa-film"></i> CTG Movies</a>
-    <a href="http://www.beeflix.biz/" target="_blank"><i class="fas fa-film"></i> BeeFlix</a>
-    <a href="http://binodonmela.net/" target="_blank"><i class="fas fa-film"></i> Binodon Mela</a>
-    <a href="http://www.dnftpbd.com/" target="_blank"><i class="fas fa-server"></i> DN FTP BD</a>
-    <a href="https://mlsbd.shop/" target="_blank"><i class="fas fa-film"></i> MLSBD</a>
-    <a href="http://172.21.22.2/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 3</a>
-    <a href="http://crazyctg.com/" target="_blank"><i class="fas fa-film"></i> Crazy CTG (Duplicate)</a>
-</div>
+    <div class="link-grid">
+        <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+        <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+        <a href="https://mail.google.com" target="_blank"><i class="fas fa-envelope"></i> Gmail</a>
+        <a href="https://new.movielinkbd.live/" target="_blank"><i class="fas fa-film"></i> Movie Link BD</a>
+        <a href="https://discoveryftp.net/" target="_blank"><i class="fas fa-server"></i> Discovery FTP</a>
+        <a href="http://10.16.100.244/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 1</a>
+        <a href="http://172.16.50.4/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 2</a>
+        <a href="http://cdn.bossbd.net/" target="_blank"><i class="fas fa-cloud-download-alt"></i> Boss BD</a>
+        <a href="https://crazyctg.com/" target="_blank"><i class="fas fa-film"></i> Crazy CTG</a>
+        <a href="http://ctgmovies.com/" target="_blank"><i class="fas fa-film"></i> CTG Movies</a>
+        <a href="http://www.beeflix.biz/" target="_blank"><i class="fas fa-film"></i> BeeFlix</a>
+        <a href="http://binodonmela.net/" target="_blank"><i class="fas fa-film"></i> Binodon Mela</a>
+        <a href="http://www.dnftpbd.com/" target="_blank"><i class="fas fa-server"></i> DN FTP BD</a>
+        <a href="https://mlsbd.shop/" target="_blank"><i class="fas fa-film"></i> MLSBD</a>
+        <a href="http://172.21.22.2/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 3</a>
+        <a href="http://crazyctg.com/" target="_blank"><i class="fas fa-film"></i> Crazy CTG (Duplicate)</a>
+    </div>
 
     <!-- Footer Section -->
     <div class="footer">
         <p>&copy; 2025 MK Learning Points. All rights reserved.</p>
     </div>
 
-    // Toggle Menu for All Devices
-function toggleMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    navLinks.classList.toggle('active');
-}
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
