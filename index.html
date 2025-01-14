@@ -20,84 +20,112 @@
         }
 
         /* Header Section */
-        .header {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 40px;
-            background-color: rgba(0, 0, 0, 0.8);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .header img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            font-size: 2.4rem;
-            color: #00ff00;
-            margin-bottom: 10px;
-        }
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: rgba(0, 0, 0, 0.9);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-        /* Navigation Menu */
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            width: 100%;
-        }
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1rem;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-        }
-        .nav-links a:hover {
-            background-color: #00ff00;
-            color: #111;
-        }
+.header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
 
-        /* Three Line Menu (Responsive) */
-        .three-line-menu {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-        }
-        .three-line-menu div {
-            width: 25px;
-            height: 3px;
-            background-color: #fff;
-        }
+.header h1 {
+    font-size: 2rem;
+    color: #00ff00;
+    margin: 10px 0;
+}
 
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                gap: 10px;
-                background-color: #333;
-                padding: 20px;
-                position: absolute;
-                top: 70px;
-                right: 40px;
-                border-radius: 5px;
-            }
-            .three-line-menu {
-                display: flex;
-            }
-            .three-line-menu.active + .nav-links {
-                display: flex;
-            }
-        }
+/* Navigation Menu */
+.nav-links-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
 
+.nav-links {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a i {
+    margin-right: 8px;
+}
+
+.nav-links a:hover {
+    background-color: #00ff00;
+    color: #111;
+}
+
+/* Three-Line Menu */
+.three-line-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 0;
+}
+
+.three-line-menu div {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.three-line-menu:hover div {
+    background-color: #00ff00;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #222;
+        padding: 15px;
+        border-radius: 5px;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 10px;
+        font-size: 1.2rem;
+    }
+}
         /* Link Grid Section */
         .link-grid {
             display: grid;
@@ -138,10 +166,13 @@
 </head>
 <body>
 
-    <!-- Header Section -->
-    <div class="header">
-        <img src="https://i.imgur.com/VfM3TXY.png" alt="MK Logo">
-        <h1>MK Learning Points</h1>
+    <!-- HTML: Header Section -->
+<div class="header">
+    <img src="https://i.imgur.com/VfM3TXY.png" alt="MK Logo">
+    <h1>MK Learning Points</h1>
+
+    <!-- Navigation Menu -->
+    <div class="nav-links-container">
         <div class="three-line-menu" onclick="toggleMenu()">
             <div></div>
             <div></div>
@@ -150,10 +181,11 @@
         <div class="nav-links">
             <a href="#home"><i class="fas fa-home"></i>Home</a>
             <a href="#about"><i class="fas fa-info-circle"></i>About</a>
-            <a href="#contact"><i class="fas fa-phone-alt"></i>Contact</a>
             <a href="#services"><i class="fas fa-cogs"></i>Services</a>
+            <a href="#contact"><i class="fas fa-phone-alt"></i>Contact</a>
         </div>
     </div>
+</div>
 
     <!-- Link Grid Section -->
   <div class="link-grid">
@@ -180,13 +212,10 @@
         <p>&copy; 2025 MK Learning Points. All rights reserved.</p>
     </div>
 
-    <script>
-        function toggleMenu() {
-            const menu = document.querySelector('.three-line-menu');
-            const navLinks = document.querySelector('.nav-links');
-            menu.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
-    </script>
+    // Toggle Menu for All Devices
+function toggleMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('active');
+}
 </body>
 </html>
