@@ -123,11 +123,11 @@
         // Handle Login
         function handleLogin(event) {
             event.preventDefault(); // Prevent page reload
-            const username = document.getElementById('Mih').value;
-            const password = document.getElementById('mih@1278').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
             // Example Validation
-            if (username === "admin" && password === "1234") {
+            if (username === "Mih" && password === "mih@1278") {
                 localStorage.setItem("loggedIn", true);
                 alert("Login Successful!");
                 window.location.href = "home.html"; // Redirect to home page
