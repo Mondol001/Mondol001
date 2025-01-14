@@ -3,163 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MK Learning Points</title>
+    <title>Login - MK Learning Points</title>
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
-    <!-- FontAwesome CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1920x1080/?technology') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #222;
             color: #fff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Header Section */
-        .header {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 40px;
-            background-color: rgba(0, 0, 0, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            color: #00ff00;
-            margin: 10px 0;
-        }
-
-        /* Navigation Menu */
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1rem;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links a i {
-            margin-right: 8px;
-        }
-
-        .nav-links a:hover {
-            background-color: #00ff00;
-            color: #111;
-        }
-
-        /* Link Grid Section */
-        .link-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 30px;
-            max-width: 1200px;
-            margin: 20px auto;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
-        }
-
-        .link-grid a {
-            display: block;
-            padding: 15px;
             text-align: center;
-            font-size: 1rem;
-            color: #fff;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .link-grid a:hover {
-            background-color: #00ff00;
-            color: #111;
-            transform: scale(1.05);
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            color: #fff;
-            margin-top: auto;
-        }
-
-        /* Sections */
-        section {
             padding: 50px;
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.7);
-            margin: 20px 0;
-            border-radius: 8px;
+        }
+        .login-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            margin: 0 auto;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #444;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00ff00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login-container button:hover {
+            background-color: #008000;
         }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <div class="header">
-        <img src="https://i.imgur.com/VfM3TXY.png" alt="MK Logo">
-        <h1>MK Learning Points</h1>
 
-        <!-- Navigation Menu -->
-        <div class="nav-links">
-            <a href="index.html"><i class="fas fa-home"></i>Home</a>
-            <a href="about.html"><i class="fas fa-info-circle"></i>About</a>
-            <a href="service.html"><i class="fas fa-cogs"></i>Services</a>
-            <a href="contact.html"><i class="fas fa-phone-alt"></i>Contact</a>
-        </div>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
     </div>
 
-    <!-- Link Grid Section -->
-    <div class="link-grid">
-        <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-        <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
-        <a href="https://mail.google.com" target="_blank"><i class="fas fa-envelope"></i> Gmail</a>
-        <a href="https://new.movielinkbd.live/" target="_blank"><i class="fas fa-film"></i> Movie Link BD</a>
-        <a href="https://discoveryftp.net/" target="_blank"><i class="fas fa-server"></i> Discovery FTP</a>
-        <a href="http://10.16.100.244/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 1</a>
-        <a href="http://172.16.50.4/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 2</a>
-        <a href="http://cdn.bossbd.net/" target="_blank"><i class="fas fa-cloud-download-alt"></i> Boss BD</a>
-        <a href="https://crazyctg.com/" target="_blank"><i class="fas fa-film"></i> Crazy CTG</a>
-        <a href="http://ctgmovies.com/" target="_blank"><i class="fas fa-film"></i> CTG Movies</a>
-        <a href="http://www.beeflix.biz/" target="_blank"><i class="fas fa-film"></i> BeeFlix</a>
-        <a href="http://binodonmela.net/" target="_blank"><i class="fas fa-film"></i> Binodon Mela</a>
-        <a href="http://www.dnftpbd.com/" target="_blank"><i class="fas fa-server"></i> DN FTP BD</a>
-        <a href="https://mlsbd.shop/" target="_blank"><i class="fas fa-film"></i> MLSBD</a>
-        <a href="http://172.21.22.2/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 3</a>
-    </div>
+    <script>
+        // Dummy username and password
+        const correctUsername = "Mih";
+        const correctPassword = "mih@1278";
 
-    <!-- Footer Section -->
-    <div class="footer">
-        <p>&copy; 2025 MK Learning Points. All rights reserved.</p>
-    </div>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get the input values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Check if the username and password are correct
+            if (username === correctUsername && password === correctPassword) {
+                // Redirect to the home page or dashboard after successful login
+                window.location.href = "home.html";
+            } else {
+                // Show an alert for incorrect credentials
+                alert("Invalid username or password!");
+            }
+        });
+    </script>
+
 </body>
 </html>
