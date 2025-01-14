@@ -10,8 +10,8 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: url('https://source.unsplash.com/1920x1080/?learning,education') no-repeat center center fixed;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://source.unsplash.com/1920x1080/?education,learning') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
             display: flex;
@@ -26,21 +26,21 @@
             justify-content: center;
             align-items: center;
             padding: 20px 40px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
         .header img {
             width: 90px;
             height: 90px;
             border-radius: 50%;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 2px solid #00ff00;
         }
         .header h1 {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             color: #00ff00;
             margin-bottom: 10px;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
@@ -57,12 +57,10 @@
             color: #fff;
             text-decoration: none;
             font-size: 1rem;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border-radius: 25px;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
             background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease-in-out;
         }
         .nav-links a:hover {
             background-color: #00ff00;
@@ -73,61 +71,26 @@
             margin-right: 8px;
         }
 
-        /* Mobile Responsive Navigation */
-        .three-line-menu {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            margin-left: auto;
-        }
-        .three-line-menu div {
-            width: 25px;
-            height: 3px;
-            background-color: #fff;
-            border-radius: 2px;
-        }
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                background-color: #333;
-                padding: 20px;
-                position: absolute;
-                top: 70px;
-                right: 20px;
-                border-radius: 10px;
-                z-index: 1000;
-            }
-            .three-line-menu {
-                display: flex;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-        }
-
         /* Dropdown Menu */
         .menu {
             position: relative;
-            margin: 20px auto;
             text-align: center;
+            margin: 20px auto;
         }
         .menu button {
-            background: linear-gradient(45deg, #00ff00, #004d00);
+            background: linear-gradient(45deg, #00ff00, #006600);
             color: #111;
-            padding: 12px 25px;
+            padding: 12px 20px;
             font-size: 1rem;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
         .menu button:hover {
             transform: translateY(-2px);
-            background: linear-gradient(45deg, #004d00, #00ff00);
-            color: #fff;
+            background: linear-gradient(45deg, #006600, #00ff00);
         }
         .dropdown-content {
             display: none;
@@ -135,10 +98,11 @@
             top: 50px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #333;
+            background: rgba(0, 0, 0, 0.9);
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
         .menu.active .dropdown-content {
             display: block;
@@ -146,9 +110,9 @@
         .dropdown-content a {
             display: block;
             padding: 10px 15px;
-            text-decoration: none;
             color: #fff;
-            background: #444;
+            text-decoration: none;
+            background: #333;
             transition: all 0.3s;
         }
         .dropdown-content a:hover {
@@ -156,72 +120,73 @@
             color: #111;
         }
 
-        /* Footer Section */
+        /* Footer */
         .footer {
             text-align: center;
             padding: 20px;
             background: rgba(0, 0, 0, 0.9);
             color: #fff;
-            font-size: 0.9rem;
-        }
-        .footer a {
-            color: #00ff00;
-            text-decoration: none;
         }
 
-        /* Developer Section */
+        /* Developer Information Section */
         .developer-info {
             padding: 30px;
-            text-align: center;
             margin: 30px auto;
-            background: rgba(0, 0, 0, 0.85);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 10px;
             max-width: 800px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
         }
         .developer-info h2 {
-            margin-bottom: 20px;
             color: #00ff00;
+            margin-bottom: 20px;
+        }
+        .developer-info p {
+            margin: 10px 0;
+            color: #fff;
+        }
+        .developer-info a {
+            color: #00ff00;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
     <div class="header">
         <img src="https://i.imgur.com/VfM3TXY.png" alt="MK Logo">
         <h1>MK Learning Points</h1>
-        <div class="three-line-menu" onclick="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
         <div class="nav-links">
             <a href="#home"><i class="fas fa-home"></i>Home</a>
             <a href="#about"><i class="fas fa-info-circle"></i>About</a>
+            <a href="#services"><i class="fas fa-cogs"></i>Services</a>
             <a href="#contact"><i class="fas fa-phone-alt"></i>Contact</a>
         </div>
     </div>
 
-    <!-- Dropdown Menu -->
     <div class="menu">
-        <button onclick="toggleDropdown()">Explore Links</button>
+        <button onclick="toggleDropdown()">Expand Links</button>
         <div class="dropdown-content">
             <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+            <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> GitHub</a>
         </div>
     </div>
 
-    <!-- Footer -->
+    <div class="developer-info">
+        <h2>Developer Information</h2>
+        <p>Developed by: <strong>Jubaer Hossain</strong></p>
+        <p>Contact: <a href="mailto:jubaer.hossain@example.com">jubaer.hossain@example.com</a></p>
+        <p>Location: Faiza Button & Zipper Ltd., Tongi, Gazipur</p>
+    </div>
+
     <div class="footer">
-        <p>&copy; 2025 <a href="https://www.mklearningpoints.com">MK Learning Points</a>. All rights reserved.</p>
+        <p>&copy; 2025 MK Learning Points. All rights reserved.</p>
     </div>
 
     <script>
-        function toggleMenu() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        }
-
         function toggleDropdown() {
-            document.querySelector('.menu').classList.toggle('active');
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('active');
         }
     </script>
 </body>
