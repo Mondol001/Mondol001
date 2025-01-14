@@ -7,72 +7,134 @@
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #222;
+            background: url('https://source.unsplash.com/1920x1080/?technology') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             color: #fff;
-            text-align: center;
-            padding: 50px;
         }
+
         .login-container {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px 40px;
             border-radius: 10px;
-            width: 300px;
-            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
         }
+
+        .login-container h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #00ff00;
+        }
+
+        .login-container p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
         .login-container input {
-            width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #444;
-        }
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #00ff00;
+            font-size: 1rem;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
+            outline: none;
+            background: #333;
+            color: #fff;
         }
+
+        .login-container input::placeholder {
+            color: #aaa;
+        }
+
+        .login-container button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background: #00ff00;
+            color: #111;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
         .login-container button:hover {
-            background-color: #008000;
+            background: #00cc00;
+        }
+
+        .welcome-message {
+            background: #111;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #00ff00;
+        }
+
+        .forgot-password {
+            margin-top: 10px;
+        }
+
+        .forgot-password a {
+            color: #00ff00;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #fff;
         }
     </style>
 </head>
 <body>
-
     <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
+        <!-- Welcome Message -->
+        <div class="welcome-message">
+            <h2>Welcome to MK Learning Points!</h2>
+            <p>Please login to access your account.</p>
+        </div>
+
+        <!-- Login Form -->
+        <form onsubmit="handleLogin(event)">
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
             <button type="submit">Login</button>
         </form>
+
+        <!-- Forgot Password -->
+        <div class="forgot-password">
+            <a href="#">Forgot your password?</a>
+        </div>
     </div>
 
     <script>
-        // Dummy username and password
-        const correctUsername = "Mih";
-        const correctPassword = "mih@1278";
+        // Handle Login
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent page reload
+            const username = document.getElementById('Mih').value;
+            const password = document.getElementById('mih@1278').value;
 
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            // Get the input values
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Check if the username and password are correct
-            if (username === correctUsername && password === correctPassword) {
-                // Redirect to the home page or dashboard after successful login
-                window.location.href = "home.html";
+            // Example Validation
+            if (username === "admin" && password === "1234") {
+                localStorage.setItem("loggedIn", true);
+                alert("Login Successful!");
+                window.location.href = "index.html"; // Redirect to home page
             } else {
-                // Show an alert for incorrect credentials
-                alert("Invalid username or password!");
+                alert("Invalid username or password. Please try again!");
             }
-        });
+        }
     </script>
-
 </body>
 </html>
