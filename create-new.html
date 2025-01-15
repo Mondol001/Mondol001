@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobuj English Academy</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         /* General Styles */
         body {
@@ -16,33 +17,36 @@
         }
 
         header {
-            text-align: center;
-            padding: 20px 0;
             background: linear-gradient(to right, #56ab2f, #a8e063);
-            color: white;
+            color: #fff;
+            padding: 20px 0;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            margin: 0 auto;
         }
 
         header h1 {
             margin: 0;
             font-size: 2.5rem;
-            font-weight: bold;
-        }
-
-        nav {
-            margin-top: 15px;
+            font-weight: 700;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         nav ul {
-            display: flex;
-            justify-content: center;
             list-style: none;
-            padding: 0;
             margin: 0;
+            padding: 0;
+            display: flex;
         }
 
         nav ul li {
-            margin: 0 10px;
+            margin: 0 15px;
         }
 
         nav ul li a {
@@ -62,115 +66,157 @@
         }
 
         main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px 0;
+            padding: 50px 0;
         }
 
-        section {
+        .container {
             width: 90%;
-            max-width: 1200px;
-            margin: 20px 0;
-            padding: 20px;
-            background: white;
-            color: #333;
+            margin: 0 auto;
+        }
+
+        .scrolling-message {
+            background: linear-gradient(to right, #ff9800, #ff5722);
+            color: white;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        section h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #a8e063;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .notice-board {
+            background: linear-gradient(to bottom, #ffffff, #e3f2fd);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        section:hover {
+        .notice-board:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
-        section h2 {
-            text-align: center;
-            font-size: 2rem;
-            color: #56ab2f;
-            margin-bottom: 20px;
+        .notice-board h3 {
+            margin-top: 0;
+            font-size: 2.2rem;
+            color: #2e7d32;
+            border-bottom: 3px solid #56ab2f;
+            padding-bottom: 15px;
+        }
+
+        .notice-board ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .notice-board ul li {
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .notice-board ul li:last-child {
+            border-bottom: none;
         }
 
         footer {
+            background: linear-gradient(to right, #56ab2f, #a8e063);
+            color: #fff;
             text-align: center;
             padding: 20px 0;
-            background: linear-gradient(to right, #56ab2f, #a8e063);
-            color: white;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        footer p {
+            margin: 0;
         }
 
         @media (max-width: 768px) {
+            header .container, .container {
+                width: 95%;
+            }
+
             header h1 {
                 font-size: 2rem;
             }
 
             nav ul {
                 flex-wrap: wrap;
+                justify-content: center;
             }
 
             nav ul li {
-                margin: 5px;
+                margin: 10px;
             }
 
-            section {
-                padding: 15px;
+            .notice-board {
+                padding: 20px;
             }
 
-            section h2 {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            nav ul {
-                flex-direction: column;
-                align-items: center;
+            .notice-board h3 {
+                font-size: 1.7rem;
             }
 
-            section {
-                padding: 10px;
+            .notice-board ul li {
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Sobuj English Academy</h1>
-        <nav>
-            <ul>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#courses">Our Courses</a></li>
-                <li><a href="#services">Our Services</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <h1>Sobuj English Academy</h1>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="courses.html">Our Courses</a></li>
+                    <li><a href="services.html">Our Services</a></li>
+                    <li><a href="goals.html">Our Goals</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
     <main>
         <section id="dashboard">
-            <h2>Dashboard</h2>
-            <p>Welcome to Sobuj English Academy's Dashboard. Find all your updates here.</p>
-        </section>
-        <section id="about">
-            <h2>About Us</h2>
-            <p>Learn about the journey of Sobuj English Academy and its mission.</p>
-        </section>
-        <section id="courses">
-            <h2>Our Courses</h2>
-            <p>Explore our wide range of English learning courses designed for everyone.</p>
-        </section>
-        <section id="services">
-            <h2>Our Services</h2>
-            <p>Check out the unique services we offer to enhance your learning experience.</p>
-        </section>
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <p>Have questions? Reach out to us via our contact page.</p>
+            <div class="container">
+                <div class="scrolling-message">
+                    <marquee behavior="scroll" direction="left">
+                        Welcome to Sobuj English Academy! | Join our Business English course today! | Check out the latest updates on our Notice Board!
+                    </marquee>
+                </div>
+                <h2>Dashboard</h2>
+                <div class="notice-board">
+                    <h3>Notice Board</h3>
+                    <ul>
+                        <li>Class timings for next week have been updated.</li>
+                        <li>New course on Business English starts from March 1st.</li>
+                        <li>Mock test for IELTS will be held on February 25th.</li>
+                        <li>Holiday announced for International Mother Language Day on February 21st.</li>
+                    </ul>
+                </div>
+            </div>
         </section>
     </main>
     <footer>
-        <p>&copy; 2025 Sobuj English Academy. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2025 Sobuj English Academy. All rights reserved.</p>
+        </div>
     </footer>
+    <script src="script.js"></script>
 </body>
 </html>
