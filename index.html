@@ -18,66 +18,6 @@
             color: #fff;
         }
 
-        /* Header Section */
-        .header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-            z-index: 1000;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: #00ffcc;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-        }
-
-        /* Notice Board */
-        .notice-board-container {
-            overflow: hidden;
-            width: 70%;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            padding: 5px 10px;
-            border: 2px solid #00ffcc;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-            position: relative;
-        }
-
-        .notice-board {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scrollNotice 20s linear infinite; /* স্পিড পরিবর্তনের জন্য সময় বাড়ানো হয়েছে */
-            font-size: 1rem;
-            color: #fff;
-        }
-
-        .notice-board span {
-            color: #ffcc00;
-            font-weight: bold;
-        }
-
-        @keyframes scrollNotice {
-            from {
-                transform: translateX(100%);
-            }
-            to {
-                transform: translateX(-100%);
-            }
-        }
-
-        /* Login Form */
         .login-container {
             background: rgba(0, 0, 0, 0.7);
             padding: 40px;
@@ -121,20 +61,25 @@
             background: linear-gradient(45deg, #0099ff, #00ffcc);
             transform: scale(1.05);
         }
+
+        .login-container .links {
+            margin-top: 20px;
+        }
+
+        .login-container .links a {
+            text-decoration: none;
+            color: #00ffcc;
+            font-size: 0.9rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .login-container .links a:hover {
+            color: #0099ff;
+        }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <div class="header">
-        <h1>MK Learning Points</h1>
-        <div class="notice-board-container">
-            <div class="notice-board">
-                Welcome to MK Learning Points! <span>Important:</span> Don't share your login credentials with anyone! Enjoy learning with us.
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Form -->
     <div class="login-container">
         <h2>Login</h2>
         <form action="dashboard.html" method="POST">
@@ -142,6 +87,10 @@
             <input type="password" name="password" placeholder="Password" required>
             <input type="submit" value="Login">
         </form>
+        <div class="links">
+            <a href="create-new.html">Create New Account</a> | 
+            <a href="forgot-password.html">Forgot Password?</a>
+        </div>
     </div>
 </body>
 </html>
