@@ -24,12 +24,13 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             padding: 10px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
         }
 
         .header h1 {
@@ -43,25 +44,28 @@
         .notice-board-container {
             overflow: hidden;
             width: 70%;
-            height: 30px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            padding: 0 10px;
+            padding: 5px 10px;
+            border: 2px solid #00ffcc;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
             position: relative;
         }
 
         .notice-board {
             display: inline-block;
             white-space: nowrap;
-            animation: scrollNotice 10s linear infinite;
+            animation: scrollNotice 20s linear infinite; /* স্পিড পরিবর্তনের জন্য সময় বাড়ানো হয়েছে */
             font-size: 1rem;
             color: #fff;
         }
 
         .notice-board span {
-            color: #00ffcc;
+            color: #ffcc00;
+            font-weight: bold;
         }
 
         @keyframes scrollNotice {
@@ -125,7 +129,7 @@
         <h1>MK Learning Points</h1>
         <div class="notice-board-container">
             <div class="notice-board">
-                Welcome to MK Learning Points! <span>Important:</span> Don't share your login credentials with anyone!
+                Welcome to MK Learning Points! <span>Important:</span> Don't share your login credentials with anyone! Enjoy learning with us.
             </div>
         </div>
     </div>
