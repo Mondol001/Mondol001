@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Account</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://source.unsplash.com/1920x1080/?signup,register') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        .form-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #00ffcc;
+        }
+
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .form-container textarea {
+            height: 80px;
+            resize: none;
+        }
+
+        .form-container input[type="submit"] {
+            background: linear-gradient(45deg, #00ffcc, #0099ff);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background: linear-gradient(45deg, #0099ff, #00ffcc);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Request for New Account</h2>
+        <form action="send-request.php" method="POST">
+            <input type="text" name="fullname" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <textarea name="message" placeholder="Why do you need an account?" required></textarea>
+            <input type="submit" value="Send Request">
+        </form>
+    </div>
+</body>
+</html>
