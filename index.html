@@ -9,7 +9,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1920x1080/?technology,learning') no-repeat center center fixed;
+            background: url('https://source.unsplash.com/1920x1080/?technology') no-repeat center center fixed;
             background-size: cover;
             display: flex;
             justify-content: center;
@@ -18,79 +18,113 @@
             color: #fff;
         }
 
+        /* Login Container */
         .login-container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px 40px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
             text-align: center;
-            max-width: 400px;
             width: 100%;
+            max-width: 400px;
         }
 
         .login-container h2 {
             margin-bottom: 20px;
-            font-size: 1.8rem;
-            color: #00ffcc;
+            font-size: 24px;
+            color: #00ff00;
         }
 
         .login-container input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            font-size: 1rem;
             border: none;
-            border-radius: 5px;
-            outline: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 16px;
         }
 
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
+        .login-container input::placeholder {
+            color: #ddd;
         }
 
-        .login-container input[type="submit"] {
-            background: linear-gradient(45deg, #00ffcc, #0099ff);
-            color: #fff;
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #00ff00;
+            color: #111;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .login-container input[type="submit"]:hover {
-            background: linear-gradient(45deg, #0099ff, #00ffcc);
-            transform: scale(1.05);
+        .login-container button:hover {
+            background-color: #00cc00;
         }
 
-        .login-container .links {
-            margin-top: 20px;
-        }
-
-        .login-container .links a {
+        .login-container a {
+            color: #00ff00;
             text-decoration: none;
-            color: #00ffcc;
-            font-size: 0.9rem;
-            margin: 0 10px;
-            transition: color 0.3s;
+            display: inline-block;
+            margin-top: 10px;
         }
 
-        .login-container .links a:hover {
-            color: #0099ff;
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        /* Notice Board */
+        .notice-board {
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .notice-text {
+            display: inline-block;
+            position: absolute;
+            animation: scrollText 10s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>Login</h2>
-        <form action="dashboard.html" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="submit" value="Login">
-        </form>
-        <div class="links">
-            <a href="create-new.html">Create New Account</a> | 
-            <a href="forgot-password.html">Forgot Password?</a>
+        <!-- Notice Board -->
+        <div class="notice-board">
+            <div class="notice-text">Welcome to MK Learning Points! Latest updates will appear here.</div>
         </div>
+
+        <!-- Login Form -->
+        <h2>Login</h2>
+        <form>
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Additional Links -->
+        <a href="create_account.html">Create New Account</a><br>
+        <a href="forgot_password.html">Forgot Password?</a>
     </div>
 </body>
 </html>
