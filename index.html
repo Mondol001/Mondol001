@@ -52,15 +52,14 @@
             top: 20%;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(255, 0, 0, 0.8);
             color: #fff;
             border-radius: 10px;
             padding: 20px;
             max-width: 500px;
             display: none;
             z-index: 9999;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
-            cursor: move;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
         }
 
         .notice-popup header {
@@ -68,7 +67,7 @@
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            background: #00ff00;
+            background: #ff0000;
             padding: 5px 10px;
             color: #111;
             border-radius: 5px;
@@ -85,12 +84,7 @@
         .notice-popup .content {
             margin-top: 10px;
             font-size: 16px;
-            color: #00ff00;
-        }
-
-        /* Draggable Style */
-        .draggable {
-            cursor: move;
+            color: #fff;
         }
 
         /* Login Form */
@@ -157,13 +151,13 @@
     </div>
 
     <!-- Pop-Up Notice Board -->
-    <div class="notice-popup draggable" id="noticePopup">
+    <div class="notice-popup" id="noticePopup">
         <header>
-            <span>Notice</span>
+            <span>Red Alert</span>
             <button class="close-btn" onclick="closeNotice()">×</button>
         </header>
         <div class="content">
-            Welcome to MK Learning Points! Stay tuned for updates. Latest announcements will be shown here.
+            Attention! This is an important message for users logging in.
         </div>
     </div>
 
@@ -186,9 +180,12 @@
 
     <!-- JavaScript -->
     <script>
-        // Function to open the pop-up notice
+        // Function to open the pop-up notice for login page
         function openNotice() {
-            document.getElementById('noticePopup').style.display = 'block';
+            const currentPage = window.location.pathname.split("/").pop();
+            if (currentPage === "index.html") {
+                document.getElementById('noticePopup').style.display = 'block';
+            }
         }
 
         // Function to close the pop-up notice
@@ -196,31 +193,7 @@
             document.getElementById('noticePopup').style.display = 'none';
         }
 
-        // Making the notice popup draggable
-        let isDragging = false;
-        let offsetX, offsetY;
-
-        const noticePopup = document.getElementById('noticePopup');
-        const header = noticePopup.querySelector('header');
-
-        header.addEventListener('mousedown', function(e) {
-            isDragging = true;
-            offsetX = e.clientX - noticePopup.offsetLeft;
-            offsetY = e.clientY - noticePopup.offsetTop;
-        });
-
-        document.addEventListener('mousemove', function(e) {
-            if (isDragging) {
-                noticePopup.style.left = e.clientX - offsetX + 'px';
-                noticePopup.style.top = e.clientY - offsetY + 'px';
-            }
-        });
-
-        document.addEventListener('mouseup', function() {
-            isDragging = false;
-        });
-
-        // Open the notice popup after page load (optional)
+        // Open the notice popup after page load for login page (optional)
         window.onload = function() {
             openNotice();
         };
