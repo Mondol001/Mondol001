@@ -3,137 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - MK Learning Points</title>
+    <title>Header with Notice Board</title>
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1920x1080/?abstract,glass') no-repeat center center fixed;
+            background: url('https://source.unsplash.com/1920x1080/?abstract') no-repeat center center fixed;
             background-size: cover;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .login-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
             color: #fff;
         }
 
-        .login-container h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
+        /* Header Section */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
             color: #00ffcc;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         }
 
-        .login-container p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-
-        .login-container form {
+        /* Notice Board */
+        .notice-board-container {
+            overflow: hidden;
+            width: 70%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            align-items: center;
+            padding: 0 10px;
+            position: relative;
         }
 
-        .login-container input {
-            padding: 12px;
+        .notice-board {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scrollNotice 10s linear infinite;
             font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-            background: rgba(255, 255, 255, 0.2);
             color: #fff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
         }
 
-        .login-container input::placeholder {
-            color: #ddd;
+        .notice-board span {
+            color: #00ffcc;
         }
 
-        .login-container input:focus {
-            background: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+        @keyframes scrollNotice {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
         }
 
-        .login-container button {
-            padding: 12px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
+        /* Logout Button */
+        .logout-btn {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            color: #fff;
             background: linear-gradient(45deg, #00ffcc, #0099ff);
-            color: #fff;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 255, 204, 0.5);
         }
 
-        .login-container button:hover {
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #0099ff, #00ffcc);
             transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.7);
-        }
-
-        .forgot-password {
-            margin-top: 10px;
-        }
-
-        .forgot-password a {
-            color: #00ffcc;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-password a:hover {
-            color: #fff;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h1>Welcome Back!</h1>
-        <p>Login to access MK Learning Points</p>
-
-        <!-- Login Form -->
-        <form onsubmit="handleLogin(event)">
-            <input type="text" id="username" placeholder="Enter your username" required>
-            <input type="password" id="password" placeholder="Enter your password" required>
-            <button type="submit">Login</button>
-        </form>
-
-        <!-- Forgot Password -->
-        <div class="forgot-password">
-            <a href="#">Forgot Password?</a>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>MK Learning Points</h1>
+        <div class="notice-board-container">
+            <div class="notice-board">
+                Welcome to MK Learning Points! <span>Latest Updates:</span> New courses available | Check out our services | Contact us for more info!
+            </div>
         </div>
+        <button class="logout-btn" onclick="handleLogout()">Logout</button>
     </div>
 
     <script>
-        // Handle Login
-        function handleLogin(event) {
-            event.preventDefault(); // Prevent page reload
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Example Validation
-            if (username === "admin" && password === "1234") {
-                localStorage.setItem("loggedIn", true);
-                alert("Login Successful!");
-                window.location.href = "index.html"; // Redirect to home page
-            } else {
-                alert("Invalid username or password. Please try again!");
+        // Logout Function
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout?")) {
+                alert("You have successfully logged out!");
+                window.location.href = "login.html"; // Redirect to login page
             }
         }
     </script>
