@@ -3,73 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Account</title>
+    <title>Sobuj English Academy</title>
+    <link rel="stylesheet" href="style.css">
     <style>
+        /* General Styles */
         body {
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1920x1080/?signup,register') no-repeat center center fixed;
-            background-size: cover;
+            padding: 0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(to right, #56ab2f, #a8e063);
+            color: #fff;
+            padding: 20px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        header .container {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
-            color: #fff;
+            width: 90%;
+            margin: 0 auto;
         }
 
-        .form-container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.4s ease;
+            font-weight: 600;
+        }
+
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        main {
+            padding: 50px 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .scrolling-message {
+            background: linear-gradient(to right, #ff9800, #ff5722);
+            color: white;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
             text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .form-container h2 {
+            border-radius: 10px;
             margin-bottom: 20px;
-            font-size: 1.8rem;
-            color: #00ffcc;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .form-container input, .form-container textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            outline: none;
+        section h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #a8e063;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .form-container textarea {
-            height: 80px;
-            resize: none;
+        .notice-board {
+            background: linear-gradient(to bottom, #ffffff, #e3f2fd);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .form-container input[type="submit"] {
-            background: linear-gradient(45deg, #00ffcc, #0099ff);
+        .notice-board:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .notice-board h3 {
+            margin-top: 0;
+            font-size: 2.2rem;
+            color: #2e7d32;
+            border-bottom: 3px solid #56ab2f;
+            padding-bottom: 15px;
+        }
+
+        .notice-board ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .notice-board ul li {
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .notice-board ul li:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            background: linear-gradient(to right, #56ab2f, #a8e063);
             color: #fff;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
         }
 
-        .form-container input[type="submit"]:hover {
-            background: linear-gradient(45deg, #0099ff, #00ffcc);
-            transform: scale(1.05);
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            header .container, .container {
+                width: 95%;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 10px;
+            }
+
+            .notice-board {
+                padding: 20px;
+            }
+
+            .notice-board h3 {
+                font-size: 1.7rem;
+            }
+
+            .notice-board ul li {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Request for New Account</h2>
-        <form action="send-request.php" method="POST">
-            <input type="text" name="fullname" placeholder="Full Name" required>
-            <input type="email" name="email" placeholder="Email Address" required>
-            <textarea name="message" placeholder="Why do you need an account?" required></textarea>
-            <input type="submit" value="Send Request">
-        </form>
-    </div>
+    <header>
+        <div class="container">
+            <h1>Sobuj English Academy</h1>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="courses.html">Our Courses</a></li>
+                    <li><a href="services.html">Our Services</a></li>
+                    <li><a href="goals.html">Our Goals</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section id="dashboard">
+            <div class="container">
+                <div class="scrolling-message">
+                    <marquee behavior="scroll" direction="left">
+                        Welcome to Sobuj English Academy! | Join our Business English course today! | Check out the latest updates on our Notice Board!
+                    </marquee>
+                </div>
+                <h2>Dashboard</h2>
+                <div class="notice-board">
+                    <h3>Notice Board</h3>
+                    <ul>
+                        <li>Class timings for next week have been updated.</li>
+                        <li>New course on Business English starts from March 1st.</li>
+                        <li>Mock test for IELTS will be held on February 25th.</li>
+                        <li>Holiday announced for International Mother Language Day on February 21st.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Sobuj English Academy. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
