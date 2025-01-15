@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header with Notice Board</title>
+    <title>Login - MK Learning Points</title>
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <style>
         body {
             margin: 0;
-            padding: 0;
             font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1920x1080/?abstract') no-repeat center center fixed;
+            background: url('https://source.unsplash.com/1920x1080/?technology,learning') no-repeat center center fixed;
             background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             color: #fff;
         }
 
         /* Header Section */
         .header {
-            position: sticky;
+            position: absolute;
             top: 0;
-            z-index: 1000;
+            left: 0;
+            width: 100%;
             background: rgba(0, 0, 0, 0.8);
             padding: 10px 20px;
             display: flex;
@@ -69,20 +73,47 @@
             }
         }
 
-        /* Logout Button */
-        .logout-btn {
-            padding: 8px 15px;
-            font-size: 0.9rem;
-            color: #fff;
-            background: linear-gradient(45deg, #00ffcc, #0099ff);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 255, 204, 0.5);
+        /* Login Form */
+        .login-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
         }
 
-        .logout-btn:hover {
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #00ffcc;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .login-container input[type="submit"] {
+            background: linear-gradient(45deg, #00ffcc, #0099ff);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-container input[type="submit"]:hover {
             background: linear-gradient(45deg, #0099ff, #00ffcc);
             transform: scale(1.05);
         }
@@ -94,20 +125,19 @@
         <h1>MK Learning Points</h1>
         <div class="notice-board-container">
             <div class="notice-board">
-                Welcome to MK Learning Points! <span>Latest Updates:</span> New courses available | Check out our services | Contact us for more info!
+                Welcome to MK Learning Points! <span>Important:</span> Don't share your login credentials with anyone!
             </div>
         </div>
-        <button class="logout-btn" onclick="handleLogout()">Logout</button>
     </div>
 
-    <script>
-        // Logout Function
-        function handleLogout() {
-            if (confirm("Are you sure you want to logout?")) {
-                alert("You have successfully logged out!");
-                window.location.href = "login.html"; // Redirect to login page
-            }
-        }
-    </script>
+    <!-- Login Form -->
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="dashboard.html" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
 </body>
 </html>
