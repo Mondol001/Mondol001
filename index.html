@@ -147,6 +147,16 @@
             color: #fff;
             margin-top: auto;
         }
+
+        /* Media Query for Smaller Screens */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .login-form {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -170,9 +180,9 @@
     <!-- Login Form -->
     <div class="login-form">
         <h2>Login</h2>
-        <form action="#" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
+        <form id="loginForm" action="#" method="POST">
+            <input type="text" name="username" id="username" placeholder="Username" required aria-label="Username">
+            <input type="password" name="password" id="password" placeholder="Password" required aria-label="Password">
             <button type="submit">Login</button>
             <a href="forgot-password.html">Forgot Password?</a>
             <a href="Create-new.html">Create New Account</a>
@@ -183,5 +193,27 @@
     <div class="footer">
         <p>&copy; 2025 MK Learning Points. All rights reserved.</p>
     </div>
+
+    <script>
+        // Handle Login
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent page reload
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Example Validation
+            if (username === "Mih" && password === "mih@1278") {
+                localStorage.setItem("loggedIn", true);
+                alert("Login Successful!");
+                window.location.href = "index.html"; // Redirect to home page
+            } else {
+                alert("Invalid username or password. Please try again!");
+            }
+        }
+
+        // Attach the handleLogin function to the form
+        document.getElementById('loginForm').onsubmit = handleLogin;
+    </script>
+
 </body>
 </html>
