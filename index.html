@@ -10,29 +10,32 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1920x1080/?technology') no-repeat center center fixed;
+            background: url('https://source.unsplash.com/1920x1080/?abstract,glass') no-repeat center center fixed;
             background-size: cover;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            color: #fff;
         }
 
         .login-container {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px 40px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
             text-align: center;
-            width: 90%;
             max-width: 400px;
+            width: 90%;
+            color: #fff;
         }
 
         .login-container h1 {
             font-size: 2rem;
             margin-bottom: 20px;
-            color: #00ff00;
+            color: #00ffcc;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         }
 
         .login-container p {
@@ -47,40 +50,41 @@
         }
 
         .login-container input {
-            padding: 10px;
+            padding: 12px;
             font-size: 1rem;
             border: none;
             border-radius: 5px;
             outline: none;
-            background: #333;
+            background: rgba(255, 255, 255, 0.2);
             color: #fff;
-        }
-
-        .login-container input::placeholder {
-            color: #aaa;
-        }
-
-        .login-container button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            background: #00ff00;
-            color: #111;
-            cursor: pointer;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
         }
 
-        .login-container button:hover {
-            background: #00cc00;
+        .login-container input::placeholder {
+            color: #ddd;
         }
 
-        .welcome-message {
-            background: #111;
-            padding: 15px;
+        .login-container input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+        }
+
+        .login-container button {
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
             border-radius: 5px;
-            margin-bottom: 20px;
-            color: #00ff00;
+            background: linear-gradient(45deg, #00ffcc, #0099ff);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.5);
+        }
+
+        .login-container button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.7);
         }
 
         .forgot-password {
@@ -88,7 +92,7 @@
         }
 
         .forgot-password a {
-            color: #00ff00;
+            color: #00ffcc;
             text-decoration: none;
             transition: color 0.3s ease;
         }
@@ -100,11 +104,8 @@
 </head>
 <body>
     <div class="login-container">
-        <!-- Welcome Message -->
-        <div class="welcome-message">
-            <h2>Welcome to MK Learning Points!</h2>
-            <p>Please login to access your account.</p>
-        </div>
+        <h1>Welcome Back!</h1>
+        <p>Login to access MK Learning Points</p>
 
         <!-- Login Form -->
         <form onsubmit="handleLogin(event)">
@@ -115,7 +116,7 @@
 
         <!-- Forgot Password -->
         <div class="forgot-password">
-            <a href="#">Forgot your password?</a>
+            <a href="#">Forgot Password?</a>
         </div>
     </div>
 
@@ -127,10 +128,10 @@
             const password = document.getElementById('password').value;
 
             // Example Validation
-            if (username === "Mih" && password === "mih@1278") {
+            if (username === "admin" && password === "1234") {
                 localStorage.setItem("loggedIn", true);
                 alert("Login Successful!");
-                window.location.href = "home.html"; // Redirect to home page
+                window.location.href = "index.html"; // Redirect to home page
             } else {
                 alert("Invalid username or password. Please try again!");
             }
