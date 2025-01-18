@@ -7,13 +7,14 @@
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
     <!-- FontAwesome CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1920x1080/?technology') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #f5f5f5;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -22,104 +23,128 @@
         /* Header Section */
         .header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
             padding: 20px 40px;
-            background-color: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.8);
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
         .header img {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            margin-bottom: 10px;
         }
 
         .header h1 {
-            font-size: 2rem;
-            color: #00ff00;
-            margin: 10px 0;
+            font-size: 1.8rem;
+            color: #00ff7f;
         }
 
         /* Navigation Menu */
         .nav-links {
             display: flex;
             gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 10px;
         }
 
         .nav-links a {
             color: #fff;
             text-decoration: none;
             font-size: 1rem;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 5px;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links a i {
-            margin-right: 8px;
+            transition: all 0.3s ease;
         }
 
         .nav-links a:hover {
-            background-color: #00ff00;
+            background: #00ff7f;
             color: #111;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: url('https://source.unsplash.com/1920x1080/?education,learning') no-repeat center center fixed;
+            background-size: cover;
+            color: #f5f5f5;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .hero a {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1rem;
+            background: #00ff7f;
+            color: #111;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .hero a:hover {
+            background: #f5f5f5;
+            color: #00ff7f;
         }
 
         /* Link Grid Section */
         .link-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            padding: 30px;
+            padding: 40px 20px;
             max-width: 1200px;
             margin: 20px auto;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
         }
 
         .link-grid a {
-            display: block;
-            padding: 15px;
             text-align: center;
-            font-size: 1rem;
-            color: #fff;
-            text-decoration: none;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #f5f5f5;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, background-color 0.3s;
         }
 
         .link-grid a:hover {
-            background-color: #00ff00;
+            background: #00ff7f;
             color: #111;
-            transform: scale(1.05);
+            transform: translateY(-10px);
+        }
+
+        .link-grid a i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
         }
 
         /* Footer */
         .footer {
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            color: #fff;
+            background: rgba(0, 0, 0, 0.8);
+            color: #f5f5f5;
             margin-top: auto;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
         }
 
-        /* Sections */
-        section {
-            padding: 50px;
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.7);
-            margin: 20px 0;
-            border-radius: 8px;
+        .footer p {
+            margin: 0;
         }
     </style>
 </head>
@@ -128,15 +153,20 @@
     <div class="header">
         <img src="https://i.imgur.com/VfM3TXY.png" alt="MK Logo">
         <h1>MK Learning Points</h1>
-
-        <!-- Navigation Menu -->
         <div class="nav-links">
-            <a href="index.html"><i class="fas fa-home"></i>Home</a>
-            <a href="about.html"><i class="fas fa-info-circle"></i>About</a>
-            <a href="service.html"><i class="fas fa-cogs"></i>Services</a>
-            <a href="contact.html"><i class="fas fa-phone-alt"></i>Contact</a>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="service.html">Services</a>
+            <a href="contact.html">Contact</a>
         </div>
     </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>Welcome to MK Learning Points</h2>
+        <p>Your one-stop platform for learning and resources. Explore, Learn, and Grow with us!</p>
+        <a href="#learn-more">Learn More</a>
+    </section>
 
     <!-- Link Grid Section -->
     <div class="link-grid">
@@ -145,16 +175,7 @@
         <a href="https://mail.google.com" target="_blank"><i class="fas fa-envelope"></i> Gmail</a>
         <a href="https://new.movielinkbd.live/" target="_blank"><i class="fas fa-film"></i> Movie Link BD</a>
         <a href="https://discoveryftp.net/" target="_blank"><i class="fas fa-server"></i> Discovery FTP</a>
-        <a href="http://10.16.100.244/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 1</a>
-        <a href="http://172.16.50.4/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 2</a>
-        <a href="http://cdn.bossbd.net/" target="_blank"><i class="fas fa-cloud-download-alt"></i> Boss BD</a>
-        <a href="https://crazyctg.com/" target="_blank"><i class="fas fa-film"></i> Crazy CTG</a>
-        <a href="http://ctgmovies.com/" target="_blank"><i class="fas fa-film"></i> CTG Movies</a>
-        <a href="http://www.beeflix.biz/" target="_blank"><i class="fas fa-film"></i> BeeFlix</a>
-        <a href="http://binodonmela.net/" target="_blank"><i class="fas fa-film"></i> Binodon Mela</a>
-        <a href="http://www.dnftpbd.com/" target="_blank"><i class="fas fa-server"></i> DN FTP BD</a>
-        <a href="https://mlsbd.shop/" target="_blank"><i class="fas fa-film"></i> MLSBD</a>
-        <a href="http://172.21.22.2/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 3</a>
+        <!-- Add more links as needed -->
     </div>
 
     <!-- Footer Section -->
