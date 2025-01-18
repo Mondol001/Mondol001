@@ -11,8 +11,9 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #1a1a1a;
+            background: linear-gradient(135deg, #1e1e1e, #2b2b2b);
             color: #fff;
+            overflow-x: hidden;
         }
 
         /* Header Section */
@@ -20,6 +21,7 @@
             text-align: center;
             padding: 20px;
             background-color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         .header img {
@@ -29,47 +31,23 @@
         }
 
         .header h1 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #00ff00;
             margin-top: 10px;
         }
 
-        /* Navigation Menu */
-        .nav-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 10px;
-            background-color: #444;
-            margin: 10px;
-            border-radius: 8px;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1rem;
-            padding: 10px;
-            background-color: #555;
-            text-align: center;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            background-color: #00ff00;
-            color: #000;
-        }
-
-        /* Link List Section */
+        /* Link Section */
         .link-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             padding: 20px;
+            max-width: 400px;
+            margin: 20px auto;
         }
 
         .link-list a {
+            display: block;
             background: #444;
             padding: 15px;
             text-align: center;
@@ -77,25 +55,87 @@
             text-decoration: none;
             font-size: 1rem;
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            transform: translateX(-100%);
+            opacity: 0;
+            transition: all 0.6s ease-in-out;
         }
 
         .link-list a i {
-            margin-right: 8px;
+            margin-right: 10px;
+        }
+
+        .link-list a:nth-child(odd) {
+            transform: translateX(100%);
         }
 
         .link-list a:hover {
-            background-color: #00ff00;
+            background: #00ff00;
             color: #000;
         }
 
-        /* Footer */
+        /* Animation Keyframes */
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Trigger Animation */
+        .link-list a:nth-child(odd) {
+            animation: slideIn 0.8s ease forwards;
+        }
+
+        .link-list a:nth-child(even) {
+            animation: slideInRight 0.8s ease forwards;
+        }
+
+        .link-list a:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .link-list a:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .link-list a:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .link-list a:nth-child(4) {
+            animation-delay: 0.8s;
+        }
+
+        .link-list a:nth-child(5) {
+            animation-delay: 1s;
+        }
+
+        .link-list a:nth-child(6) {
+            animation-delay: 1.2s;
+        }
+
+        /* Footer Section */
         .footer {
             text-align: center;
             padding: 10px;
             background-color: #333;
-            margin-top: 20px;
             color: #ccc;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -106,14 +146,6 @@
         <h1>MK Learning Points</h1>
     </div>
 
-    <!-- Navigation Menu -->
-    <div class="nav-links">
-        <a href="index.html"><i class="fas fa-home"></i> Home</a>
-        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
-        <a href="service.html"><i class="fas fa-cogs"></i> Services</a>
-        <a href="contact.html"><i class="fas fa-phone-alt"></i> Contact</a>
-    </div>
-
     <!-- Link List Section -->
     <div class="link-list">
         <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
@@ -122,8 +154,6 @@
         <a href="https://new.movielinkbd.live/" target="_blank"><i class="fas fa-film"></i> Movie Link BD</a>
         <a href="https://discoveryftp.net/" target="_blank"><i class="fas fa-server"></i> Discovery FTP</a>
         <a href="http://10.16.100.244/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 1</a>
-        <a href="http://172.16.50.4/" target="_blank"><i class="fas fa-network-wired"></i> Local Network 2</a>
-        <a href="http://cdn.bossbd.net/" target="_blank"><i class="fas fa-cloud-download-alt"></i> Boss BD</a>
     </div>
 
     <!-- Footer Section -->
