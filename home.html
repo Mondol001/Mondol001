@@ -1,186 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.header {
-    background: rgba(0, 0, 0, 0.85);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    padding: 20px 40px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.header img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-}
-
-.header h1 {
-    font-size: 1.8rem;
-    margin-left: 20px;
-    color: #00ff7f;
-}
-
-.header nav {
-    display: flex;
-    gap: 15px;
-}
-
-.header nav a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 1rem;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.header nav a:hover {
-    background-color: #00ff7f;
-    color: #111;
-}
-
-.hero {
-    background: url('https://source.unsplash.com/1920x1080/?learning,education') no-repeat center/cover;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 100px 20px;
-    text-align: center;
-    min-height: 400px; /* Added min-height */
-}
-.hero-content{
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.hero h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    max-width: 600px;
-    line-height: 1.6;
-}
-
-.hero-btn {
-    display: inline-block;
-    padding: 15px 30px;
-    font-size: 1rem;
-    background: #00ff7f;
-    color: #111;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.hero-btn:hover {
-    background: #fff;
-    color: #00ff7f;
-}
-
-.link-grid {
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: 20px auto;
-}
-.grid-container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Increased minmax width */
-    gap: 20px;
-}
-
-.link-grid a {
-    text-align: center;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s, background-color 0.3s;
-    display: flex;
-    flex-direction: column; /* Added flex direction */
-    align-items: center; /* Added align items */
-}
-
-.link-grid a:hover {
-    background: #00ff7f;
-    color: #111;
-    transform: translateY(-10px);
-}
-
-.link-grid a i {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    display: block;
-}
-.link-grid a span{
-    display: block;
-}
-
-.footer {
-    text-align: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.9);
-    margin-top: auto;
-}
-
-.footer p {
-    margin: 0;
-    color: #ccc;
-}
-/*Responsive Design*/
-@media (max-width: 768px){
-    .header{
-        flex-direction: column;
-        text-align: center;
-        padding: 10px;
-    }
-    .header h1{
-        margin: 10px 0;
-    }
-    .hero{
-        min-height: 300px;
-    }
-}
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MK Learning Points</title>
     <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-</head>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Section */
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00e676;
+        }
+
+        .header nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .header nav a:hover {
+            background: #00e676;
+            color: #000;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px;
+            background: url('https://source.unsplash.com/1920x1080/?study,books') no-repeat center/cover;
+            height: 50vh;
+            color: #fff;
+            box-shadow: inset 0 0 10px #000;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .hero a {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background: #00e676;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero a:hover {
+            transform: scale(1.1);
+        }
+
+        /* Link Grid Section */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .link-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .link-card i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #00e676;
+        }
+
+        .link-card h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .link-card a {
+            text-decoration: none;
+            color: #00e676;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .link-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .link-card:hover a {
+            color: #fff;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            margin-top: auto;
+            color: #ccc;
+        }
+    </style>
+</head>
 <body>
+    <!-- Header Section -->
     <header class="header">
-        <div class="logo">
-            <img src="https://i.imgur.com/VfM3TXY.png" alt="MK Logo">
-        </div>
         <h1>MK Learning Points</h1>
         <nav>
             <a href="index.html">Home</a>
@@ -190,44 +168,45 @@ body {
         </nav>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <h2>Welcome to MK Learning Points</h2>
-            <p>Your destination for learning and growth. Dive into a world of knowledge with us.</p>
-            <a href="#link-grid" class="hero-btn">Get Started</a>
+        <h2>Welcome to MK Learning Points</h2>
+        <p>Your gateway to endless learning opportunities. Join us and explore a world of knowledge.</p>
+        <a href="#link-grid">Get Started</a>
+    </section>
+
+    <!-- Link Grid Section -->
+    <section class="link-grid">
+        <div class="link-card">
+            <i class="fab fa-youtube"></i>
+            <h3>YouTube</h3>
+            <a href="https://youtube.com" target="_blank">Visit</a>
+        </div>
+        <div class="link-card">
+            <i class="fab fa-facebook"></i>
+            <h3>Facebook</h3>
+            <a href="https://facebook.com" target="_blank">Visit</a>
+        </div>
+        <div class="link-card">
+            <i class="fas fa-envelope"></i>
+            <h3>Gmail</h3>
+            <a href="https://mail.google.com" target="_blank">Visit</a>
+        </div>
+        <div class="link-card">
+            <i class="fas fa-film"></i>
+            <h3>Movies</h3>
+            <a href="https://mlsbd.shop" target="_blank">Visit</a>
+        </div>
+        <div class="link-card">
+            <i class="fas fa-server"></i>
+            <h3>FTP</h3>
+            <a href="https://discoveryftp.net" target="_blank">Visit</a>
         </div>
     </section>
 
-    <section class="link-grid" id="link-grid">
-        <div class="grid-container">
-            <a href="https://youtube.com" target="_blank">
-                <i class="fab fa-youtube"></i>
-                <span>YouTube</span>
-            </a>
-            <a href="https://facebook.com" target="_blank">
-                <i class="fab fa-facebook"></i>
-                <span>Facebook</span>
-            </a>
-            <a href="https://mail.google.com" target="_blank">
-                <i class="fas fa-envelope"></i>
-                <span>Gmail</span>
-            </a>
-            <a href="https://mlsbd.shop" target="_blank">
-                <i class="fas fa-film"></i>
-                <span>MLSBd</span>
-            </a>
-            <a href="https://discoveryftp.net" target="_blank">
-                <i class="fas fa-server"></i>
-                <span>Discovery FTP</span>
-            </a>
-        </div>
-    </section>
-
+    <!-- Footer Section -->
     <footer class="footer">
-        <p>© 2025 MK Learning Points. All rights reserved.</p>
+        <p>&copy; 2025 MK Learning Points. All rights reserved.</p>
     </footer>
-
-    <script src="script.js"></script>
 </body>
-
 </html>
