@@ -30,8 +30,73 @@
             height: 100vh;
         }
 
-        /* Header */
+        /* Header styling */
         .header {
+            font-size: 40px;
+            font-weight: bold;
+            display: inline-block;
+            color: #fff;
+            position: relative;
+        }
+
+        /* Each letter styling */
+        .header span {
+            display: inline-block;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: animateText 2s infinite ease-in-out;
+        }
+
+        /* Delay the animation for each letter */
+        .header span:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .header span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .header span:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        .header span:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+        .header span:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+        .header span:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+        .header span:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+        .header span:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+        .header span:nth-child(9) {
+            animation-delay: 0.9s;
+        }
+        .header span:nth-child(10) {
+            animation-delay: 1s;
+        }
+
+        /* Animation for each letter */
+        @keyframes animateText {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Original Header style */
+        .header-container {
             background: linear-gradient(135deg, #00ff88, #006644);
             color: #fff;
             text-align: center;
@@ -134,8 +199,32 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">Mih Mondol Access Point</div>
+        <!-- Header with animated letters -->
+        <div class="header-container">
+            <div class="header">
+                <span>M</span>
+                <span>i</span>
+                <span>h</span>
+                <span> </span>
+                <span>M</span>
+                <span>o</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+                <span>l</span>
+                <span> </span>
+                <span>A</span>
+                <span>c</span>
+                <span>c</span>
+                <span>e</span>
+                <span>s</span>
+                <span>s</span>
+                <span> </span>
+                <span>P</span>
+                <span>o</span>
+                <span>i</span>
+                <span>n</span>
+                <span>t</span></div>
 
         <!-- Notice Bar -->
         <div class="notice-bar">
