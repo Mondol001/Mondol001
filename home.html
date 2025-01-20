@@ -39,19 +39,31 @@
             flex-direction: column;
         }
 
-        .mobile-header {
+        .mobile-header, .mobile-footer {
             background: var(--primary-color);
-            color: #fff;
+            color: var(--footer-text);
             text-align: center;
             padding: 15px;
             font-size: 1.5rem;
             font-weight: bold;
+            position: sticky;
+            z-index: 10;
+        }
+
+        .mobile-header {
+            top: 0;
+        }
+
+        .mobile-footer {
+            bottom: 0;
+            font-size: 0.9rem;
         }
 
         .sections {
             flex: 1;
             overflow-y: auto;
             padding: 10px;
+            background: var(--bg-color);
         }
 
         .section-heading {
@@ -95,14 +107,6 @@
             color: #fff;
         }
 
-        .mobile-footer {
-            background: var(--footer-bg);
-            color: var(--footer-text);
-            text-align: center;
-            padding: 10px;
-            font-size: 0.9rem;
-        }
-
         @media (max-width: 400px) {
             .mobile-frame {
                 width: 95%;
@@ -118,8 +122,12 @@
 </head>
 <body>
     <div class="mobile-frame">
+        <!-- Header -->
         <div class="mobile-header">MK Learning Points</div>
+
+        <!-- Scrollable Sections -->
         <div class="sections">
+            <!-- Entertainment Section -->
             <div class="section-heading">Entertainment</div>
             <div class="app-container">
                 <a href="https://www.youtube.com" class="app" target="_blank">
@@ -135,6 +143,8 @@
                     Crazy CTG
                 </a>
             </div>
+
+            <!-- Social Section -->
             <div class="section-heading">Social</div>
             <div class="app-container">
                 <a href="https://www.facebook.com" class="app" target="_blank">
@@ -146,6 +156,8 @@
                     Gmail
                 </a>
             </div>
+
+            <!-- FTP Links Section -->
             <div class="section-heading">FTP Links</div>
             <div class="app-container">
                 <a href="https://discoveryftp.net/" class="app" target="_blank">
@@ -161,7 +173,22 @@
                     DN FTP
                 </a>
             </div>
+
+            <!-- Extra Links (You Can Add More Here) -->
+            <div class="section-heading">Extra</div>
+            <div class="app-container">
+                <a href="https://github.com" class="app" target="_blank">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a href="https://stackoverflow.com" class="app" target="_blank">
+                    <i class="fab fa-stack-overflow"></i>
+                    Stack Overflow
+                </a>
+            </div>
         </div>
+
+        <!-- Footer -->
         <div class="mobile-footer">&copy; 2025 MK Learning Points</div>
     </div>
 </body>
