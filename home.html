@@ -57,6 +57,31 @@
             font-size: 0.9rem;
         }
 
+        .notice-bar {
+            background: var(--secondary-color);
+            color: #fff;
+            padding: 10px 0;
+            overflow: hidden;
+            position: relative;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .notice-text {
+            position: absolute;
+            white-space: nowrap;
+            animation: scroll-left 10s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
         .sections {
             flex: 1;
             overflow-y: auto;
@@ -140,6 +165,11 @@
         <!-- Header -->
         <div class="mobile-header">MK Learning Points</div>
 
+        <!-- Notice Bar -->
+        <div class="notice-bar">
+            <div class="notice-text">Welcome to MK Learning Points! Stay tuned for more updates.</div>
+        </div>
+
         <!-- Scrollable Sections -->
         <div class="sections">
             <!-- Entertainment Section -->
@@ -156,19 +186,6 @@
                 <a href="https://crazyctg.com/" class="app" target="_blank">
                     <i class="fas fa-film"></i>
                     Crazy CTG
-                </a>
-            </div>
-
-            <!-- Social Section -->
-            <div class="section-heading">Social</div>
-            <div class="app-container">
-                <a href="https://www.facebook.com" class="app" target="_blank">
-                    <i class="fab fa-facebook"></i>
-                    Facebook
-                </a>
-                <a href="https://mail.google.com" class="app" target="_blank">
-                    <i class="fas fa-envelope"></i>
-                    Gmail
                 </a>
             </div>
         </div>
