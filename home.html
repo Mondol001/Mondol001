@@ -8,18 +8,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #00ff00;
-            --secondary-color: #00aa00;
-            --bg-color: #f5f5f5;
-            --text-color: #333;
-            --footer-bg: #333;
-            --footer-text: #fff;
+            --primary-color: #1f1f1f; /* Dark primary color */
+            --secondary-color: #2b2b2b; /* Dark secondary color */
+            --highlight-color: #00ff88; /* Glossy green */
+            --text-color: #ffffff; /* White text color */
+            --footer-bg: #000000; /* Black for footer */
+            --footer-text: #dddddd; /* Light grey for footer text */
         }
 
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--bg-color);
+            background: var(--primary-color);
             color: var(--text-color);
         }
 
@@ -32,18 +32,19 @@
 
         /* Header */
         .header {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, #00ff88, #006644);
             color: #fff;
             text-align: center;
             padding: 20px;
             font-size: 2rem;
             font-weight: bold;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
         }
 
         /* Notice Bar */
         .notice-bar {
             background: var(--secondary-color);
-            color: #fff;
+            color: var(--highlight-color);
             height: 60px;
             display: flex;
             align-items: center;
@@ -52,6 +53,7 @@
             font-size: 1.5rem;
             font-weight: bold;
             padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .notice-text {
@@ -79,7 +81,7 @@
         .section-heading {
             font-size: 2rem;
             margin: 20px 10px 10px;
-            color: var(--secondary-color);
+            color: var(--highlight-color);
         }
 
         .app-container {
@@ -92,14 +94,14 @@
         .app {
             width: 140px;
             height: 140px;
-            background: #f0f0f0;
+            background: var(--secondary-color);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             border-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
             text-decoration: none;
             color: var(--text-color);
             font-size: 1rem;
@@ -109,12 +111,14 @@
         .app i {
             font-size: 2rem;
             margin-bottom: 5px;
+            color: var(--highlight-color);
         }
 
         .app:hover {
             transform: scale(1.1);
-            background: var(--primary-color);
-            color: #fff;
+            background: var(--highlight-color);
+            color: #000;
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.6);
         }
 
         /* Footer */
@@ -124,6 +128,7 @@
             text-align: center;
             padding: 15px;
             font-size: 1rem;
+            box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
