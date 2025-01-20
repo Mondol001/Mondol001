@@ -28,8 +28,6 @@
         }
 
         .mobile-frame {
-            width: 375px;
-            height: 667px;
             background: #fff;
             border: 10px solid var(--text-color);
             border-radius: 40px;
@@ -107,15 +105,32 @@
             color: #fff;
         }
 
-        @media (max-width: 400px) {
+        /* Responsive Design */
+        @media (max-width: 768px) {
             .mobile-frame {
-                width: 95%;
-                height: auto;
+                width: 375px;
+                height: 667px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-frame {
+                width: 768px;
+                height: 1024px;
+                border-radius: 20px;
             }
 
             .app {
-                width: 80px;
-                height: 80px;
+                width: 120px;
+                height: 120px;
+            }
+
+            .sections {
+                padding: 20px;
+            }
+
+            .section-heading {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -154,61 +169,6 @@
                 <a href="https://mail.google.com" class="app" target="_blank">
                     <i class="fas fa-envelope"></i>
                     Gmail
-                </a>
-            </div>
-
-            <!-- FTP Links Section -->
-            <div class="section-heading">FTP Links</div>
-            <div class="app-container">
-                <a href="https://discoveryftp.net/" class="app" target="_blank">
-                    <i class="fas fa-server"></i>
-                    Discovery FTP
-                </a>
-                <a href="http://10.16.100.244/" class="app" target="_blank">
-                    <i class="fas fa-network-wired"></i>
-                    Local 1
-                </a>
-<a href="http://10.16.100.244/" class="app" target="_blank">
-                    <i class="fas fa-network-wired"></i>
-                    Local 1
-                </a>
-<a href="http://10.16.100.244/" class="app" target="_blank">
-                    <i class="fas fa-network-wired"></i>
-                    Local 1
-                </a>
-<a href="http://10.16.100.244/" class="app" target="_blank">
-                    <i class="fas fa-network-wired"></i>
-                    Local 1
-                </a>
-<a href="http://10.16.100.244/" class="app" target="_blank">
-                    <i class="fas fa-network-wired"></i>
-                    Local 1
-                </a>
-<a href="http://10.16.100.244/" class="app" target="_blank">
-                    <i class="fas fa-network-wired"></i>
-                    Local 1
-                </a>
-<a href="http://10.16.100.244/" class="app" target="_blank">
-                    <i class="fas fa-network-wired"></i>
-                    Local 1
-                </a>
-
-                <a href="http://www.dnftpbd.com/" class="app" target="_blank">
-                    <i class="fas fa-server"></i>
-                    DN FTP
-                </a>
-            </div>
-
-            <!-- Extra Links (You Can Add More Here) -->
-            <div class="section-heading">Extra</div>
-            <div class="app-container">
-                <a href="https://github.com" class="app" target="_blank">
-                    <i class="fab fa-github"></i>
-                    GitHub
-                </a>
-                <a href="https://stackoverflow.com" class="app" target="_blank">
-                    <i class="fab fa-stack-overflow"></i>
-                    Stack Overflow
                 </a>
             </div>
         </div>
