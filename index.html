@@ -4,427 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Entry App</title>
-    <style>
-        /* General styles */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f7f7f7;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #ffffff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-/* Header */
-header {
-    text-align: center;
-    padding: 20px 0;
-    background-color: #4caf50;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 8px 8px 0 0;
-}
-
-/* Form styles */
-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: space-between;
-}
-
-form input, form textarea, form button {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-}
-
-form input:focus, form textarea:focus {
-    border-color: #4caf50;
-}
-
-form button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-form button:hover {
-    background-color: #45a049;
-}
-
-form textarea {
-    flex: 100%;
-    resize: vertical;
-}
-
-/* Table styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-}
-
-th {
-    background-color: #4caf50;
-    color: white;
-    font-size: 16px;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Total amount */
-#totalAmount {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 20px;
-    text-align: right;
-    color: #333;
-}
-
-/* Three dot menu */
-.menu-btn {
-    background: transparent;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    position: relative;
-}
-
-.menu-options {
-    display: none;
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    z-index: 10;
-}
-
-.menu-options button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background: white;
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.menu-options button:hover {
-    background-color: #f7f7f7;
-}
-
-/* Modal styles */
-#reportModal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
-}
-
-#reportModal .modal-content {
-    background: white;
-    margin: 50px auto;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 800px;
-    position: relative;
-}
-
-#reportModal .modal-content h2 {
-    text-align: center;
-    color: #4caf50;
-}
-
-#reportModal .modal-content table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#reportModal .modal-content th, #reportModal .modal-content td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-}
-
-#reportModal .modal-content th {
-    background-color: #4caf50;
-    color: white;
-}
-
-#closeReportModal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-}
-
-/* Print styles */
-@media print {
-    body {
-        background: white;
-    }
-    .container, header, form, #entryTable {
-        box-shadow: none;
-    }
-    #reportModal .modal-content {
-        box-shadow: none;
-        margin: 0;
-        padding: 0;
-    }
-    #closeReportModal {
-        display: none;
-    }
-}
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Data Entry App</h1>
-        <div class="total-amount-box" id="totalAmount">৳ 0</div>
+        <header>Data Entry System</header>
         <form id="entryForm">
-            <div class="form-group">
-                <label>Date:</label>
-                <input type="date" id="date" required>
-            </div>
-            <div class="form-group">
-                <label>Item Name:</label>
-                <input type="text" id="itemName" required>
-            </div>
-            <div class="form-group">
-                <label>Amount (৳):</label>
-                <input type="number" id="amount" required>
-            </div>
-            <div class="form-group">
-                <label>Notes/Comments:</label>
-                <textarea id="notes"></textarea>
-            </div>
+            <label for="docNo">Document No:</label>
+            <input type="text" id="docNo" readonly>
+
+            <label for="entryDate">Date:</label>
+            <input type="date" id="entryDate" required>
+
+            <label for="itemName">Item Name:</label>
+            <input type="text" id="itemName" required>
+
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" required>
+
+            <label for="notes">Notes:</label>
+            <textarea id="notes" rows="3"></textarea>
+
             <button type="submit">Add Entry</button>
-            <button type="button" id="reportViewBtn">Report View</button>
         </form>
-        <table class="entry-table" id="entryTable">
+
+        <div id="totalAmount">Total Amount: 0</div>
+        <table id="entryTable">
             <thead>
                 <tr>
                     <th>Document No</th>
                     <th>Date</th>
                     <th>Item Name</th>
-                    <th>Amount (৳)</th>
+                    <th>Amount</th>
                     <th>Notes</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Entries will appear here -->
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 
-    <!-- Report Modal -->
-    <div class="report-modal" id="reportModal">
-        <div class="report-modal-content">
-            <h3>Report</h3>
-            <button id="printBtn">Print</button>
-            <button id="closeReportModal">Close</button>
-        </div>
-    </div>
-
-    <script>
-        // JavaScript কোড এখানে
-        // Entry Management, LocalStorage, Report View এবং Print Functionality সহ।
-// Local storage key
-const localStorageKey = 'dataEntries';
-
-// DOM elements
-const entryForm = document.getElementById('entryForm');
-const entryTable = document.getElementById('entryTable').getElementsByTagName('tbody')[0];
-const totalAmountBox = document.getElementById('totalAmount');
-const reportModal = document.getElementById('reportModal');
-const closeReportModal = document.getElementById('closeReportModal');
-const printBtn = document.getElementById('printBtn');
-const reportViewBtn = document.getElementById('reportViewBtn');
-
-// Helper functions
-const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
-};
-
-const calculateTotalAmount = (entries) => {
-    return entries.reduce((total, entry) => total + entry.amount, 0);
-};
-
-const saveToLocalStorage = (entries) => {
-    localStorage.setItem(localStorageKey, JSON.stringify(entries));
-};
-
-const loadFromLocalStorage = () => {
-    const data = localStorage.getItem(localStorageKey);
-    return data ? JSON.parse(data) : [];
-};
-
-// Add entry to table
-const addEntryToTable = (entry, index) => {
-    const row = entryTable.insertRow();
-
-    row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${formatDate(entry.date)}</td>
-        <td>${entry.itemName}</td>
-        <td>৳ ${entry.amount}</td>
-        <td>${entry.notes || '-'}</td>
-        <td>
-            <button class="menu-btn" onclick="toggleMenu(this)">...</button>
-            <div class="menu-options">
-                <button onclick="editEntry(${index})">Edit</button>
-                <button onclick="deleteEntry(${index})">Delete</button>
-            </div>
-        </td>
-    `;
-};
-
-// Populate table and update total
-const populateTable = () => {
-    const entries = loadFromLocalStorage();
-    entryTable.innerHTML = '';
-    entries.forEach((entry, index) => addEntryToTable(entry, index));
-    totalAmountBox.textContent = `Total Amount = ৳ ${calculateTotalAmount(entries)}`;
-};
-
-// Toggle menu options
-const toggleMenu = (button) => {
-    const menu = button.nextElementSibling;
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    document.addEventListener('click', (e) => {
-        if (!button.contains(e.target)) menu.style.display = 'none';
-    }, { once: true });
-};
-
-// Add entry
-entryForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const date = document.getElementById('date').value;
-    const itemName = document.getElementById('itemName').value;
-    const amount = parseFloat(document.getElementById('amount').value);
-    const notes = document.getElementById('notes').value;
-
-    const entries = loadFromLocalStorage();
-    entries.push({ date, itemName, amount, notes });
-    saveToLocalStorage(entries);
-    populateTable();
-    entryForm.reset();
-});
-
-// Edit entry
-const editEntry = (index) => {
-    const entries = loadFromLocalStorage();
-    const entry = entries[index];
-    document.getElementById('date').value = entry.date;
-    document.getElementById('itemName').value = entry.itemName;
-    document.getElementById('amount').value = entry.amount;
-    document.getElementById('notes').value = entry.notes;
-
-    entries.splice(index, 1);
-    saveToLocalStorage(entries);
-    populateTable();
-};
-
-// Delete entry
-const deleteEntry = (index) => {
-    const entries = loadFromLocalStorage();
-    entries.splice(index, 1);
-    saveToLocalStorage(entries);
-    populateTable();
-};
-
-// Report view
-reportViewBtn.addEventListener('click', () => {
-    const entries = loadFromLocalStorage();
-    const reportWindow = window.open('', '_blank');
-    reportWindow.document.write(`
-        <html>
-        <head>
-            <title>Report</title>
-            <style>
-                body { font-family: Arial, sans-serif; }
-                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                th, td { border: 1px solid #444; padding: 10px; text-align: center; }
-                th { background: #4CAF50; color: white; }
-                h2 { text-align: center; }
-                .total { text-align: right; margin-top: 20px; }
-            </style>
-        </head>
-        <body>
-            <h2>Data Report</h2>
-            <table>
+    <div id="reportModal">
+        <div class="modal-content">
+            <h2>Report</h2>
+            <button id="closeReportModal">×</button>
+            <table id="reportTable">
                 <thead>
                     <tr>
                         <th>Document No</th>
                         <th>Date</th>
                         <th>Item Name</th>
-                        <th>Amount (৳)</th>
+                        <th>Amount</th>
                         <th>Notes</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${entries.map((entry, index) => `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${formatDate(entry.date)}</td>
-                            <td>${entry.itemName}</td>
-                            <td>৳ ${entry.amount}</td>
-                            <td>${entry.notes || '-'}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
+                <tbody></tbody>
             </table>
-            <div class="total">
-                <strong>Total Amount = ৳ ${calculateTotalAmount(entries)}</strong>
-            </div>
-        </body>
-        </html>
-    `);
-    reportWindow.document.close();
-    reportWindow.print();
-});
-
-// Initial population of the table
-populateTable();
-    </script>
+            <div>Total Amount: <span id="reportTotalAmount"></span></div>
+        </div>
+    </div>
 </body>
+<script src="script.js"></script>
 </html>
