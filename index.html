@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Entry App</title>
     <style>
+        /* আগের মতোই স্টাইল থাকবে, পরিবর্তন নেই */
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
@@ -154,6 +155,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            <div class="total-amount" id="reportTotalAmount"></div>
             <button class="close-btn" id="closeModal">Close</button>
             <button onclick="window.print()">Print</button>
         </div>
@@ -165,10 +167,12 @@
         const totalAmountElement = document.getElementById('totalAmount');
         const reportModal = document.getElementById('reportModal');
         const reportTableBody = document.getElementById('reportTable').querySelector('tbody');
+        const reportTotalAmount = document.getElementById('reportTotalAmount');
         const closeModal = document.getElementById('closeModal');
         const reportBtn = document.getElementById('reportBtn');
 
         let entries = JSON.parse(localStorage.getItem('entries')) || [];
+        let editingIndex = null;
 
         function renderTable() {
             entryTableBody.innerHTML = '';
@@ -182,7 +186,10 @@
                     <td>${entry.itemName}</td>
                     <td>৳ ${entry.amount}</td>
                     <td>${entry.notes}</td>
-                    <td><button onclick="deleteEntry(${index})">Delete</button></td>
+                    <td>
+                        <button onclick="editEntry(${index})">Edit</button>
+                        <button onclick="deleteEntry(${index})">Delete</button>
+                    </td>
                 `;
                 entryTableBody.appendChild(row);
             });
@@ -196,6 +203,15 @@
             renderTable();
         }
 
+        function editEntry(index) {
+            const entry = entries[index];
+            document.getElementById('date').value = entry.date;
+            document.getElementById('itemName').value = entry.itemName;
+            document.getElementById('amount').value = entry.amount;
+            document.getElementById('notes').value = entry.notes;
+            editingIndex = index;
+        }
+
         entryForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -206,14 +222,23 @@
                 notes: document.getElementById('notes').value,
             };
 
-            entries.push(newEntry);
+            if (editingIndex !== null) {
+                entries[editingIndex] = newEntry;
+                editingIndex = null;
+            } else {
+                entries.push(newEntry);
+            }
+
             renderTable();
             entryForm.reset();
         });
 
         reportBtn.addEventListener('click', () => {
             reportTableBody.innerHTML = '';
+            let totalAmount = 0;
+
             entries.forEach(entry => {
+                totalAmount += parseFloat(entry.amount);
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${entry.date}</td>
@@ -223,6 +248,8 @@
                 `;
                 reportTableBody.appendChild(row);
             });
+
+            reportTotalAmount.textContent = `Total Amount: ৳ ${totalAmount}`;
             reportModal.style.display = 'flex';
         });
 
