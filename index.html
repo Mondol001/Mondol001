@@ -3,66 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry App</title>
+    <title>Enhanced Data Entry App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <header>Data Entry System</header>
+        <h1>Data Entry App</h1>
+        <div class="total-amount-box" id="totalAmount">৳ 0</div>
         <form id="entryForm">
-            <label for="docNo">Document No:</label>
-            <input type="text" id="docNo" readonly>
-
-            <label for="entryDate">Date:</label>
-            <input type="date" id="entryDate" required>
-
-            <label for="itemName">Item Name:</label>
-            <input type="text" id="itemName" required>
-
-            <label for="amount">Amount:</label>
-            <input type="number" id="amount" required>
-
-            <label for="notes">Notes:</label>
-            <textarea id="notes" rows="3"></textarea>
-
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="date" id="date" required>
+            </div>
+            <div class="form-group">
+                <label>Item Name:</label>
+                <input type="text" id="itemName" required>
+            </div>
+            <div class="form-group">
+                <label>Amount (৳):</label>
+                <input type="number" id="amount" required>
+            </div>
+            <div class="form-group">
+                <label>Notes/Comments:</label>
+                <textarea id="notes"></textarea>
+            </div>
             <button type="submit">Add Entry</button>
+            <button type="button" id="printReportBtn">Print Report</button>
         </form>
-
-        <div id="totalAmount">Total Amount: 0</div>
-        <table id="entryTable">
+        <table class="entry-table" id="entryTable">
             <thead>
                 <tr>
-                    <th>Document No</th>
+                    <th>Doc No</th>
                     <th>Date</th>
                     <th>Item Name</th>
-                    <th>Amount</th>
+                    <th>Amount (৳)</th>
                     <th>Notes</th>
-                    <th>Actions</th>
+                    <th>Action</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                <!-- Entries will appear here -->
+            </tbody>
         </table>
     </div>
 
-    <div id="reportModal">
+    <!-- Modal for Actions -->
+    <div class="modal" id="actionModal">
         <div class="modal-content">
-            <h2>Report</h2>
-            <button id="closeReportModal">×</button>
-            <table id="reportTable">
-                <thead>
-                    <tr>
-                        <th>Document No</th>
-                        <th>Date</th>
-                        <th>Item Name</th>
-                        <th>Amount</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div>Total Amount: <span id="reportTotalAmount"></span></div>
+            <button id="editBtn">Edit</button>
+            <button id="deleteBtn">Delete</button>
         </div>
     </div>
+    
+    <script src="script.js"></script>
 </body>
-<script src="script.js"></script>
 </html>
