@@ -184,6 +184,12 @@
     const editBtn = document.getElementById("editBtn");
     const deleteBtn = document.getElementById("deleteBtn");
     const submitButton = entryForm.querySelector("button[type='submit']");
+    const reportSection = document.getElementById("reportSection");
+    const reportTable = document.getElementById("reportTable").querySelector("tbody");
+    const startDateField = document.getElementById("startDate");
+    const endDateField = document.getElementById("endDate");
+    const generateReportButton = document.getElementById("generateReport");
+    const printReportButton = document.getElementById("printReport");
 
     let entries = JSON.parse(localStorage.getItem("entries")) || [];
     let totalAmount = 0;
@@ -213,79 +219,50 @@
         docNoField.value = entries.length ? entries[entries.length - 1].docNo + 1 : 1;
     }
 
-    entryForm.addEventListener("submit", function (e) {
-        e.preventDefault();
+    generateReportButton.addEventListener("click", function () {
+        const startDate = new Date(startDateField.value);
+        const endDate = new Date(endDateField.value);
 
-        if (isEditMode) {
-            // Update existing entry in edit mode
-            const updatedEntry = {
-                docNo: parseInt(docNoField.value),
-                date: document.getElementById("date").value,
-                itemName: document.getElementById("itemName").value,
-                amount: parseFloat(document.getElementById("amount").value),
-                notes: document.getElementById("notes").value,
-            };
-
-            entries[currentIndex] = updatedEntry;
-            localStorage.setItem("entries", JSON.stringify(entries));
-            renderTable();
-            submitButton.textContent = "Add Entry"; // Change button back to Add Entry
-            isEditMode = false;
-        } else {
-            // Add new entry
-            const newEntry = {
-                docNo: parseInt(docNoField.value),
-                date: document.getElementById("date").value,
-                itemName: document.getElementById("itemName").value,
-                amount: parseFloat(document.getElementById("amount").value),
-                notes: document.getElementById("notes").value,
-            };
-
-            entries.push(newEntry);
-            localStorage.setItem("entries", JSON.stringify(entries));
-            renderTable();
+        if (!startDate || !endDate || startDate > endDate) {
+            alert("Please enter a valid date range.");
+            return;
         }
 
-        entryForm.reset();
+        reportTable.innerHTML = "";
+
+        const filteredEntries = entries.filter(entry => {
+            const entryDate = new Date(entry.date);
+            return entryDate >= startDate && entryDate <= endDate;
+        });
+
+        if (filteredEntries.length === 0) {
+            alert("No data found for the selected date range.");
+            return;
+        }
+
+        filteredEntries.forEach(entry => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${entry.docNo}</td>
+                <td>${entry.date}</td>
+                <td>${entry.itemName}</td>
+                <td>৳ ${entry.amount}</td>
+                <td>${entry.notes}</td>
+            `;
+            reportTable.appendChild(row);
+        });
+
+        reportSection.style.display = "block";
     });
 
-    entryTable.addEventListener("click", function (e) {
-        if (e.target.classList.contains("action-btn")) {
-            currentIndex = e.target.dataset.index;
-            modal.style.display = "flex";
-        }
-    });
+    printReportButton.addEventListener("click", function () {
+        const printContent = document.getElementById("reportSection").innerHTML;
+        const originalContent = document.body.innerHTML;
 
-    deleteBtn.addEventListener("click", function () {
-        if (currentIndex !== null) {
-            entries.splice(currentIndex, 1);
-            localStorage.setItem("entries", JSON.stringify(entries));
-            renderTable();
-            modal.style.display = "none";
-        }
-    });
-
-    editBtn.addEventListener("click", function () {
-        if (currentIndex !== null) {
-            const entry = entries[currentIndex];
-            document.getElementById("date").value = entry.date;
-            document.getElementById("itemName").value = entry.itemName;
-            document.getElementById("amount").value = entry.amount;
-            document.getElementById("notes").value = entry.notes;
-            docNoField.value = entry.docNo;
-
-            // Switch to edit mode
-            submitButton.textContent = "Edit Save";
-            isEditMode = true;
-
-            modal.style.display = "none";
-        }
-    });
-
-    modal.addEventListener("click", function (e) {
-        if (e.target === modal) {
-            modal.style.display = "none";
-        }
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+        location.reload(); // Reload the page after printing
     });
 
     renderTable();
