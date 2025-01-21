@@ -189,179 +189,135 @@
         </div>
     </div>
 
-    <!-- Report Modal -->
-    <div class="report-modal" id="reportModal">
-        <div class="report-modal-content">
-            <h3>Select Date Range</h3>
-            <label>From:</label>
-            <input type="date" id="startDate">
-            <label>To:</label>
-            <input type="date" id="endDate">
-            <button id="getReportBtn">Get Report</button>
-        </div>
+   <!-- Report Modal -->
+<div class="report-modal" id="reportModal">
+    <div class="report-modal-content">
+        <h3>Select Date Range</h3>
+        <label>From:</label>
+        <input type="date" id="startDate">
+        <label>To:</label>
+        <input type="date" id="endDate">
+        <button id="getReportBtn">Get Report</button>
     </div>
+</div>
 
    <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const entryForm = document.getElementById("entryForm");
-        const entryTable = document.getElementById("entryTable").querySelector("tbody");
-        const totalAmountBox = document.getElementById("totalAmount");
-        const modal = document.getElementById("actionModal");
-        const reportModal = document.getElementById("reportModal");
-        const reportViewBtn = document.getElementById("reportViewBtn");
-        const getReportBtn = document.getElementById("getReportBtn");
-        const startDate = document.getElementById("startDate");
-        const endDate = document.getElementById("endDate");
+    const reportModal = document.getElementById("reportModal");
+    const getReportBtn = document.getElementById("getReportBtn");
+    const startDate = document.getElementById("startDate");
+    const endDate = document.getElementById("endDate");
 
-        let entries = JSON.parse(localStorage.getItem("entries")) || [];
-        let totalAmount = 0;
-        let currentIndex = null;
-        let isEditMode = false;
+    document.getElementById("reportViewBtn").addEventListener("click", function () {
+        reportModal.style.display = "flex";
+    });
 
-        function renderTable() {
-            entryTable.innerHTML = "";
-            totalAmount = 0;
+    getReportBtn.addEventListener("click", function () {
+        const start = startDate.value;
+        const end = endDate.value;
 
-            entries.forEach((entry, index) => {
-                totalAmount += parseFloat(entry.amount);
+        if (!start || !end) {
+            alert("Please select a valid date range.");
+            return;
+        }
 
-                const row = document.createElement("tr");
-                row.innerHTML = `
+        const filteredEntries = entries.filter(entry => {
+            return new Date(entry.date) >= new Date(start) && new Date(entry.date) <= new Date(end);
+        });
+
+        let reportHtml = `
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                }
+                h3 {
+                    text-align: center;
+                    color: #333;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                }
+                th, td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: center;
+                }
+                th {
+                    background-color: #f4f4f4;
+                    font-weight: bold;
+                }
+                .total {
+                    font-weight: bold;
+                    text-align: right;
+                    padding-right: 20px;
+                }
+            </style>
+            <h3>Report from ${start} to ${end}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Item Name</th>
+                        <th>Amount (৳)</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+        let reportTotal = 0;
+        filteredEntries.forEach(entry => {
+            reportHtml += `
+                <tr>
                     <td>${entry.date}</td>
                     <td>${entry.itemName}</td>
                     <td>৳ ${entry.amount}</td>
                     <td>${entry.notes}</td>
-                    <td><button class="action-btn" data-index="${index}">Action</button></td>
-                `;
-                entryTable.appendChild(row);
-            });
-
-            totalAmountBox.textContent = `৳ ${totalAmount}`;
-        }
-
-        entryForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const date = document.getElementById("date").value;
-            const itemName = document.getElementById("itemName").value;
-            const amount = document.getElementById("amount").value;
-            const notes = document.getElementById("notes").value;
-
-            if (isEditMode) {
-                entries[currentIndex] = { date, itemName, amount, notes };
-                isEditMode = false;
-            } else {
-                entries.push({ date, itemName, amount, notes });
-            }
-
-            localStorage.setItem("entries", JSON.stringify(entries));
-            renderTable();
-            entryForm.reset();
+                </tr>`;
+            reportTotal += parseFloat(entry.amount);
         });
 
-        entryTable.addEventListener("click", function (e) {
-            if (e.target.classList.contains("action-btn")) {
-                currentIndex = e.target.dataset.index;
-                modal.style.display = "flex";
-            }
+        reportHtml += `
+                </tbody>
+            </table>
+            <div class="total">Total Amount: ৳ ${reportTotal}</div>
+        `;
+
+        reportModal.innerHTML = `
+            <div class="report-modal-content">
+                ${reportHtml}
+                <button id="printReportBtn">Print</button>
+                <button id="closeReportBtn">Close</button>
+            </div>`;
+        reportModal.style.display = "flex";
+
+        document.getElementById("printReportBtn").addEventListener("click", function () {
+            const printWindow = window.open("", "_blank");
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Report</title>
+                    </head>
+                    <body>${reportHtml}</body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
         });
 
-        document.getElementById("editBtn").addEventListener("click", function () {
-            const entry = entries[currentIndex];
-
-            document.getElementById("date").value = entry.date;
-            document.getElementById("itemName").value = entry.itemName;
-            document.getElementById("amount").value = entry.amount;
-            document.getElementById("notes").value = entry.notes;
-
-            modal.style.display = "none";
-            isEditMode = true;
+        document.getElementById("closeReportBtn").addEventListener("click", function () {
+            reportModal.style.display = "none";
         });
-
-        document.getElementById("deleteBtn").addEventListener("click", function () {
-            entries.splice(currentIndex, 1);
-            localStorage.setItem("entries", JSON.stringify(entries));
-            renderTable();
-            modal.style.display = "none";
-        });
-
-        document.getElementById("reportViewBtn").addEventListener("click", function () {
-            reportModal.style.display = "flex";
-        });
-
-        getReportBtn.addEventListener("click", function () {
-            const start = startDate.value;
-            const end = endDate.value;
-
-            if (!start || !end) {
-                alert("Please select a valid date range.");
-                return;
-            }
-
-            const filteredEntries = entries.filter(entry => {
-                return new Date(entry.date) >= new Date(start) && new Date(entry.date) <= new Date(end);
-            });
-
-            let reportHtml = `<table class="entry-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Item Name</th>
-                                        <th>Amount (৳)</th>
-                                        <th>Notes</th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
-
-            filteredEntries.forEach(entry => {
-                reportHtml += `
-                    <tr>
-                        <td>${entry.date}</td>
-                        <td>${entry.itemName}</td>
-                        <td>৳ ${entry.amount}</td>
-                        <td>${entry.notes}</td>
-                    </tr>`;
-            });
-
-            reportHtml += `</tbody></table>`;
-
-            reportModal.innerHTML = `
-                <div class="report-modal-content">
-                    <h3>Report from ${start} to ${end}</h3>
-                    ${reportHtml}
-                    <button id="printReportBtn">Print</button>
-                </div>`;
-            reportModal.style.display = "flex";
-
-            document.getElementById("printReportBtn").addEventListener("click", function () {
-                const printWindow = window.open("", "_blank");
-                printWindow.document.write(`
-                    <html>
-                        <head>
-                            <title>Report</title>
-                        </head>
-                        <body>
-                            <h3>Report from ${start} to ${end}</h3>
-                            ${reportHtml}
-                        </body>
-                    </html>
-                `);
-                printWindow.document.close();
-                printWindow.print();
-            });
-        });
-
-        window.addEventListener("click", function (e) {
-            if (e.target === modal) {
-                modal.style.display = "none";
-            }
-            if (e.target === reportModal) {
-                reportModal.style.display = "none";
-            }
-        });
-
-        renderTable(); // Initial table rendering
     });
+
+    // Close report modal when clicked outside
+    window.addEventListener("click", function (e) {
+        if (e.target === reportModal) {
+            reportModal.style.display = "none";
+        }
+    });
+});
 </script>
 </body>
 </html>
