@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bazar Management System</title>
+    <title>Data Entry App</title>
     <style>
-        /* আগের মতোই স্টাইল থাকবে, পরিবর্তন নেই */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
         }
         .container {
             max-width: 800px;
-            margin: auto;
-            background: #fff;
+            margin: 50px auto;
+            background: #1e1e1e;
             padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
@@ -32,23 +31,39 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: #bdbdbd;
         }
         input, textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #555;
+            background-color: #222;
+            color: #fff;
             border-radius: 4px;
+            font-size: 16px;
         }
         button {
             background: #4CAF50;
-            color: white;
+            color: #fff;
             padding: 10px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
         }
         button:hover {
             background: #45a049;
+        }
+        .total-amount-box {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #2e2e2e;
+            border: 1px solid #4CAF50;
+            border-radius: 8px;
+            text-align: center;
+            color: #4CAF50;
+            font-weight: bold;
         }
         .entry-table {
             width: 100%;
@@ -56,78 +71,81 @@
             margin-top: 20px;
         }
         .entry-table th, .entry-table td {
-            border: 1px solid #ddd;
+            border: 1px solid #444;
             padding: 10px;
             text-align: center;
         }
         .entry-table th {
             background: #4CAF50;
-            color: white;
+            color: #fff;
         }
-        .total-amount {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 20px;
+        .entry-table tr:nth-child(even) {
+            background: #1e1e1e;
         }
-        .modal {
+        .entry-table tr:nth-child(odd) {
+            background: #2a2a2a;
+        }
+        .menu-btn {
+            background: #2196F3;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+        .menu-options {
+            display: none;
+            position: absolute;
+            background: #2e2e2e;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        .menu-options button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+        }
+        .report-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
         }
-        .modal-content {
-            background: white;
+        .report-modal-content {
+            background: #2e2e2e;
             padding: 20px;
             border-radius: 8px;
-            width: 90%;
-            max-width: 800px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
         }
-        .close-btn {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .close-btn:hover {
-            background: #e53935;
-        }
-        .dots {
-            cursor: pointer;
-            font-size: 20px;
-            padding: 0 5px;
-        }
-        .actions {
-            display: none;
-            position: absolute;
-            background: white;
-            border: 1px solid #ddd;
-            padding: 5px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-        .actions button {
-            background: none;
-            border: none;
-            color: #4CAF50;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .actions button:hover {
-            color: #45a049;
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+            }
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+                background: #fff;
+            }
+            button {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Bazar Management System</h1>
+        <h1>Data Entry App</h1>
+        <div class="total-amount-box" id="totalAmount">৳ 0</div>
         <form id="entryForm">
             <div class="form-group">
                 <label>Date:</label>
@@ -138,161 +156,203 @@
                 <input type="text" id="itemName" required>
             </div>
             <div class="form-group">
-                <label>Amount:</label>
+                <label>Amount (৳):</label>
                 <input type="number" id="amount" required>
             </div>
             <div class="form-group">
-                <label>Notes:</label>
+                <label>Notes/Comments:</label>
                 <textarea id="notes"></textarea>
             </div>
-            <button type="submit">Submit</button>
-            <button type="button" id="reportBtn">Report Viewer</button>
+            <button type="submit">Add Entry</button>
+            <button type="button" id="reportViewBtn">Report View</button>
         </form>
-
         <table class="entry-table" id="entryTable">
             <thead>
                 <tr>
+                    <th>Document No</th>
                     <th>Date</th>
                     <th>Item Name</th>
-                    <th>Amount</th>
+                    <th>Amount (৳)</th>
                     <th>Notes</th>
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                <!-- Entries will appear here -->
+            </tbody>
         </table>
-        <div class="total-amount" id="totalAmount">Total Amount: ৳ 0</div>
     </div>
 
-    <!-- Modal for Report -->
-    <div class="modal" id="reportModal">
-        <div class="modal-content">
-            <h2>Report</h2>
-            <table class="entry-table" id="reportTable">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Item Name</th>
-                        <th>Amount</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div class="total-amount" id="reportTotalAmount"></div>
-            <button class="close-btn" id="closeModal">Close</button>
-            <button onclick="window.print()">Print</button>
+    <!-- Report Modal -->
+    <div class="report-modal" id="reportModal">
+        <div class="report-modal-content">
+            <h3>Report</h3>
+            <button id="printBtn">Print</button>
+            <button id="closeReportModal">Close</button>
         </div>
     </div>
 
     <script>
-        const entryForm = document.getElementById('entryForm');
-        const entryTableBody = document.getElementById('entryTable').querySelector('tbody');
-        const totalAmountElement = document.getElementById('totalAmount');
-        const reportModal = document.getElementById('reportModal');
-        const reportTableBody = document.getElementById('reportTable').querySelector('tbody');
-        const reportTotalAmount = document.getElementById('reportTotalAmount');
-        const closeModal = document.getElementById('closeModal');
-        const reportBtn = document.getElementById('reportBtn');
+        // JavaScript কোড এখানে
+        // Entry Management, LocalStorage, Report View এবং Print Functionality সহ।
+// Local storage key
+const localStorageKey = 'dataEntries';
 
-        let entries = JSON.parse(localStorage.getItem('entries')) || [];
-        let editingIndex = null;
+// DOM elements
+const entryForm = document.getElementById('entryForm');
+const entryTable = document.getElementById('entryTable').getElementsByTagName('tbody')[0];
+const totalAmountBox = document.getElementById('totalAmount');
+const reportModal = document.getElementById('reportModal');
+const closeReportModal = document.getElementById('closeReportModal');
+const printBtn = document.getElementById('printBtn');
+const reportViewBtn = document.getElementById('reportViewBtn');
 
-        function renderTable() {
-            entryTableBody.innerHTML = '';
-            let totalAmount = 0;
+// Helper functions
+const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+};
 
-            entries.forEach((entry, index) => {
-                totalAmount += parseFloat(entry.amount);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${entry.date}</td>
-                    <td>${entry.itemName}</td>
-                    <td>৳ ${entry.amount}</td>
-                    <td>${entry.notes}</td>
-                    <td>
-                        <div style="position: relative;">
-                            <span class="dots" onclick="toggleActions(${index})">...</span>
-                            <div class="actions" id="actions-${index}">
-                                <button onclick="editEntry(${index})">Edit</button>
-                                <button onclick="deleteEntry(${index})">Delete</button>
-                            </div>
-                        </div>
-                    </td>
-                `;
-                entryTableBody.appendChild(row);
-            });
+const calculateTotalAmount = (entries) => {
+    return entries.reduce((total, entry) => total + entry.amount, 0);
+};
 
-            totalAmountElement.textContent = `Total Amount: ৳ ${totalAmount}`;
-            localStorage.setItem('entries', JSON.stringify(entries));
-        }
+const saveToLocalStorage = (entries) => {
+    localStorage.setItem(localStorageKey, JSON.stringify(entries));
+};
 
-        function toggleActions(index) {
-            const actions = document.getElementById(`actions-${index}`);
-            actions.style.display = actions.style.display === 'block' ? 'none' : 'block';
-        }
+const loadFromLocalStorage = () => {
+    const data = localStorage.getItem(localStorageKey);
+    return data ? JSON.parse(data) : [];
+};
 
-        function deleteEntry(index) {
-            entries.splice(index, 1);
-            renderTable();
-        }
+// Add entry to table
+const addEntryToTable = (entry, index) => {
+    const row = entryTable.insertRow();
 
-        function editEntry(index) {
-            const entry = entries[index];
-            document.getElementById('date').value = entry.date;
-            document.getElementById('itemName').value = entry.itemName;
-            document.getElementById('amount').value = entry.amount;
-            document.getElementById('notes').value = entry.notes;
-            editingIndex = index;
-        }
+    row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${formatDate(entry.date)}</td>
+        <td>${entry.itemName}</td>
+        <td>৳ ${entry.amount}</td>
+        <td>${entry.notes || '-'}</td>
+        <td>
+            <button class="menu-btn" onclick="toggleMenu(this)">...</button>
+            <div class="menu-options">
+                <button onclick="editEntry(${index})">Edit</button>
+                <button onclick="deleteEntry(${index})">Delete</button>
+            </div>
+        </td>
+    `;
+};
 
-        entryForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+// Populate table and update total
+const populateTable = () => {
+    const entries = loadFromLocalStorage();
+    entryTable.innerHTML = '';
+    entries.forEach((entry, index) => addEntryToTable(entry, index));
+    totalAmountBox.textContent = `Total Amount = ৳ ${calculateTotalAmount(entries)}`;
+};
 
-            const newEntry = {
-                date: document.getElementById('date').value,
-                itemName: document.getElementById('itemName').value,
-                amount: document.getElementById('amount').value,
-                notes: document.getElementById('notes').value,
-            };
+// Toggle menu options
+const toggleMenu = (button) => {
+    const menu = button.nextElementSibling;
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    document.addEventListener('click', (e) => {
+        if (!button.contains(e.target)) menu.style.display = 'none';
+    }, { once: true });
+};
 
-            if (editingIndex !== null) {
-                entries[editingIndex] = newEntry;
-                editingIndex = null;
-            } else {
-                entries.push(newEntry);
-            }
+// Add entry
+entryForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const date = document.getElementById('date').value;
+    const itemName = document.getElementById('itemName').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+    const notes = document.getElementById('notes').value;
 
-            renderTable();
-            entryForm.reset();
-        });
+    const entries = loadFromLocalStorage();
+    entries.push({ date, itemName, amount, notes });
+    saveToLocalStorage(entries);
+    populateTable();
+    entryForm.reset();
+});
 
-        reportBtn.addEventListener('click', () => {
-            reportTableBody.innerHTML = '';
-            let totalAmount = 0;
+// Edit entry
+const editEntry = (index) => {
+    const entries = loadFromLocalStorage();
+    const entry = entries[index];
+    document.getElementById('date').value = entry.date;
+    document.getElementById('itemName').value = entry.itemName;
+    document.getElementById('amount').value = entry.amount;
+    document.getElementById('notes').value = entry.notes;
 
-            entries.forEach(entry => {
-                totalAmount += parseFloat(entry.amount);
-                const row = document.createElement('tr');
-row.innerHTML = `
-                    <td>${entry.date}</td>
-                    <td>${entry.itemName}</td>
-                    <td>৳ ${entry.amount}</td>
-                    <td>${entry.notes}</td>
-                `;
-                reportTableBody.appendChild(row);
-            });
+    entries.splice(index, 1);
+    saveToLocalStorage(entries);
+    populateTable();
+};
 
-            reportTotalAmount.textContent = `Total Amount: ৳ ${totalAmount}`;
-            reportModal.style.display = 'flex';
-        });
+// Delete entry
+const deleteEntry = (index) => {
+    const entries = loadFromLocalStorage();
+    entries.splice(index, 1);
+    saveToLocalStorage(entries);
+    populateTable();
+};
 
-        closeModal.addEventListener('click', () => {
-            reportModal.style.display = 'none';
-        });
+// Report view
+reportViewBtn.addEventListener('click', () => {
+    const entries = loadFromLocalStorage();
+    const reportWindow = window.open('', '_blank');
+    reportWindow.document.write(`
+        <html>
+        <head>
+            <title>Report</title>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #444; padding: 10px; text-align: center; }
+                th { background: #4CAF50; color: white; }
+                h2 { text-align: center; }
+                .total { text-align: right; margin-top: 20px; }
+            </style>
+        </head>
+        <body>
+            <h2>Data Report</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Document No</th>
+                        <th>Date</th>
+                        <th>Item Name</th>
+                        <th>Amount (৳)</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${entries.map((entry, index) => `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${formatDate(entry.date)}</td>
+                            <td>${entry.itemName}</td>
+                            <td>৳ ${entry.amount}</td>
+                            <td>${entry.notes || '-'}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <div class="total">
+                <strong>Total Amount = ৳ ${calculateTotalAmount(entries)}</strong>
+            </div>
+        </body>
+        </html>
+    `);
+    reportWindow.document.close();
+    reportWindow.print();
+});
 
-        // Initial render
-        renderTable();
+// Initial population of the table
+populateTable();
     </script>
 </body>
 </html>
