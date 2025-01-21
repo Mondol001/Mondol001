@@ -123,8 +123,39 @@
 </head>
 <body>
     <div class="container">
-        <h1>Data Entry App</h1>
-        <div class="total-amount-box" id="totalAmount">৳ 0</div>
+    <!-- Existing content -->
+    <h1>Data Entry App</h1>
+    <div class="total-amount-box" id="totalAmount">৳ 0</div>
+
+    <!-- Date Range for Report -->
+    <div class="form-group">
+        <h3>Generate Report</h3>
+        <label>Start Date:</label>
+        <input type="date" id="startDate">
+        <label>End Date:</label>
+        <input type="date" id="endDate">
+        <button id="generateReport">Generate Report</button>
+    </div>
+
+    <div id="reportSection" style="display: none;">
+        <h3>Report</h3>
+        <table class="entry-table" id="reportTable">
+            <thead>
+                <tr>
+                    <th>Doc No</th>
+                    <th>Date</th>
+                    <th>Item Name</th>
+                    <th>Amount (৳)</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Report entries will appear here -->
+            </tbody>
+        </table>
+        <button id="printReport">Print Report</button>
+    </div>
+</div>
         <form id="entryForm">
             <div class="form-group">
                 <label>Entry Doc No:</label>
