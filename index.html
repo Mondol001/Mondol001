@@ -1,262 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily Expense Tracking</title>
-  <style>
-/* General Styling */
-body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f0f2f5;
-  color: #333;
-}
-
-.container {
-  width: 90%;
-  max-width: 1000px;
-  margin: 20px auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Header */
-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-h1 {
-  color: #007bff;
-}
-
-/* Form Styling */
-.form {
-  display: grid;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-input, textarea, button {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Table Styling */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th, td {
-  padding: 10px;
-  text-align: left;
-  border: 1px solid #ddd;
-}
-
-th {
-  background-color: #007bff;
-  color: white;
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.actions button {
-  margin-right: 5px;
-  padding: 5px 10px;
-  font-size: 14px;
-}
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Entry App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .total-amount {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #e8f5e9;
+            border: 1px solid #4CAF50;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: #4CAF50;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .action-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .action-menu-content {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 4px;
+        }
+        .action-menu-content button {
+            border: none;
+            background: none;
+            padding: 10px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        .action-menu:hover .action-menu-content {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Daily Expense Tracking</h1>
-    </header>
-    <main>
-      <!-- Input Form -->
-      <form id="expense-form" class="form">
-        <div class="form-group">
-          <label for="date">Date:</label>
-          <input type="date" id="date" required>
-        </div>
-        <div class="form-group">
-          <label for="item-name">Item Name:</label>
-          <input type="text" id="item-name" placeholder="Enter item name" required>
-        </div>
-        <div class="form-group">
-          <label for="amount">Amount:</label>
-          <input type="number" id="amount" placeholder="Enter amount" required>
-        </div>
-        <div class="form-group">
-          <label for="notes">Notes:</label>
-          <textarea id="notes" placeholder="Add notes"></textarea>
-        </div>
-        <div class="buttons">
-          <button type="submit" id="submit-btn">Submit</button>
-          <button type="button" id="report-btn">Generate Report</button>
-        </div>
-      </form>
-
-      <!-- Expense Table -->
-      <section class="expense-section">
-        <h2>Expense List</h2>
+    <div class="container">
+        <h1>Data Entry App</h1>
+        <div class="total-amount" id="totalAmount">Total Amount: ৳ 0</div>
+        <form id="entryForm">
+            <div class="form-group">
+                <label for="date">Date (dd/mm/yyyy):</label>
+                <input type="date" id="date" required>
+            </div>
+            <div class="form-group">
+                <label for="itemName">Item Name:</label>
+                <input type="text" id="itemName" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount (৳):</label>
+                <input type="number" id="amount" required>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes/Comments:</label>
+                <textarea id="notes"></textarea>
+            </div>
+            <button type="submit">Add Entry</button>
+            <button type="button" onclick="printReport()">Print Report</button>
+        </form>
         <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Item Name</th>
-              <th>Amount</th>
-              <th>Notes</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="expense-list"></tbody>
+            <thead>
+                <tr>
+                    <th>Doc No.</th>
+                    <th>Date</th>
+                    <th>Item Name</th>
+                    <th>Amount (৳)</th>
+                    <th>Notes</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="entryTable"></tbody>
         </table>
-        <h3>Total Amount: <span id="total-amount">0</span></h3>
-      </section>
-    </main>
-  </div>
-  <script>
-const form = document.getElementById('expense-form');
-const expenseList = document.getElementById('expense-list');
-const totalAmount = document.getElementById('total-amount');
-const reportBtn = document.getElementById('report-btn');
+    </div>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("entryForm");
+    const entryTable = document.getElementById("entryTable");
+    const totalAmountBox = document.getElementById("totalAmount");
 
-// Initialize Expense Data
-let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    let entries = JSON.parse(localStorage.getItem("entries")) || [];
 
-// Render Expenses
-function renderExpenses() {
-  expenseList.innerHTML = '';
-  let total = 0;
+    function saveToLocalStorage() {
+        localStorage.setItem("entries", JSON.stringify(entries));
+    }
 
-  expenses.forEach((expense, index) => {
-    total += Number(expense.amount);
+    function formatDate(date) {
+        const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+        return new Date(date).toLocaleDateString("en-GB", options);
+    }
 
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${expense.date}</td>
-      <td>${expense.itemName}</td>
-      <td>${expense.amount}</td>
-      <td>${expense.notes}</td>
-      <td class="actions">
-        <button onclick="editExpense(${index})">Edit</button>
-        <button onclick="deleteExpense(${index})">Delete</button>
-      </td>
-    `;
-    expenseList.appendChild(row);
-  });
+    function calculateTotalAmount() {
+        const total = entries.reduce((sum, entry) => sum + entry.amount, 0);
+        totalAmountBox.textContent = `Total Amount: ৳ ${total}`;
+    }
 
-  totalAmount.textContent = total;
-}
+    function renderTable() {
+        entryTable.innerHTML = "";
+        entries.forEach((entry, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${entry.docNo}</td>
+                <td>${formatDate(entry.date)}</td>
+                <td>${entry.itemName}</td>
+                <td>৳ ${entry.amount}</td>
+                <td>${entry.notes}</td>
+                <td>
+                    <div class="action-menu">
+                        <button>⋮</button>
+                        <div class="action-menu-content">
+                            <button onclick="editEntry(${index})">Edit</button>
+                            <button onclick="deleteEntry(${index})">Delete</button>
+                        </div>
+                    </div>
+                </td>
+            `;
+            entryTable.appendChild(row);
+        });
+        calculateTotalAmount();
+    }
 
-// Add Expense
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const date = document.getElementById("date").value;
+        const itemName = document.getElementById("itemName").value.trim();
+        const amount = parseFloat(document.getElementById("amount").value);
+        const notes = document.getElementById("notes").value.trim();
 
-  const date = document.getElementById('date').value;
-  const itemName = document.getElementById('item-name').value;
-  const amount = document.getElementById('amount').value;
-  const notes = document.getElementById('notes').value;
+        const docNo = entries.length > 0 ? entries[entries.length - 1].docNo + 1 : 1;
+        entries.push({ docNo, date, itemName, amount, notes });
+        saveToLocalStorage();
+        renderTable();
+        form.reset();
+    });
 
-  const newExpense = { date, itemName, amount, notes };
-  expenses.push(newExpense);
-  localStorage.setItem('expenses', JSON.stringify(expenses));
+    window.editEntry = function (index) {
+        const entry = entries[index];
+        document.getElementById("date").value = entry.date;
+        document.getElementById("itemName").value = entry.itemName;
+        document.getElementById("amount").value = entry.amount;
+        document.getElementById("notes").value = entry.notes;
 
-  renderExpenses();
-  form.reset();
+        entries.splice(index, 1);
+        saveToLocalStorage();
+        renderTable();
+    };
+
+    window.deleteEntry = function (index) {
+        if (confirm("Are you sure you want to delete this entry?")) {
+            entries.splice(index, 1);
+            saveToLocalStorage();
+            renderTable();
+        }
+    };
+
+    window.printReport = function () {
+        const printWindow = window.open("", "_blank");
+        const reportContent = `
+            <html>
+                <head>
+                    <title>Report</title>
+                </head>
+                <body>
+                    <h1>Data Report</h1>
+                    <h3>Total Amount: ৳ ${entries.reduce((sum, entry) => sum + entry.amount, 0)}</h3>
+                </body>
+            </html>
+        `;
+        printWindow.document.write(reportContent);
+        printWindow.document.close();
+        printWindow.print();
+    };
+
+    renderTable();
 });
-
-// Edit Expense
-function editExpense(index) {
-  const expense = expenses[index];
-  document.getElementById('date').value = expense.date;
-  document.getElementById('item-name').value = expense.itemName;
-  document.getElementById('amount').value = expense.amount;
-  document.getElementById('notes').value = expense.notes;
-
-  deleteExpense(index);
-}
-
-// Delete Expense
-function deleteExpense(index) {
-  expenses.splice(index, 1);
-  localStorage.setItem('expenses', JSON.stringify(expenses));
-  renderExpenses();
-}
-
-// Generate Report
-reportBtn.addEventListener('click', () => {
-  const reportContent = `
-    <h1>Expense Report</h1>
-    <p>Total Amount: ${totalAmount.textContent}</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Item Name</th>
-          <th>Amount</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${expenses.map(expense => `
-          <tr>
-            <td>${expense.date}</td>
-            <td>${expense.itemName}</td>
-            <td>${expense.amount}</td>
-            <td>${expense.notes}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
-
-  const reportWindow = window.open('', '_blank');
-  reportWindow.document.write(reportContent);
-  reportWindow.document.close();
-  reportWindow.print();
-});
-
-// Initial Render
-renderExpenses();
 </script>
 </body>
 </html>
