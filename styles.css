@@ -6,12 +6,12 @@ body {
     color: #333;
 }
 .container {
-    max-width: 900px;
+    max-width: 800px;
     margin: 50px auto;
-    background: #ffffff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 h1 {
     text-align: center;
@@ -21,36 +21,34 @@ h1 {
     margin-bottom: 15px;
 }
 label {
-    font-weight: bold;
-    margin-bottom: 5px;
     display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 input, textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 button {
-    background: #4CAF50;
-    color: #fff;
     padding: 10px 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
 }
 button:hover {
-    background: #45a049;
+    opacity: 0.9;
 }
 .total-amount-box {
     font-size: 18px;
-    text-align: center;
-    background: #e8f5e9;
-    padding: 10px;
     margin-bottom: 20px;
-    border-radius: 5px;
+    padding: 10px;
+    background: #e8f5e9;
+    border: 1px solid #4CAF50;
+    text-align: center;
     color: #4CAF50;
     font-weight: bold;
 }
@@ -68,20 +66,30 @@ button:hover {
     background: #4CAF50;
     color: #fff;
 }
-.modal {
+.entry-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+.entry-table tr:nth-child(odd) {
+    background: #ffffff;
+}
+.three-dots {
+    cursor: pointer;
+}
+.report-modal {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
 }
-.modal-content {
+.report-modal-content {
     background: #fff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
+    width: 400px;
     text-align: center;
 }
