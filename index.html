@@ -3,164 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Expense Tracker</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Data Entry App</title>
+    <style>
+        /* আগের মতোই স্টাইল থাকবে, পরিবর্তন নেই */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .entry-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .entry-table th, .entry-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .entry-table th {
+            background: #4CAF50;
+            color: white;
+        }
+        .total-amount {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+        }
+        .close-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            background: #e53935;
+        }
+        .dots {
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0 5px;
+        }
+        .actions {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        .actions button {
+            background: none;
+            border: none;
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .actions button:hover {
+            color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Daily Expense Tracker</h1>
+        <h1>Data Entry App</h1>
         <form id="entryForm">
             <div class="form-group">
-                <label for="date">Date (DD-MM-YYYY):</label>
+                <label>Date:</label>
                 <input type="date" id="date" required>
             </div>
             <div class="form-group">
-                <label for="itemName">Item Name:</label>
+                <label>Item Name:</label>
                 <input type="text" id="itemName" required>
             </div>
             <div class="form-group">
-                <label for="amount">Amount (৳):</label>
+                <label>Amount:</label>
                 <input type="number" id="amount" required>
             </div>
             <div class="form-group">
-                <label for="notes">Notes:</label>
-                <input type="text" id="notes">
+                <label>Notes:</label>
+                <textarea id="notes"></textarea>
             </div>
             <button type="submit">Add Entry</button>
+            <button type="button" id="reportBtn">View Report</button>
         </form>
-        <h2 id="totalAmount">Total Amount: ৳ 0</h2>
-        <table id="entryTable">
+
+        <table class="entry-table" id="entryTable">
             <thead>
                 <tr>
-                    <th>Doc No</th>
                     <th>Date</th>
                     <th>Item Name</th>
-                    <th>Amount (৳)</th>
+                    <th>Amount</th>
                     <th>Notes</th>
-                    <th>Actions</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
-        <button id="reportViewBtn">View Report</button>
+        <div class="total-amount" id="totalAmount">Total Amount: ৳ 0</div>
     </div>
 
-    <div id="reportModal" class="modal">
+    <!-- Modal for Report -->
+    <div class="modal" id="reportModal">
         <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Generate Report</h2>
-            <div class="form-group">
-                <label for="startDate">Start Date:</label>
-                <input type="date" id="startDate">
-            </div>
-            <div class="form-group">
-                <label for="endDate">End Date:</label>
-                <input type="date" id="endDate">
-            </div>
-            <button id="getReportBtn">Generate Report</button>
+            <h2>Report</h2>
+            <table class="entry-table" id="reportTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Item Name</th>
+                        <th>Amount</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="total-amount" id="reportTotalAmount"></div>
+            <button class="close-btn" id="closeModal">Close</button>
+            <button onclick="window.print()">Print</button>
         </div>
     </div>
 
     <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const entryForm = document.getElementById("entryForm");
-    const entryTable = document.querySelector("#entryTable tbody");
-    const totalAmountBox = document.getElementById("totalAmount");
-    const reportModal = document.getElementById("reportModal");
-    const reportViewBtn = document.getElementById("reportViewBtn");
-    const getReportBtn = document.getElementById("getReportBtn");
-    const startDate = document.getElementById("startDate");
-    const endDate = document.getElementById("endDate");
+        const entryForm = document.getElementById('entryForm');
+        const entryTableBody = document.getElementById('entryTable').querySelector('tbody');
+        const totalAmountElement = document.getElementById('totalAmount');
+        const reportModal = document.getElementById('reportModal');
+        const reportTableBody = document.getElementById('reportTable').querySelector('tbody');
+        const reportTotalAmount = document.getElementById('reportTotalAmount');
+        const closeModal = document.getElementById('closeModal');
+        const reportBtn = document.getElementById('reportBtn');
 
-    let entries = JSON.parse(localStorage.getItem("entries")) || [];
-    let totalAmount = 0;
+        let entries = JSON.parse(localStorage.getItem('entries')) || [];
+        let editingIndex = null;
 
-    // Render Table
-    function renderTable() {
-        entryTable.innerHTML = "";
-        totalAmount = 0;
+        function renderTable() {
+            entryTableBody.innerHTML = '';
+            let totalAmount = 0;
 
-        entries.forEach((entry, index) => {
-            totalAmount += parseFloat(entry.amount);
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${entry.docNo}</td>
-                <td>${entry.date}</td>
-                <td>${entry.itemName}</td>
-                <td>৳ ${entry.amount}</td>
-                <td>${entry.notes}</td>
-                <td>
-                    <button onclick="editEntry(${index})">Edit</button>
-                    <button onclick="deleteEntry(${index})">Delete</button>
-                </td>
-            `;
-            entryTable.appendChild(row);
+            entries.forEach((entry, index) => {
+                totalAmount += parseFloat(entry.amount);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${entry.itemName}</td>
+                    <td>৳ ${entry.amount}</td>
+                    <td>${entry.notes}</td>
+                    <td>
+                        <div style="position: relative;">
+                            <span class="dots" onclick="toggleActions(${index})">...</span>
+                            <div class="actions" id="actions-${index}">
+                                <button onclick="editEntry(${index})">Edit</button>
+                                <button onclick="deleteEntry(${index})">Delete</button>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                entryTableBody.appendChild(row);
+            });
+
+            totalAmountElement.textContent = `Total Amount: ৳ ${totalAmount}`;
+            localStorage.setItem('entries', JSON.stringify(entries));
+        }
+
+        function toggleActions(index) {
+            const actions = document.getElementById(`actions-${index}`);
+            actions.style.display = actions.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function deleteEntry(index) {
+            entries.splice(index, 1);
+            renderTable();
+        }
+
+        function editEntry(index) {
+            const entry = entries[index];
+            document.getElementById('date').value = entry.date;
+            document.getElementById('itemName').value = entry.itemName;
+            document.getElementById('amount').value = entry.amount;
+            document.getElementById('notes').value = entry.notes;
+            editingIndex = index;
+        }
+
+        entryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const newEntry = {
+                date: document.getElementById('date').value,
+                itemName: document.getElementById('itemName').value,
+                amount: document.getElementById('amount').value,
+                notes: document.getElementById('notes').value,
+            };
+
+            if (editingIndex !== null) {
+                entries[editingIndex] = newEntry;
+                editingIndex = null;
+            } else {
+                entries.push(newEntry);
+            }
+
+            renderTable();
+            entryForm.reset();
         });
 
-        totalAmountBox.textContent = `Total Amount: ৳ ${totalAmount}`;
-    }
+        reportBtn.addEventListener('click', () => {
+            reportTableBody.innerHTML = '';
+            let totalAmount = 0;
 
-    // Add or Edit Entry
-    entryForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const date = document.getElementById("date").value;
-        const itemName = document.getElementById("itemName").value;
-        const amount = document.getElementById("amount").value;
-        const notes = document.getElementById("notes").value;
+            entries.forEach(entry => {
+                totalAmount += parseFloat(entry.amount);
+                const row = document.createElement('tr');
+row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${entry.itemName}</td>
+                    <td>৳ ${entry.amount}</td>
+                    <td>${entry.notes}</td>
+                `;
+                reportTableBody.appendChild(row);
+            });
 
-        const newEntry = {
-            docNo: entries.length + 1,
-            date,
-            itemName,
-            amount,
-            notes,
-        };
-
-        entries.push(newEntry);
-        localStorage.setItem("entries", JSON.stringify(entries));
-        renderTable();
-        entryForm.reset();
-    });
-
-    // Edit Entry
-    window.editEntry = function (index) {
-        const entry = entries[index];
-        document.getElementById("date").value = entry.date;
-        document.getElementById("itemName").value = entry.itemName;
-        document.getElementById("amount").value = entry.amount;
-        document.getElementById("notes").value = entry.notes;
-
-        entries.splice(index, 1);
-        localStorage.setItem("entries", JSON.stringify(entries));
-        renderTable();
-    };
-
-    // Delete Entry
-    window.deleteEntry = function (index) {
-        entries.splice(index, 1);
-        localStorage.setItem("entries", JSON.stringify(entries));
-        renderTable();
-    };
-
-    // View Report
-    reportViewBtn.addEventListener("click", function () {
-        reportModal.style.display = "flex";
-    });
-
-    getReportBtn.addEventListener("click", function () {
-        const start = new Date(startDate.value);
-        const end = new Date(endDate.value);
-        const filteredEntries = entries.filter((entry) => {
-            const entryDate = new Date(entry.date);
-            return entryDate >= start && entryDate <= end;
+            reportTotalAmount.textContent = `Total Amount: ৳ ${totalAmount}`;
+            reportModal.style.display = 'flex';
         });
 
-        console.log(filteredEntries); // For debugging
-        alert("Report generated! Check console.");
-    });
+        closeModal.addEventListener('click', () => {
+            reportModal.style.display = 'none';
+        });
 
-    renderTable();
-});
-</script>
+        // Initial render
+        renderTable();
+    </script>
 </body>
 </html>
