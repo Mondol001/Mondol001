@@ -1,136 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry App</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Expense Tracking</title>
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: grid;
+  gap: 15px;
+}
+
+input, textarea, button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#expense-list {
+  margin-top: 20px;
+}
+
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: #f1f1f1;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 5px;
+  font-size: 14px;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Data Entry App</h1>
-        <div class="total-amount-box" id="totalAmount">Total: ৳ 0</div>
-        <form id="entryForm">
-            <div class="form-group">
-                <label>Date:</label>
-                <input type="date" id="date" required>
-            </div>
-            <div class="form-group">
-                <label>Item Name:</label>
-                <input type="text" id="itemName" required>
-            </div>
-            <div class="form-group">
-                <label>Amount (৳):</label>
-                <input type="number" id="amount" required>
-            </div>
-            <div class="form-group">
-                <label>Notes:</label>
-                <textarea id="notes"></textarea>
-            </div>
-            <button type="submit">Add Entry</button>
-            <button type="button" id="reportViewBtn">View Report</button>
-        </form>
+  <div class="container">
+    <h1>Daily Expense Tracking</h1>
+    
+    <!-- Input Fields -->
+    <form id="expense-form">
+      <label for="date">Date:</label>
+      <input type="date" id="date" required>
+      
+      <label for="item-name">Item Name:</label>
+      <input type="text" id="item-name" placeholder="Enter item name" required>
+      
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" placeholder="Enter amount" required>
+      
+      <label for="notes">Notes:</label>
+      <textarea id="notes" placeholder="Add notes"></textarea>
+      
+      <button type="submit" id="submit-btn">Submit</button>
+      <button type="button" id="report-btn">Report</button>
+    </form>
+    
+    <!-- Display Data -->
+    <h2>Expense List</h2>
+    <div id="expense-list"></div>
+    <h3>Total Amount: <span id="total-amount">0</span></h3>
+  </div>
 
-        <table class="entry-table" id="entryTable">
-            <thead>
-                <tr>
-                    <th>Doc No</th>
-                    <th>Date</th>
-                    <th>Item Name</th>
-                    <th>Amount</th>
-                    <th>Notes</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Entries will be dynamically added here -->
-            </tbody>
-        </table>
-    </div>
+  <script>
+// DOM Elements
+const form = document.getElementById('expense-form');
+const expenseList = document.getElementById('expense-list');
+const totalAmount = document.getElementById('total-amount');
+const reportBtn = document.getElementById('report-btn');
 
-    <!-- Report Modal -->
-    <div class="report-modal" id="reportModal">
-        <div class="report-modal-content">
-            <h3>Report</h3>
-            <label>From:</label>
-            <input type="date" id="startDate">
-            <label>To:</label>
-            <input type="date" id="endDate">
-            <button id="getReportBtn">Generate</button>
-            <button id="closeReportBtn">Close</button>
-        </div>
-    </div>
+// Initialize Data
+let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
-    <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const entryForm = document.getElementById("entryForm");
-    const entryTable = document.getElementById("entryTable").querySelector("tbody");
-    const totalAmountBox = document.getElementById("totalAmount");
-    const reportModal = document.getElementById("reportModal");
-    const startDate = document.getElementById("startDate");
-    const endDate = document.getElementById("endDate");
-    const closeReportBtn = document.getElementById("closeReportBtn");
-    const getReportBtn = document.getElementById("getReportBtn");
+// Function to Render Expenses
+function renderExpenses() {
+  expenseList.innerHTML = '';
+  let total = 0;
 
-    let entries = JSON.parse(localStorage.getItem("entries")) || [];
-    let totalAmount = 0;
+  expenses.forEach((expense, index) => {
+    total += Number(expense.amount);
 
-    function formatDate(date) {
-        const [year, month, day] = date.split("-");
-        return `${day}/${month}/${year}`;
-    }
+    const expenseItem = document.createElement('div');
+    expenseItem.classList.add('expense-item');
+    expenseItem.innerHTML = `
+      <div>
+        <strong>${expense.date}</strong> - ${expense.itemName} - $${expense.amount}
+        <p>${expense.notes}</p>
+      </div>
+      <div class="actions">
+        <button onclick="editExpense(${index})">Edit</button>
+        <button onclick="deleteExpense(${index})">Delete</button>
+      </div>
+    `;
+    expenseList.appendChild(expenseItem);
+  });
 
-    function renderTable() {
-        entryTable.innerHTML = "";
-        totalAmount = 0;
-        entries.forEach((entry, index) => {
-            totalAmount += parseFloat(entry.amount);
+  totalAmount.textContent = total;
+}
 
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${entry.docNo}</td>
-                <td>${formatDate(entry.date)}</td>
-                <td>${entry.itemName}</td>
-                <td>৳ ${entry.amount}</td>
-                <td>${entry.notes}</td>
-                <td>
-                    <div class="three-dots" data-index="${index}">
-                        •••
-                    </div>
-                </td>
-            `;
-            entryTable.appendChild(row);
-        });
+// Add Expense
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const date = document.getElementById('date').value;
+  const itemName = document.getElementById('item-name').value;
+  const amount = document.getElementById('amount').value;
+  const notes = document.getElementById('notes').value;
 
-        totalAmountBox.textContent = `Total: ৳ ${totalAmount}`;
-    }
+  const newExpense = { date, itemName, amount, notes };
+  expenses.push(newExpense);
+  localStorage.setItem('expenses', JSON.stringify(expenses));
 
-    entryForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const date = document.getElementById("date").value;
-        const itemName = document.getElementById("itemName").value;
-        const amount = document.getElementById("amount").value;
-        const notes = document.getElementById("notes").value;
-
-        const docNo = new Date().getTime();
-        entries.push({ docNo, date, itemName, amount, notes });
-        localStorage.setItem("entries", JSON.stringify(entries));
-
-        renderTable();
-        entryForm.reset();
-    });
-
-    getReportBtn.addEventListener("click", () => {
-        // Report logic here...
-        alert("Report generated!");
-    });
-
-    closeReportBtn.addEventListener("click", () => {
-        reportModal.style.display = "none";
-    });
-
-    renderTable();
+  renderExpenses();
+  form.reset();
 });
+
+// Edit Expense
+function editExpense(index) {
+  const expense = expenses[index];
+  document.getElementById('date').value = expense.date;
+  document.getElementById('item-name').value = expense.itemName;
+  document.getElementById('amount').value = expense.amount;
+  document.getElementById('notes').value = expense.notes;
+
+  deleteExpense(index);
+}
+
+// Delete Expense
+function deleteExpense(index) {
+  expenses.splice(index, 1);
+  localStorage.setItem('expenses', JSON.stringify(expenses));
+  renderExpenses();
+}
+
+// Report Button
+reportBtn.addEventListener('click', () => {
+  window.print();
+});
+
+// Initial Render
+renderExpenses();
 </script>
 </body>
 </html>
