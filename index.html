@@ -171,29 +171,34 @@
     </div>
     <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("entryForm");
-    const entryTable = document.getElementById("entryTable");
+    const entryForm = document.getElementById("entryForm");
+    const entryTable = document.getElementById("entryTable").querySelector("tbody");
     const totalAmountBox = document.getElementById("totalAmount");
+    const reportModal = document.getElementById("reportModal");
+    const reportViewBtn = document.getElementById("reportViewBtn");
+    const getReportBtn = document.getElementById("getReportBtn");
+    const startDate = document.getElementById("startDate");
+    const endDate = document.getElementById("endDate");
 
     let entries = JSON.parse(localStorage.getItem("entries")) || [];
+    let totalAmount = 0;
+    let currentIndex = null;
+    let isEditMode = false;
 
-    function saveToLocalStorage() {
-        localStorage.setItem("entries", JSON.stringify(entries));
-    }
+    // Format Date as Day-Month-Year
+    const formatDate = (dateString) => {
+        const [year, month, day] = dateString.split("-");
+        return `${day}-${month}-${year}`;
+    };
 
-    function formatDate(date) {
-        const options = { day: "2-digit", month: "2-digit", year: "numeric" };
-        return new Date(date).toLocaleDateString("en-GB", options);
-    }
-
-    function calculateTotalAmount() {
-        const total = entries.reduce((sum, entry) => sum + entry.amount, 0);
-        totalAmountBox.textContent = `Total Amount: ৳ ${total}`;
-    }
-
+    // Render the table with entries
     function renderTable() {
         entryTable.innerHTML = "";
+        totalAmount = 0;
+
         entries.forEach((entry, index) => {
+            totalAmount += parseFloat(entry.amount);
+
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${entry.docNo}</td>
@@ -202,104 +207,124 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>৳ ${entry.amount}</td>
                 <td>${entry.notes}</td>
                 <td>
-                    <div class="action-menu">
-                        <button>⋮</button>
-                        <div class="action-menu-content">
-                            <button onclick="editEntry(${index})">Edit</button>
-                            <button onclick="deleteEntry(${index})">Delete</button>
+                    <div class="dropdown">
+                        <button class="action-btn">⋮</button>
+                        <div class="dropdown-content">
+                            <button class="edit-btn" data-index="${index}">Edit</button>
+                            <button class="delete-btn" data-index="${index}">Delete</button>
                         </div>
                     </div>
                 </td>
             `;
             entryTable.appendChild(row);
         });
-        calculateTotalAmount();
+
+        totalAmountBox.textContent = `Total Amount: ৳ ${totalAmount}`;
     }
 
-    form.addEventListener("submit", function (e) {
+    // Add/Edit Entry
+    entryForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        const date = document.getElementById("date").value;
-        const itemName = document.getElementById("itemName").value.trim();
-        const amount = parseFloat(document.getElementById("amount").value);
-        const notes = document.getElementById("notes").value.trim();
 
-        const docNo = entries.length > 0 ? entries[entries.length - 1].docNo + 1 : 1;
-        entries.push({ docNo, date, itemName, amount, notes });
-        saveToLocalStorage();
+        const date = document.getElementById("date").value;
+        const itemName = document.getElementById("itemName").value;
+        const amount = parseFloat(document.getElementById("amount").value);
+        const notes = document.getElementById("notes").value;
+
+        if (isEditMode) {
+            entries[currentIndex] = { ...entries[currentIndex], date, itemName, amount, notes };
+            isEditMode = false;
+        } else {
+            const newEntry = {
+                docNo: new Date().getTime(),
+                date,
+                itemName,
+                amount,
+                notes,
+            };
+            entries.push(newEntry);
+        }
+
+        localStorage.setItem("entries", JSON.stringify(entries));
         renderTable();
-        form.reset();
+        entryForm.reset();
     });
 
-    window.editEntry = function (index) {
-        const entry = entries[index];
-        document.getElementById("date").value = entry.date;
-        document.getElementById("itemName").value = entry.itemName;
-        document.getElementById("amount").value = entry.amount;
-        document.getElementById("notes").value = entry.notes;
+    // Action Buttons (Edit/Delete)
+    entryTable.addEventListener("click", function (e) {
+        if (e.target.classList.contains("edit-btn")) {
+            currentIndex = e.target.dataset.index;
+            const entry = entries[currentIndex];
+            document.getElementById("date").value = entry.date;
+            document.getElementById("itemName").value = entry.itemName;
+            document.getElementById("amount").value = entry.amount;
+            document.getElementById("notes").value = entry.notes;
+            isEditMode = true;
+        }
 
-        entries.splice(index, 1);
-        saveToLocalStorage();
-        renderTable();
-    };
-
-    window.deleteEntry = function (index) {
-        if (confirm("Are you sure you want to delete this entry?")) {
-            entries.splice(index, 1);
-            saveToLocalStorage();
+        if (e.target.classList.contains("delete-btn")) {
+            currentIndex = e.target.dataset.index;
+            entries.splice(currentIndex, 1);
+            localStorage.setItem("entries", JSON.stringify(entries));
             renderTable();
         }
-    };
+    });
 
-    window.printReport = function () {
-        const printWindow = window.open("", "_blank");
+    // View Report
+    reportViewBtn.addEventListener("click", function () {
+        reportModal.style.display = "flex";
+    });
+
+    getReportBtn.addEventListener("click", function () {
+        const start = new Date(startDate.value);
+        const end = new Date(endDate.value);
+        const filteredEntries = entries.filter(entry => {
+            const entryDate = new Date(entry.date);
+            return entryDate >= start && entryDate <= end;
+        });
+
         let reportContent = `
             <html>
                 <head>
-                    <title>Report</title>
-                </head>
-                <body>
                     <style>
                         body {
-                            font-family: 'Arial', sans-serif;
-                            margin: 0;
+                            font-family: Arial, sans-serif;
                             padding: 20px;
+                            background: #fff;
+                            color: #000;
                         }
-
                         h1 {
                             text-align: center;
                             color: #4CAF50;
-                            margin-bottom: 20px;
                         }
-
                         table {
                             width: 100%;
                             border-collapse: collapse;
                             margin-top: 20px;
                         }
-
                         th, td {
+                            border: 1px solid #444;
                             text-align: center;
                             padding: 10px;
-                            border: 1px solid #000;
                         }
-
                         th {
-                            background: #4CAF50;
-                            color: #fff;
+                            background-color: #4CAF50;
+                            color: white;
                         }
-
                         .total {
                             margin-top: 20px;
-                            text-align: right;
-                            font-weight: bold;
                             font-size: 18px;
+                            font-weight: bold;
+                            text-align: right;
                         }
                     </style>
+                </head>
+                <body>
                     <h1>Report</h1>
                     <table>
                         <thead>
                             <tr>
-                                <th>Doc No.</th>
+                                <th>Doc No</th>
                                 <th>Date</th>
                                 <th>Item Name</th>
                                 <th>Amount (৳)</th>
@@ -308,19 +333,21 @@ document.addEventListener("DOMContentLoaded", function () {
                         </thead>
                         <tbody>
         `;
-        entries.forEach((entry) => {
+        let total = 0;
+
+        filteredEntries.forEach(entry => {
+            total += entry.amount;
             reportContent += `
-                            <tr>
-                                <td>${entry.docNo}</td>
-                                <td>${formatDate(entry.date)}</td>
-                                <td>${entry.itemName}</td>
-                                <td>৳ ${entry.amount}</td>
-                                <td>${entry.notes}</td>
-                            </tr>
+                <tr>
+                    <td>${entry.docNo}</td>
+                    <td>${formatDate(entry.date)}</td>
+                    <td>${entry.itemName}</td>
+                    <td>৳ ${entry.amount}</td>
+                    <td>${entry.notes}</td>
+                </tr>
             `;
         });
 
-        const total = entries.reduce((sum, entry) => sum + entry.amount, 0);
         reportContent += `
                         </tbody>
                     </table>
@@ -329,12 +356,21 @@ document.addEventListener("DOMContentLoaded", function () {
             </html>
         `;
 
+        const printWindow = window.open("", "PRINT", "height=600,width=800");
         printWindow.document.write(reportContent);
         printWindow.document.close();
         printWindow.print();
-    };
+        reportModal.style.display = "none";
+    });
 
-    // প্রথমে লোকাল স্টোরেজ থেকে ডেটা লোড করুন এবং টেবিলে দেখান
+    // Close Report Modal
+    window.addEventListener("click", function (e) {
+        if (e.target === reportModal) {
+            reportModal.style.display = "none";
+        }
+    });
+
+    // Initial render
     renderTable();
 });
 </body>
