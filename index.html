@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Entry App</title>
     <style>
-        /* আগের মতোই স্টাইল থাকবে, পরিবর্তন নেই */
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
@@ -14,7 +13,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: auto;
             background: #fff;
             padding: 20px;
@@ -70,48 +69,8 @@
             font-weight: bold;
             margin-top: 20px;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 800px;
-        }
-        .close-btn {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .close-btn:hover {
-            background: #e53935;
-        }
-        .dots {
-            cursor: pointer;
-            font-size: 20px;
-            padding: 0 5px;
-        }
         .actions {
-            display: none;
-            position: absolute;
-            background: white;
-            border: 1px solid #ddd;
-            padding: 5px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
         .actions button {
             background: none;
@@ -129,146 +88,153 @@
     <div class="container">
         <h1>Data Entry App</h1>
         <form id="entryForm">
-    <div class="form-group">
-        <label>Date:</label>
-        <input type="date" id="date" required>
-    </div>
-    <div class="form-group">
-        <label>Order No:</label>
-        <input type="text" id="orderNo" required>
-    </div>
-    <div class="form-group">
-        <label>Party Name:</label>
-        <input type="text" id="partyName" required>
-    </div>
-    <div class="form-group">
-        <label>Color Name:</label>
-        <input type="text" id="colorName" required>
-    </div>
-    <div class="form-group">
-        <label>Shade No:</label>
-        <input type="text" id="shadeNo" required>
-    </div>
-    <div class="form-group">
-        <label>Bal Qty:</label>
-        <input type="number" id="balQty" required>
-    </div>
-    <div class="form-group">
-        <label>Particular:</label>
-        <input type="number" id="particular" required>
-    </div>
-    <div class="form-group">
-        <label>Short (Auto-calculated):</label>
-        <input type="number" id="shortQty" disabled>
-    </div>
-    <div class="form-group">
-        <label>Remarks:</label>
-        <textarea id="remarks"></textarea>
-    </div>
-    <button type="submit">Add Entry</button>
-    <button type="button" id="reportBtn">View Report</button>
-</form>
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="date" id="date" required>
+            </div>
+            <div class="form-group">
+                <label>Order No:</label>
+                <input type="text" id="orderNo" required>
+            </div>
+            <div class="form-group">
+                <label>Party Name:</label>
+                <input type="text" id="partyName" required>
+            </div>
+            <div class="form-group">
+                <label>Color Name:</label>
+                <input type="text" id="colorName" required>
+            </div>
+            <div class="form-group">
+                <label>Shade No:</label>
+                <input type="text" id="shadeNo" required>
+            </div>
+            <div class="form-group">
+                <label>Bal Qty:</label>
+                <input type="number" id="balQty" required>
+            </div>
+            <div class="form-group">
+                <label>Particular:</label>
+                <input type="number" id="particular" required>
+            </div>
+            <div class="form-group">
+                <label>Short (Auto-calculated):</label>
+                <input type="number" id="shortQty" disabled>
+            </div>
+            <div class="form-group">
+                <label>Remarks:</label>
+                <textarea id="remarks"></textarea>
+            </div>
+            <button type="submit">Add Entry</button>
+        </form>
+
         <table class="entry-table" id="entryTable">
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Item Name</th>
-                    <th>Amount</th>
-                    <th>Notes</th>
-                    <th>Action</th>
+                    <th>Order No</th>
+                    <th>Party Name</th>
+                    <th>Color Name</th>
+                    <th>Shade No</th>
+                    <th>Bal Qty</th>
+                    <th>Particular</th>
+                    <th>Short</th>
+                    <th>Remarks</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
-        <div class="total-amount" id="totalAmount">Total Amount: ৳ 0</div>
-    </div>
-
-    <!-- Modal for Report -->
-    <div class="modal" id="reportModal">
-        <div class="modal-content">
-            <h2>Report</h2>
-            <table class="entry-table" id="reportTable">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Item Name</th>
-                        <th>Amount</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div class="total-amount" id="reportTotalAmount"></div>
-            <button class="close-btn" id="closeModal">Close</button>
-            <button onclick="window.print()">Print</button>
-        </div>
+        <div class="total-amount" id="totalAmount">Total Bal Qty: ৳ 0</div>
     </div>
 
     <script>
-        entryForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+        const entryForm = document.getElementById('entryForm');
+        const entryTableBody = document.getElementById('entryTable').querySelector('tbody');
+        const totalAmountElement = document.getElementById('totalAmount');
 
-    // Calculate Short automatically
-    const balQty = parseFloat(document.getElementById('balQty').value);
-    const particular = parseFloat(document.getElementById('particular').value);
-    const shortQty = balQty - particular;
+        let entries = JSON.parse(localStorage.getItem('entries')) || [];
+        let editingIndex = null;
 
-    const newEntry = {
-        date: document.getElementById('date').value,
-        orderNo: document.getElementById('orderNo').value,
-        partyName: document.getElementById('partyName').value,
-        colorName: document.getElementById('colorName').value,
-        shadeNo: document.getElementById('shadeNo').value,
-        balQty: balQty,
-        particular: particular,
-        shortQty: shortQty,
-        remarks: document.getElementById('remarks').value,
-    };
+        function renderTable() {
+            entryTableBody.innerHTML = '';
+            let totalBalQty = 0;
 
-    if (editingIndex !== null) {
-        entries[editingIndex] = newEntry;
-        editingIndex = null;
-    } else {
-        entries.push(newEntry);
-    }
-
-    renderTable();
-    entryForm.reset();
-});
-
-function renderTable() {
-    entryTableBody.innerHTML = '';
-    let totalAmount = 0;
-
-    entries.forEach((entry, index) => {
-        totalAmount += parseFloat(entry.balQty);
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${entry.date}</td>
-            <td>${entry.orderNo}</td>
-            <td>${entry.partyName}</td>
-            <td>${entry.colorName}</td>
-            <td>${entry.shadeNo}</td>
-            <td>${entry.balQty}</td>
-            <td>${entry.particular}</td>
-            <td>${entry.shortQty}</td>
-            <td>${entry.remarks}</td>
-            <td>
-                <div style="position: relative;">
-                    <span class="dots" onclick="toggleActions(${index})">...</span>
-                    <div class="actions" id="actions-${index}">
+            entries.forEach((entry, index) => {
+                totalBalQty += parseFloat(entry.balQty);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${entry.orderNo}</td>
+                    <td>${entry.partyName}</td>
+                    <td>${entry.colorName}</td>
+                    <td>${entry.shadeNo}</td>
+                    <td>${entry.balQty}</td>
+                    <td>${entry.particular}</td>
+                    <td>${entry.shortQty}</td>
+                    <td>${entry.remarks}</td>
+                    <td class="actions">
                         <button onclick="editEntry(${index})">Edit</button>
                         <button onclick="deleteEntry(${index})">Delete</button>
-                    </div>
-                </div>
-            </td>
-        `;
-        entryTableBody.appendChild(row);
-    });
+                    </td>
+                `;
+                entryTableBody.appendChild(row);
+            });
 
-    totalAmountElement.textContent = `Total Amount: ৳ ${totalAmount}`;
-    localStorage.setItem('entries', JSON.stringify(entries));
-}
+            totalAmountElement.textContent = `Total Bal Qty: ৳ ${totalBalQty}`;
+            localStorage.setItem('entries', JSON.stringify(entries));
+        }
+
+        function deleteEntry(index) {
+            entries.splice(index, 1);
+            renderTable();
+        }
+
+        function editEntry(index) {
+            const entry = entries[index];
+            document.getElementById('date').value = entry.date;
+            document.getElementById('orderNo').value = entry.orderNo;
+            document.getElementById('partyName').value = entry.partyName;
+            document.getElementById('colorName').value = entry.colorName;
+            document.getElementById('shadeNo').value = entry.shadeNo;
+            document.getElementById('balQty').value = entry.balQty;
+            document.getElementById('particular').value = entry.particular;
+            document.getElementById('remarks').value = entry.remarks;
+
+            editingIndex = index;
+        }
+
+        entryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const balQty = parseFloat(document.getElementById('balQty').value);
+            const particular = parseFloat(document.getElementById('particular').value);
+            const shortQty = balQty - particular;
+
+            const newEntry = {
+                date: document.getElementById('date').value,
+                orderNo: document.getElementById('orderNo').value,
+                partyName: document.getElementById('partyName').value,
+                colorName: document.getElementById('colorName').value,
+                shadeNo: document.getElementById('shadeNo').value,
+                balQty: balQty,
+                particular: particular,
+                shortQty: shortQty,
+                remarks: document.getElementById('remarks').value,
+            };
+
+            if (editingIndex !== null) {
+                entries[editingIndex] = newEntry;
+                editingIndex = null;
+            } else {
+                entries.push(newEntry);
+            }
+
+            renderTable();
+            entryForm.reset();
+        });
+
+        // Initial render
+        renderTable();
     </script>
 </body>
 </html>
