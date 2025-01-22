@@ -129,26 +129,45 @@
     <div class="container">
         <h1>Data Entry App</h1>
         <form id="entryForm">
-            <div class="form-group">
-                <label>Date:</label>
-                <input type="date" id="date" required>
-            </div>
-            <div class="form-group">
-                <label>Item Name:</label>
-                <input type="text" id="itemName" required>
-            </div>
-            <div class="form-group">
-                <label>Amount:</label>
-                <input type="number" id="amount" required>
-            </div>
-            <div class="form-group">
-                <label>Notes:</label>
-                <textarea id="notes"></textarea>
-            </div>
-            <button type="submit">Add Entry</button>
-            <button type="button" id="reportBtn">View Report</button>
-        </form>
-
+    <div class="form-group">
+        <label>Date:</label>
+        <input type="date" id="date" required>
+    </div>
+    <div class="form-group">
+        <label>Order No:</label>
+        <input type="text" id="orderNo" required>
+    </div>
+    <div class="form-group">
+        <label>Party Name:</label>
+        <input type="text" id="partyName" required>
+    </div>
+    <div class="form-group">
+        <label>Color Name:</label>
+        <input type="text" id="colorName" required>
+    </div>
+    <div class="form-group">
+        <label>Shade No:</label>
+        <input type="text" id="shadeNo" required>
+    </div>
+    <div class="form-group">
+        <label>Bal Qty:</label>
+        <input type="number" id="balQty" required>
+    </div>
+    <div class="form-group">
+        <label>Particular:</label>
+        <input type="number" id="particular" required>
+    </div>
+    <div class="form-group">
+        <label>Short (Auto-calculated):</label>
+        <input type="number" id="shortQty" disabled>
+    </div>
+    <div class="form-group">
+        <label>Remarks:</label>
+        <textarea id="remarks"></textarea>
+    </div>
+    <button type="submit">Add Entry</button>
+    <button type="button" id="reportBtn">View Report</button>
+</form>
         <table class="entry-table" id="entryTable">
             <thead>
                 <tr>
@@ -186,113 +205,70 @@
     </div>
 
     <script>
-        const entryForm = document.getElementById('entryForm');
-        const entryTableBody = document.getElementById('entryTable').querySelector('tbody');
-        const totalAmountElement = document.getElementById('totalAmount');
-        const reportModal = document.getElementById('reportModal');
-        const reportTableBody = document.getElementById('reportTable').querySelector('tbody');
-        const reportTotalAmount = document.getElementById('reportTotalAmount');
-        const closeModal = document.getElementById('closeModal');
-        const reportBtn = document.getElementById('reportBtn');
-
-        let entries = JSON.parse(localStorage.getItem('entries')) || [];
-        let editingIndex = null;
-
-        function renderTable() {
-            entryTableBody.innerHTML = '';
-            let totalAmount = 0;
-
-            entries.forEach((entry, index) => {
-                totalAmount += parseFloat(entry.amount);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${entry.date}</td>
-                    <td>${entry.itemName}</td>
-                    <td>৳ ${entry.amount}</td>
-                    <td>${entry.notes}</td>
-                    <td>
-                        <div style="position: relative;">
-                            <span class="dots" onclick="toggleActions(${index})">...</span>
-                            <div class="actions" id="actions-${index}">
-                                <button onclick="editEntry(${index})">Edit</button>
-                                <button onclick="deleteEntry(${index})">Delete</button>
-                            </div>
-                        </div>
-                    </td>
-                `;
-                entryTableBody.appendChild(row);
-            });
-
-            totalAmountElement.textContent = `Total Amount: ৳ ${totalAmount}`;
-            localStorage.setItem('entries', JSON.stringify(entries));
-        }
-
-        function toggleActions(index) {
-            const actions = document.getElementById(`actions-${index}`);
-            actions.style.display = actions.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function deleteEntry(index) {
-            entries.splice(index, 1);
-            renderTable();
-        }
-
-        function editEntry(index) {
-            const entry = entries[index];
-            document.getElementById('date').value = entry.date;
-            document.getElementById('itemName').value = entry.itemName;
-            document.getElementById('amount').value = entry.amount;
-            document.getElementById('notes').value = entry.notes;
-            editingIndex = index;
-        }
-
         entryForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+    e.preventDefault();
 
-            const newEntry = {
-                date: document.getElementById('date').value,
-                itemName: document.getElementById('itemName').value,
-                amount: document.getElementById('amount').value,
-                notes: document.getElementById('notes').value,
-            };
+    // Calculate Short automatically
+    const balQty = parseFloat(document.getElementById('balQty').value);
+    const particular = parseFloat(document.getElementById('particular').value);
+    const shortQty = balQty - particular;
 
-            if (editingIndex !== null) {
-                entries[editingIndex] = newEntry;
-                editingIndex = null;
-            } else {
-                entries.push(newEntry);
-            }
+    const newEntry = {
+        date: document.getElementById('date').value,
+        orderNo: document.getElementById('orderNo').value,
+        partyName: document.getElementById('partyName').value,
+        colorName: document.getElementById('colorName').value,
+        shadeNo: document.getElementById('shadeNo').value,
+        balQty: balQty,
+        particular: particular,
+        shortQty: shortQty,
+        remarks: document.getElementById('remarks').value,
+    };
 
-            renderTable();
-            entryForm.reset();
-        });
+    if (editingIndex !== null) {
+        entries[editingIndex] = newEntry;
+        editingIndex = null;
+    } else {
+        entries.push(newEntry);
+    }
 
-        reportBtn.addEventListener('click', () => {
-            reportTableBody.innerHTML = '';
-            let totalAmount = 0;
+    renderTable();
+    entryForm.reset();
+});
 
-            entries.forEach(entry => {
-                totalAmount += parseFloat(entry.amount);
-                const row = document.createElement('tr');
-row.innerHTML = `
-                    <td>${entry.date}</td>
-                    <td>${entry.itemName}</td>
-                    <td>৳ ${entry.amount}</td>
-                    <td>${entry.notes}</td>
-                `;
-                reportTableBody.appendChild(row);
-            });
+function renderTable() {
+    entryTableBody.innerHTML = '';
+    let totalAmount = 0;
 
-            reportTotalAmount.textContent = `Total Amount: ৳ ${totalAmount}`;
-            reportModal.style.display = 'flex';
-        });
+    entries.forEach((entry, index) => {
+        totalAmount += parseFloat(entry.balQty);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${entry.date}</td>
+            <td>${entry.orderNo}</td>
+            <td>${entry.partyName}</td>
+            <td>${entry.colorName}</td>
+            <td>${entry.shadeNo}</td>
+            <td>${entry.balQty}</td>
+            <td>${entry.particular}</td>
+            <td>${entry.shortQty}</td>
+            <td>${entry.remarks}</td>
+            <td>
+                <div style="position: relative;">
+                    <span class="dots" onclick="toggleActions(${index})">...</span>
+                    <div class="actions" id="actions-${index}">
+                        <button onclick="editEntry(${index})">Edit</button>
+                        <button onclick="deleteEntry(${index})">Delete</button>
+                    </div>
+                </div>
+            </td>
+        `;
+        entryTableBody.appendChild(row);
+    });
 
-        closeModal.addEventListener('click', () => {
-            reportModal.style.display = 'none';
-        });
-
-        // Initial render
-        renderTable();
+    totalAmountElement.textContent = `Total Amount: ৳ ${totalAmount}`;
+    localStorage.setItem('entries', JSON.stringify(entries));
+}
     </script>
 </body>
 </html>
