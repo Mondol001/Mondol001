@@ -3,101 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry App</title>
+    <title>Data Entry App - Dark Theme</title>
     <style>
+        /* Base Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
+            background-color: #121212;
+            color: #ffffff;
         }
+
         .container {
             max-width: 900px;
-            margin: 50px auto;
-            background: #fff;
+            margin: 30px auto;
+            background: #1e1e1e;
             padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.6);
         }
+
         h1 {
             text-align: center;
             color: #4CAF50;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            background: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background: #45a049;
-        }
-        .total-amount {
-            font-size: 18px;
             margin-bottom: 20px;
-            padding: 10px;
-            background: #e8f5e9;
-            border: 1px solid #4CAF50;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
+            text-shadow: 0px 2px 4px rgba(0, 255, 0, 0.5);
         }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #b3b3b3;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #ffffff;
+            background: #292929;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border: 2px solid #4CAF50;
+        }
+
+        button {
+            background: linear-gradient(145deg, #4CAF50, #2e7d32);
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(145deg, #2e7d32, #4CAF50);
+            transform: translateY(-2px);
+        }
+
+        .total-amount {
+            background: #4CAF50;
+            color: #121212;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 255, 0, 0.5);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background: #1e1e1e;
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
             text-align: center;
+            padding: 10px;
+            color: #b3b3b3;
+            border: 1px solid #292929;
         }
+
         th {
-            background: #4CAF50;
-            color: #fff;
+            background: #292929;
         }
-        tr:nth-child(even) {
-            background: #f9f9f9;
+
+        tr:hover {
+            background: #292929;
+            color: #ffffff;
         }
+
+        /* Action Menu */
         .action-menu {
             position: relative;
             display: inline-block;
         }
+
         .action-menu-content {
             display: none;
             position: absolute;
-            background: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background: #292929;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
             z-index: 1;
-            border-radius: 4px;
         }
+
         .action-menu-content button {
-            border: none;
             background: none;
-            padding: 10px;
-            width: 100%;
+            border: none;
+            color: #b3b3b3;
+            padding: 8px 12px;
             text-align: left;
             cursor: pointer;
+            width: 100%;
+            transition: background 0.2s ease;
         }
+
+        .action-menu-content button:hover {
+            background: #4CAF50;
+            color: #ffffff;
+        }
+
         .action-menu:hover .action-menu-content {
             display: block;
         }
@@ -105,28 +136,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Data Entry App</h1>
+        <h1>Data Entry - Dark Theme</h1>
         <div class="total-amount" id="totalAmount">Total Amount: ৳ 0</div>
         <form id="entryForm">
-            <div class="form-group">
-                <label for="date">Date (dd/mm/yyyy):</label>
-                <input type="date" id="date" required>
-            </div>
-            <div class="form-group">
-                <label for="itemName">Item Name:</label>
-                <input type="text" id="itemName" required>
-            </div>
-            <div class="form-group">
-                <label for="amount">Amount (৳):</label>
-                <input type="number" id="amount" required>
-            </div>
-            <div class="form-group">
-                <label for="notes">Notes/Comments:</label>
-                <textarea id="notes"></textarea>
-            </div>
+            <label for="date">Date (dd/mm/yyyy):</label>
+            <input type="date" id="date" required>
+
+            <label for="itemName">Item Name:</label>
+            <input type="text" id="itemName" required>
+
+            <label for="amount">Amount (৳):</label>
+            <input type="number" id="amount" required>
+
+            <label for="notes">Notes/Comments:</label>
+            <textarea id="notes"></textarea>
+
             <button type="submit">Add Entry</button>
             <button type="button" onclick="printReport()">Print Report</button>
         </form>
+
         <table>
             <thead>
                 <tr>
@@ -224,24 +252,90 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.printReport = function () {
         const printWindow = window.open("", "_blank");
-        const reportContent = `
+        let reportContent = `
             <html>
                 <head>
                     <title>Report</title>
                 </head>
                 <body>
-                    <h1>Data Report</h1>
-                    <h3>Total Amount: ৳ ${entries.reduce((sum, entry) => sum + entry.amount, 0)}</h3>
+                    <style>
+                        body {
+                            font-family: 'Arial', sans-serif;
+                            margin: 0;
+                            padding: 20px;
+                        }
+
+                        h1 {
+                            text-align: center;
+                            color: #4CAF50;
+                            margin-bottom: 20px;
+                        }
+
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 20px;
+                        }
+
+                        th, td {
+                            text-align: center;
+                            padding: 10px;
+                            border: 1px solid #000;
+                        }
+
+                        th {
+                            background: #4CAF50;
+                            color: #fff;
+                        }
+
+                        .total {
+                            margin-top: 20px;
+                            text-align: right;
+                            font-weight: bold;
+                            font-size: 18px;
+                        }
+                    </style>
+                    <h1>Report</h1>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Doc No.</th>
+                                <th>Date</th>
+                                <th>Item Name</th>
+                                <th>Amount (৳)</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        `;
+        entries.forEach((entry) => {
+            reportContent += `
+                            <tr>
+                                <td>${entry.docNo}</td>
+                                <td>${formatDate(entry.date)}</td>
+                                <td>${entry.itemName}</td>
+                                <td>৳ ${entry.amount}</td>
+                                <td>${entry.notes}</td>
+                            </tr>
+            `;
+        });
+
+        const total = entries.reduce((sum, entry) => sum + entry.amount, 0);
+        reportContent += `
+                        </tbody>
+                    </table>
+                    <div class="total">Total Amount: ৳ ${total}</div>
                 </body>
             </html>
         `;
+
         printWindow.document.write(reportContent);
         printWindow.document.close();
         printWindow.print();
     };
 
+    // প্রথমে লোকাল স্টোরেজ থেকে ডেটা লোড করুন এবং টেবিলে দেখান
     renderTable();
 });
-</script>
 </body>
 </html>
