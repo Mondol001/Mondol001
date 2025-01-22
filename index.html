@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
             isEditMode = false;
         } else {
             const newEntry = {
-                docNo: new Date().getTime(),
+                docNo: entries.length + 1,
                 date,
                 itemName,
                 amount,
