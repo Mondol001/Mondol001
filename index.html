@@ -62,7 +62,7 @@
 </head>
 <body>
   <div class="container">
-    <h2>Login Page</h2>
+    <h2>Login System</h2>
     <div id="loginForm">
       <h3>Login</h3>
       <input type="text" id="loginUsername" placeholder="Username" required>
@@ -89,62 +89,77 @@
     </div>
   </div>
   <script>
+    // Show login form
     function showLogin() {
       document.getElementById("loginForm").style.display = "block";
       document.getElementById("signUpForm").style.display = "none";
       document.getElementById("passwordRecoveryForm").style.display = "none";
     }
 
+    // Show sign-up form
     function showSignUp() {
       document.getElementById("loginForm").style.display = "none";
       document.getElementById("signUpForm").style.display = "block";
       document.getElementById("passwordRecoveryForm").style.display = "none";
     }
 
+    // Show password recovery form
     function showPasswordRecovery() {
       document.getElementById("loginForm").style.display = "none";
       document.getElementById("signUpForm").style.display = "none";
       document.getElementById("passwordRecoveryForm").style.display = "block";
     }
 
+    // Sign up function
     function signUp() {
-      const username = document.getElementById("signUpUsername").value;
-      const password = document.getElementById("signUpPassword").value;
-      const confirmPassword = document.getElementById("signUpConfirmPassword").value;
+      const username = document.getElementById("signUpUsername").value.trim();
+      const password = document.getElementById("signUpPassword").value.trim();
+      const confirmPassword = document.getElementById("signUpConfirmPassword").value.trim();
 
       if (password !== confirmPassword) {
         alert("Passwords do not match!");
         return;
       }
 
-      if (localStorage.getItem(username)) {
+      // Get existing users from localStorage
+      let users = JSON.parse(localStorage.getItem("users")) || {};
+
+      if (users[username]) {
         alert("Username already exists!");
         return;
       }
 
-      localStorage.setItem(username, password);
+      // Save new user
+      users[username] = password;
+      localStorage.setItem("users", JSON.stringify(users));
       alert("Account created successfully!");
       showLogin();
     }
 
+    // Login function
     function login() {
-      const username = document.getElementById("loginUsername").value;
-      const password = document.getElementById("loginPassword").value;
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
 
-      const storedPassword = localStorage.getItem(username);
-      if (storedPassword === password) {
+      // Get users from localStorage
+      let users = JSON.parse(localStorage.getItem("users")) || {};
+
+      if (users[username] === password) {
         alert("Login successful!");
       } else {
         alert("Invalid username or password!");
       }
     }
 
+    // Recover password function
     function recoverPassword() {
-      const username = document.getElementById("recoveryUsername").value;
-      const storedPassword = localStorage.getItem(username);
+      const username = document.getElementById("recoveryUsername").value.trim();
 
-      if (storedPassword) {
-        alert(`Your password is: ${storedPassword}`);
+      // Get users from localStorage
+      let users = JSON.parse(localStorage.getItem("users")) || {};
+
+      if (users[username]) {
+        alert(`Your password is: ${users[username]}`);
       } else {
         alert("Username not found!");
       }
