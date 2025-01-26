@@ -1,240 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #4CAF50;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #45a049;
-        }
-        .entry-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .entry-table th, .entry-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
-        .entry-table th {
-            background: #4CAF50;
-            color: white;
-        }
-        .total-amount {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        .actions {
-            position: relative;
-        }
-        .actions button {
-            background: none;
-            border: none;
-            color: #4CAF50;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .actions button:hover {
-            color: #45a049;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Data Entry App</h1>
-        <form id="entryForm">
-            <div class="form-group">
-                <label>Date:</label>
-                <input type="date" id="date" required>
-            </div>
-            <div class="form-group">
-                <label>Order No:</label>
-                <input type="text" id="orderNo" required>
-            </div>
-            <div class="form-group">
-                <label>Party Name:</label>
-                <input type="text" id="partyName" required>
-            </div>
-            <div class="form-group">
-                <label>Color Name:</label>
-                <input type="text" id="colorName" required>
-            </div>
-            <div class="form-group">
-                <label>Shade No:</label>
-                <input type="text" id="shadeNo" required>
-            </div>
-            <div class="form-group">
-                <label>Bal Qty:</label>
-                <input type="number" id="balQty" required>
-            </div>
-            <div class="form-group">
-                <label>Particular:</label>
-                <input type="number" id="particular" required>
-            </div>
-            <div class="form-group">
-                <label>Short (Auto-calculated):</label>
-                <input type="number" id="shortQty" disabled>
-            </div>
-            <div class="form-group">
-                <label>Remarks:</label>
-                <textarea id="remarks"></textarea>
-            </div>
-            <button type="submit">Add Entry</button>
-        </form>
 
-        <table class="entry-table" id="entryTable">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Order No</th>
-                    <th>Party Name</th>
-                    <th>Color Name</th>
-                    <th>Shade No</th>
-                    <th>Bal Qty</th>
-                    <th>Particular</th>
-                    <th>Short</th>
-                    <th>Remarks</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <div class="total-amount" id="totalAmount">Total Bal Qty: ৳ 0</div>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+h2, h3 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+<body>
+  <div class="container">
+    <h2>Login Page</h2>
+    <div id="loginForm">
+      <h3>Login</h3>
+      <input type="text" id="loginUsername" placeholder="Username" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button onclick="login()">Login</button>
+      <p><a href="#" onclick="showPasswordRecovery()">Forgot Password?</a></p>
+      <p>Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a></p>
     </div>
 
-    <script>
-        const entryForm = document.getElementById('entryForm');
-        const entryTableBody = document.getElementById('entryTable').querySelector('tbody');
-        const totalAmountElement = document.getElementById('totalAmount');
+    <div id="signUpForm" style="display: none;">
+      <h3>Sign Up</h3>
+      <input type="text" id="signUpUsername" placeholder="Username" required>
+      <input type="password" id="signUpPassword" placeholder="Password" required>
+      <input type="password" id="signUpConfirmPassword" placeholder="Confirm Password" required>
+      <button onclick="signUp()">Sign Up</button>
+      <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
 
-        let entries = JSON.parse(localStorage.getItem('entries')) || [];
-        let editingIndex = null;
+    <div id="passwordRecoveryForm" style="display: none;">
+      <h3>Password Recovery</h3>
+      <input type="text" id="recoveryUsername" placeholder="Enter your username" required>
+      <button onclick="recoverPassword()">Recover Password</button>
+      <p><a href="#" onclick="showLogin()">Back to Login</a></p>
+    </div>
+  </div>
+  <script>
+function showLogin() {
+  document.getElementById("loginForm").style.display = "block";
+  document.getElementById("signUpForm").style.display = "none";
+  document.getElementById("passwordRecoveryForm").style.display = "none";
+}
 
-        function renderTable() {
-            entryTableBody.innerHTML = '';
-            let totalBalQty = 0;
+function showSignUp() {
+  document.getElementById("loginForm").style.display = "none";
+  document.getElementById("signUpForm").style.display = "block";
+  document.getElementById("passwordRecoveryForm").style.display = "none";
+}
 
-            entries.forEach((entry, index) => {
-                totalBalQty += parseFloat(entry.balQty);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${entry.date}</td>
-                    <td>${entry.orderNo}</td>
-                    <td>${entry.partyName}</td>
-                    <td>${entry.colorName}</td>
-                    <td>${entry.shadeNo}</td>
-                    <td>${entry.balQty}</td>
-                    <td>${entry.particular}</td>
-                    <td>${entry.shortQty}</td>
-                    <td>${entry.remarks}</td>
-                    <td class="actions">
-                        <button onclick="editEntry(${index})">Edit</button>
-                        <button onclick="deleteEntry(${index})">Delete</button>
-                    </td>
-                `;
-                entryTableBody.appendChild(row);
-            });
+function showPasswordRecovery() {
+  document.getElementById("loginForm").style.display = "none";
+  document.getElementById("signUpForm").style.display = "none";
+  document.getElementById("passwordRecoveryForm").style.display = "block";
+}
 
-            totalAmountElement.textContent = `Total Bal Qty: ৳ ${totalBalQty}`;
-            localStorage.setItem('entries', JSON.stringify(entries));
-        }
+function signUp() {
+  const username = document.getElementById("signUpUsername").value;
+  const password = document.getElementById("signUpPassword").value;
+  const confirmPassword = document.getElementById("signUpConfirmPassword").value;
 
-        function deleteEntry(index) {
-            entries.splice(index, 1);
-            renderTable();
-        }
+  if (password !== confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
 
-        function editEntry(index) {
-            const entry = entries[index];
-            document.getElementById('date').value = entry.date;
-            document.getElementById('orderNo').value = entry.orderNo;
-            document.getElementById('partyName').value = entry.partyName;
-            document.getElementById('colorName').value = entry.colorName;
-            document.getElementById('shadeNo').value = entry.shadeNo;
-            document.getElementById('balQty').value = entry.balQty;
-            document.getElementById('particular').value = entry.particular;
-            document.getElementById('remarks').value = entry.remarks;
+  if (localStorage.getItem(username)) {
+    alert("Username already exists!");
+    return;
+  }
 
-            editingIndex = index;
-        }
+  localStorage.setItem(username, password);
+  alert("Account created successfully!");
+  showLogin();
+}
 
-        entryForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+function login() {
+  const username = document.getElementById("loginUsername").value;
+  const password = document.getElementById("loginPassword").value;
 
-            const balQty = parseFloat(document.getElementById('balQty').value);
-            const particular = parseFloat(document.getElementById('particular').value);
-            const shortQty = balQty - particular;
+  const storedPassword = localStorage.getItem(username);
+  if (storedPassword === password) {
+    alert("Login successful!");
+  } else {
+    alert("Invalid username or password!");
+  }
+}
 
-            const newEntry = {
-                date: document.getElementById('date').value,
-                orderNo: document.getElementById('orderNo').value,
-                partyName: document.getElementById('partyName').value,
-                colorName: document.getElementById('colorName').value,
-                shadeNo: document.getElementById('shadeNo').value,
-                balQty: balQty,
-                particular: particular,
-                shortQty: shortQty,
-                remarks: document.getElementById('remarks').value,
-            };
+function recoverPassword() {
+  const username = document.getElementById("recoveryUsername").value;
+  const storedPassword = localStorage.getItem(username);
 
-            if (editingIndex !== null) {
-                entries[editingIndex] = newEntry;
-                editingIndex = null;
-            } else {
-                entries.push(newEntry);
-            }
-
-            renderTable();
-            entryForm.reset();
-        });
-
-        // Initial render
-        renderTable();
-    </script>
+  if (storedPassword) {
+    alert(`Your password is: ${storedPassword}`);
+  } else {
+    alert("Username not found!");
+  }
+}
+</script>
 </body>
 </html>
