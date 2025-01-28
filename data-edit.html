@@ -32,13 +32,15 @@
             border: 1px solid #00ff00;
             padding: 15px;
         }
-        .orders-container {
-            max-height: 300px;
-            overflow-y: scroll;
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
         }
-        .order-item {
+        th, td {
             padding: 10px;
-            border-bottom: 1px solid #00ff00;
+            border: 1px solid #00ff00;
+            text-align: center;
         }
         .delete-btn {
             background-color: red;
@@ -48,25 +50,6 @@
         }
         .delete-btn:hover {
             background-color: darkred;
-        }
-        #ordersModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            text-align: center;
-            padding-top: 50px;
-        }
-        #ordersModal .modal-content {
-            background-color: #222;
-            padding: 20px;
-            border-radius: 10px;
-            max-height: 80%;
-            overflow-y: auto;
         }
     </style>
 </head>
@@ -101,12 +84,24 @@
 
     <button onclick="showAllOrders()">সব অর্ডার দেখুন</button>
 
-    <div id="ordersModal">
-        <div class="modal-content">
-            <h2>সব অর্ডার</h2>
-            <div id="ordersContainer" class="orders-container"></div>
-            <button onclick="closeModal()">বন্ধ করুন</button>
-        </div>
+    <div id="allOrdersTable" style="display:none; margin-top: 20px;">
+        <h2>সব অর্ডার</h2>
+        <table id="ordersTable">
+            <thead>
+                <tr>
+                    <th>অর্ডার নং</th>
+                    <th>পার্টির নাম</th>
+                    <th>শেড নং</th>
+                    <th>অর্ডার পরিমাণ</th>
+                    <th>ব্যালেন্স পরিমাণ</th>
+                    <th>মন্তব্য</th>
+                    <th>ডিলেট</th>
+                </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+                <!-- All orders will be listed here -->
+            </tbody>
+        </table>
     </div>
 
     <script>
@@ -181,26 +176,24 @@
         // Show All Orders ফাংশন
         function showAllOrders() {
             const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const ordersContainer = document.getElementById('ordersContainer');
-            ordersContainer.innerHTML = '';
+            const ordersTableBody = document.getElementById('ordersTableBody');
+            ordersTableBody.innerHTML = ''; // Clear existing table rows
 
             dataEntries.forEach(entry => {
-                const orderItem = document.createElement('div');
-                orderItem.classList.add('order-item');
-                orderItem.innerHTML = `
-                    <p>অর্ডার নং: ${entry.orderNo}</p>
-                    <p>পার্টির নাম: ${entry.partyName}</p>
-                    <p>শেড নং: ${entry.shadeNo}</p>
-                    <p>অর্ডার পরিমাণ: ${entry.orderQty}</p>
-                    <p>ব্যালেন্স পরিমাণ: ${entry.balQty}</p>
-                    <p>মন্তব্য: ${entry.remarks}</p>
-                    <button class="delete-btn" onclick="deleteOrder('${entry.orderNo}')">ডিলেট করুন</button>
-                    <hr>
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.orderNo}</td>
+                    <td>${entry.partyName}</td>
+                    <td>${entry.shadeNo}</td>
+                    <td>${entry.orderQty}</td>
+                    <td>${entry.balQty}</td>
+                    <td>${entry.remarks}</td>
+                    <td><button class="delete-btn" onclick="deleteOrder('${entry.orderNo}')">ডিলেট</button></td>
                 `;
-                ordersContainer.appendChild(orderItem);
+                ordersTableBody.appendChild(row);
             });
 
-            document.getElementById('ordersModal').style.display = 'block';
+            document.getElementById('allOrdersTable').style.display = 'block';
         }
 
         // অর্ডার ডিলেট ফাংশন
@@ -210,11 +203,6 @@
             localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
             alert("অর্ডার সফলভাবে ডিলেট হয়েছে!");
             showAllOrders(); // পুনরায় সব অর্ডার দেখান
-        }
-
-        // মডাল বন্ধ করার ফাংশন
-        function closeModal() {
-            document.getElementById('ordersModal').style.display = 'none';
         }
     </script>
 </body>
