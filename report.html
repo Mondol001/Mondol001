@@ -23,7 +23,7 @@
       background-color: #008000;
     }
     table {
-      width: 90%;
+      width: 100%;
       margin: 20px auto;
       border-collapse: collapse;
     }
@@ -43,6 +43,22 @@
     #reportContainer {
       display: none;
       margin-top: 20px;
+    }
+    @media print {
+      body {
+        background-color: white;
+        color: black;
+      }
+      button, input {
+        display: none;
+      }
+      table {
+        width: 100%;
+        border: 1px solid black;
+      }
+      th, td {
+        border: 1px solid black;
+      }
     }
   </style>
 </head>
