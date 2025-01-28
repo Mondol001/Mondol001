@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hacker Style Data Entry</title>
-
+  <title>Data Entry System - Hacker Theme</title>
+  
   <style>
-    /* Body and Basic Styling */
+    /* Basic Hacker Theme Styling */
     * {
       margin: 0;
       padding: 0;
@@ -16,27 +16,21 @@
       background: #000;
       color: #0f0;
       font-family: 'Courier New', Courier, monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       padding: 20px;
-      min-height: 100vh;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 20px;
       text-shadow: 0px 0px 5px #0f0;
     }
 
-    form, .popup {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 10px;
+    form {
+      background: rgba(0, 0, 0, 0.7);
       padding: 20px;
-      box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.2);
-      width: 100%;
+      border-radius: 8px;
       max-width: 400px;
+      margin: 20px auto;
+      box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.7);
     }
 
     label {
@@ -47,17 +41,15 @@
     input, button {
       width: 100%;
       padding: 10px;
-      margin: 5px 0;
       background: rgba(0, 255, 0, 0.1);
       color: #0f0;
       border: 1px solid #0f0;
       border-radius: 5px;
-      font-size: 1rem;
+      margin-bottom: 10px;
     }
 
     input:focus, button:hover {
-      background: rgba(0, 255, 0, 0.2);
-      outline: none;
+      background: rgba(0, 255, 0, 0.3);
     }
 
     button {
@@ -68,7 +60,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       color: #0f0;
     }
 
@@ -78,14 +70,23 @@
       text-align: left;
     }
 
-    /* Popup */
-    .popup {
+    .popup, .overlay {
       display: none;
+    }
+
+    .popup {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 20px;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 10;
+      width: 80%;
+      max-width: 500px;
+      box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.5);
     }
 
     .popup button {
@@ -103,17 +104,26 @@
       z-index: 5;
     }
 
+    .close-btn {
+      color: red;
+      background: black;
+      padding: 5px 10px;
+      cursor: pointer;
+      border: 1px solid red;
+      float: right;
+    }
+
     /* Responsive Design */
     @media only screen and (max-width: 600px) {
-      body {
-        padding: 10px;
+      form {
+        width: 90%;
       }
     }
   </style>
 </head>
 
 <body>
-  <h1>Data Entry - Hacker Theme</h1>
+  <h1>Data Entry System</h1>
 
   <p>Last Entry Order No: <span id="lastOrderNo">None</span></p>
 
