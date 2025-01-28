@@ -130,6 +130,7 @@
 
     <script>
         let entries = JSON.parse(localStorage.getItem('entries')) || [];
+        let filteredEntries = [];
 
         function submitData() {
             let orderNo = document.getElementById('orderNo').value;
@@ -174,7 +175,7 @@
 
         function searchOrder() {
             let searchOrderNo = document.getElementById('searchOrderNo').value;
-            let filteredEntries = entries.filter(entry => entry.orderNo === searchOrderNo);
+            filteredEntries = entries.filter(entry => entry.orderNo === searchOrderNo);
             if (filteredEntries.length > 0) {
                 displayReport(filteredEntries);
             } else {
@@ -183,7 +184,8 @@
         }
 
         function showAllOrders() {
-            displayReport(entries);
+            filteredEntries = entries;
+            displayReport(filteredEntries);
         }
 
         function displayReport(filteredEntries) {
@@ -214,7 +216,7 @@
             printWindow.document.write('<table>');
             printWindow.document.write('<thead><tr><th>অর্ডার নং</th><th>পার্টি নাম</th><th>শেড নং</th><th>অর্ডার কিউটি</th><th>ব্যাল কিউটি</th><th>রিমার্কস</th></tr></thead><tbody>');
 
-            entries.forEach(entry => {
+            filteredEntries.forEach(entry => {
                 printWindow.document.write(`
                     <tr>
                         <td>${entry.orderNo}</td>
