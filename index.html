@@ -14,7 +14,7 @@
     }
 
     body {
-      background-color: #121212;
+      background-color: #0e0e0e;
       color: #00ff00;
       display: flex;
       flex-direction: column;
@@ -90,6 +90,12 @@
       width: 80%;
       max-width: 800px;
     }
+
+    .chart-title {
+      margin-top: 30px;
+      font-size: 20px;
+      color: #00ff00;
+    }
   </style>
 </head>
 <body>
@@ -112,17 +118,21 @@
     <p class="notice-text">📢 নোটিশ: আজকের সমস্ত ডেটা সঠিকভাবে এন্ট্রি করুন এবং রিপোর্ট যাচাই করুন।</p>
   </div>
 
-  <h2>ডেটা অ্যানালাইসিস</h2>
+  <h2 class="chart-title">ডেটা অ্যানালাইসিস</h2>
 
   <div class="chart-container">
-    <canvas id="dataChart"></canvas>
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="pieChart"></canvas>
   </div>
 
   <script>
-    // ডামি ডেটা অ্যানালাইসিস (লোকাল স্টোরেজ থেকে ডেটা নিতে পারেন)
-    const labels = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন"];
-    const data = {
-      labels: labels,
+    // বার চার্ট ডেটা
+    const barLabels = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন"];
+    const barData = {
+      labels: barLabels,
       datasets: [{
         label: 'মাসিক অর্ডার পরিমাণ',
         backgroundColor: 'rgba(0, 255, 0, 0.5)',
@@ -131,9 +141,9 @@
       }]
     };
 
-    const config = {
+    const barConfig = {
       type: 'bar',
-      data: data,
+      data: barData,
       options: {
         responsive: true,
         plugins: {
@@ -144,11 +154,34 @@
       }
     };
 
-    const dataChart = new Chart(
-      document.getElementById('dataChart'),
-      config
-    );
+    new Chart(document.getElementById('barChart'), barConfig);
+
+    // Pie চার্ট ডেটা
+    const pieData = {
+      labels: ["অর্ডার A", "অর্ডার B", "অর্ডার C", "অর্ডার D"],
+      datasets: [{
+        label: 'অর্ডার বণ্টন',
+        data: [10, 20, 30, 40],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.7)',
+          'rgba(54, 162, 235, 0.7)',
+          'rgba(255, 206, 86, 0.7)',
+          'rgba(75, 192, 192, 0.7)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    const pieConfig = {
+      type: 'pie',
+      data: pieData,
+      options: {
+        responsive: true
+      }
+    };
+
+    new Chart(document.getElementById('pieChart'), pieConfig);
   </script>
-  
+
 </body>
 </html>
