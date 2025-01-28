@@ -278,6 +278,47 @@
                 document.getElementById('passwordPopup').style.display = 'none';
                 document.getElementById('passwordInput').value = '';
             }
+// Show report popup
+function showReportPopup() {
+    if (entries.length === 0) {
+        alert('কোনো ডেটা পাওয়া যায়নি!');
+        return;
+    }
+
+    let reportContent = `<h3>অর্ডার রিপোর্ট</h3><table>
+        <thead>
+            <tr>
+                <th>অর্ডার নং</th>
+                <th>পার্টি নাম</th>
+                <th>শেড নং</th>
+                <th>অর্ডার কিউটি</th>
+                <th>ব্যাল কিউটি</th>
+                <th>রিমার্কস</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+    entries.forEach(entry => {
+        reportContent += `
+            <tr>
+                <td>${entry.orderNo}</td>
+                <td>${entry.partyName}</td>
+                <td>${entry.shadeNo}</td>
+                <td>${entry.orderQty}</td>
+                <td>${entry.balQty}</td>
+                <td>${entry.remarks}</td>
+            </tr>`;
+    });
+
+    reportContent += '</tbody></table>';
+
+    // Display report content in a new popup window
+    let reportWindow = window.open('', '', 'width=800,height=600');
+    reportWindow.document.write('<html><head><title>রিপোর্ট</title></head><body>');
+    reportWindow.document.write(reportContent);
+    reportWindow.document.write('</body></html>');
+    reportWindow.document.close();
+}
 
             // Initially render the table
             renderTable();
