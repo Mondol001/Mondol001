@@ -3,60 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ডেটা এডিট</title>
+    <title>ডেটা এন্ট্রি</title>
     <style>
-        input, button {
-            width: 100%;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f0f;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"], input[type="number"] {
             padding: 10px;
-            margin: 10px 0;
+            width: 300px;
+            margin: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #008000;
+        }
+        .last-entry {
+            background: #111;
+            padding: 15px;
+            color: #00ff00;
+            margin: 20px 0;
+            border: 1px solid #444;
         }
     </style>
 </head>
 <body>
-    <h1>ডেটা এডিট করুন</h1>
-    <input type="text" id="searchOrderNo" placeholder="অর্ডার নং দিয়ে সার্চ করুন" />
-    <button onclick="searchOrder()">সার্চ</button>
-    <div id="editSection" style="display: none;">
-        <input type="text" id="editPartyName" />
-        <input type="text" id="editShadeNo" />
-        <input type="number" id="editOrderQty" />
-        <input type="number" id="editBalQty" />
-        <textarea id="editRemarks"></textarea>
-        <button onclick="updateData()">আপডেট করুন</button>
-    </div>
+    <h1>ডেটা এন্ট্রি পেজ</h1>
+    <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
+    <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
+    <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
+    <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
+
+    <h2>লাস্ট এন্ট্রি:</h2>
+    <div id="lastEntry" class="last-entry">কোনো এন্ট্রি নেই।</div>
+
+    <h2>নতুন ডেটা এন্ট্রি করুন:</h2>
+    <form id="entryForm">
+        <input type="text" id="orderNo" placeholder="অর্ডার নং" required><br>
+        <input type="text" id="partyName" placeholder="পার্টির নাম" required><br>
+        <input type="text" id="shadeNo" placeholder="শেড নং" required><br>
+        <input type="number" id="orderQty" placeholder="অর্ডার পরিমাণ" required><br>
+        <input type="number" id="balQty" placeholder="ব্যালেন্স পরিমাণ" required><br>
+        <input type="text" id="remarks" placeholder="মন্তব্য"><br>
+        <button type="submit">সাবমিট</button>
+    </form>
 
     <script>
-        let entries = JSON.parse(localStorage.getItem('entries')) || [];
-        let currentIndex;
+        // লাস্ট এন্ট্রি দেখানো ফাংশন
+        function displayLastEntry() {
+            const entries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+            const lastEntry = entries[entries.length - 1];
 
-        function searchOrder() {
-            let searchOrderNo = document.getElementById('searchOrderNo').value;
-            currentIndex = entries.findIndex(entry => entry.orderNo === searchOrderNo);
-
-            if (currentIndex === -1) {
-                alert('অর্ডার পাওয়া যায়নি!');
-                return;
+            if (lastEntry) {
+                document.getElementById('lastEntry').innerHTML = `
+                    <p>অর্ডার নং: ${lastEntry.orderNo}</p>
+                    <p>পার্টির নাম: ${lastEntry.partyName}</p>
+                    <p>শেড নং: ${lastEntry.shadeNo}</p>
+                    <p>অর্ডার পরিমাণ: ${lastEntry.orderQty}</p>
+                    <p>ব্যালেন্স পরিমাণ: ${lastEntry.balQty}</p>
+                    <p>মন্তব্য: ${lastEntry.remarks}</p>
+                `;
+            } else {
+                document.getElementById('lastEntry').innerText = "কোনো এন্ট্রি নেই।";
             }
-
-            document.getElementById('editSection').style.display = 'block';
-            let entry = entries[currentIndex];
-            document.getElementById('editPartyName').value = entry.partyName;
-            document.getElementById('editShadeNo').value = entry.shadeNo;
-            document.getElementById('editOrderQty').value = entry.orderQty;
-            document.getElementById('editBalQty').value = entry.balQty;
-            document.getElementById('editRemarks').value = entry.remarks;
         }
 
-        function updateData() {
-            entries[currentIndex].partyName = document.getElementById('editPartyName').value;
-            entries[currentIndex].shadeNo = document.getElementById('editShadeNo').value;
-            entries[currentIndex].orderQty = document.getElementById('editOrderQty').value;
-            entries[currentIndex].balQty = document.getElementById('editBalQty').value;
-            entries[currentIndex].remarks = document.getElementById('editRemarks').value;
+        // ডেটা সেভ ফাংশন
+        document.getElementById('entryForm').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-            localStorage.setItem('entries', JSON.stringify(entries));
-            alert('ডেটা আপডেট সফল হয়েছে!');
-        }
+            const orderNo = document.getElementById('orderNo').value;
+            const partyName = document.getElementById('partyName').value;
+            const shadeNo = document.getElementById('shadeNo').value;
+            const orderQty = document.getElementById('orderQty').value;
+            const balQty = document.getElementById('balQty').value;
+            const remarks = document.getElementById('remarks').value;
+
+            const entry = { orderNo, partyName, shadeNo, orderQty, balQty, remarks };
+
+            let dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+            dataEntries.push(entry);
+            localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
+
+            alert("এন্ট্রি সফল হয়েছে!");
+            document.getElementById('entryForm').reset();
+
+            displayLastEntry();
+        });
+
+        // লোড হলে লাস্ট এন্ট্রি দেখাও
+        window.onload = displayLastEntry;
     </script>
 </body>
 </html>
