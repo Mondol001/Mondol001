@@ -5,61 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ড্যাশবোর্ড</title>
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #0f0f0f;
-      color: #00ff00;
-      text-align: center;
-      padding: 0;
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
     }
-    .container {
+
+    body {
+      background-color: #121212;
+      color: #00ff00;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
       padding: 20px;
     }
-    button {
-      background-color: #00ff00;
-      border: none;
-      padding: 15px 30px;
-      color: #0f0f0f;
-      font-size: 18px;
+
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .dashboard-card {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
       cursor: pointer;
-      margin: 10px;
+      transition: all 0.3s;
+      border: 2px solid #00ff00;
     }
-    button:hover {
-      background-color: #008000;
+
+    .dashboard-card:hover {
+      background: #00ff00;
+      color: black;
+      transform: scale(1.05);
     }
+
+    .dashboard-card a {
+      text-decoration: none;
+      color: inherit;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
     .notice-board {
-      margin: 30px auto;
-      width: 90%;
-      max-width: 800px;
-      background-color: #333;
-      color: white;
+      background: #000;
+      border: 2px solid #00ff00;
       padding: 10px;
+      margin-top: 30px;
+      width: 100%;
+      max-width: 900px;
       overflow: hidden;
-      border: 1px solid #444;
-      height: 50px;
       position: relative;
     }
+
     .notice-text {
-      position: absolute;
+      display: inline-block;
       white-space: nowrap;
-      animation: scroll 8s linear infinite;
+      animation: move 10s linear infinite;
     }
-    @keyframes scroll {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+
+    @keyframes move {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ড্যাশবোর্ড</h1>
-    <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
-    <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
-    <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
-    <div class="notice-board">
-      <div class="notice-text">নোটিশ বোর্ড: নতুন ফিচার যোগ করা হয়েছে, রিপোর্ট প্রিন্ট করার সুবিধা এখন সহজ!</div>
+
+  <h1>ড্যাশবোর্ড</h1>
+
+  <div class="dashboard-container">
+    <div class="dashboard-card">
+      <a href="data-entry.html">ডেটা এন্ট্রি</a>
+    </div>
+    <div class="dashboard-card">
+      <a href="data-edit.html">ডেটা এডিট</a>
+    </div>
+    <div class="dashboard-card">
+      <a href="report.html">রিপোর্ট</a>
     </div>
   </div>
+
+  <div class="notice-board">
+    <p class="notice-text">📢 নোটিশ: আজকের সমস্ত ডেটা সঠিকভাবে এন্ট্রি করুন এবং রিপোর্ট যাচাই করুন।</p>
+  </div>
+
 </body>
 </html>
