@@ -24,7 +24,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-        .form-section input, .form-section button {
+        .form-section input, .form-section button, .form-section textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -118,6 +118,7 @@
                         <th>অর্ডার কিউটি</th>
                         <th>ব্যাল কিউটি</th>
                         <th>রিমার্কস</th>
+                        <th>একশন</th>
                     </tr>
                 </thead>
                 <tbody id="reportBody"></tbody>
@@ -191,7 +192,7 @@
         function displayReport(filteredEntries) {
             let reportBody = document.getElementById('reportBody');
             reportBody.innerHTML = '';
-            filteredEntries.forEach(entry => {
+            filteredEntries.forEach((entry, index) => {
                 let row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${entry.orderNo}</td>
@@ -200,11 +201,50 @@
                     <td>${entry.orderQty}</td>
                     <td>${entry.balQty}</td>
                     <td>${entry.remarks}</td>
+                    <td>
+                        <button onclick="editEntry(${index})">সম্পাদন করুন</button>
+                        <button onclick="deleteEntry(${index})">মুছুন</button>
+                    </td>
                 `;
                 reportBody.appendChild(row);
             });
             document.getElementById('reportSection').style.display = 'block';
             closeReportPopup();
+        }
+
+        function editEntry(index) {
+            let entry = filteredEntries[index];
+            let updatedOrderNo = prompt('নতুন অর্ডার নং দিন:', entry.orderNo);
+            let updatedPartyName = prompt('নতুন পার্টি নাম দিন:', entry.partyName);
+            let updatedShadeNo = prompt('নতুন শেড নং দিন:', entry.shadeNo);
+            let updatedOrderQty = prompt('নতুন অর্ডার কিউটি দিন:', entry.orderQty);
+            let updatedBalQty = prompt('নতুন ব্যাল কিউটি দিন:', entry.balQty);
+            let updatedRemarks = prompt('নতুন রিমার্কস দিন:', entry.remarks);
+
+            if (updatedOrderNo && updatedPartyName && updatedShadeNo && updatedOrderQty && updatedBalQty) {
+                entries[index] = {
+                    orderNo: updatedOrderNo,
+                    partyName: updatedPartyName,
+                    shadeNo: updatedShadeNo,
+                    orderQty: updatedOrderQty,
+                    balQty: updatedBalQty,
+                    remarks: updatedRemarks
+                };
+                localStorage.setItem('entries', JSON.stringify(entries));
+                alert('এন্ট্রি আপডেট হয়েছে!');
+                displayReport(filteredEntries);
+            } else {
+                alert('সব তথ্য দিন!');
+            }
+        }
+
+        function deleteEntry(index) {
+            if (confirm('আপনি কি নিশ্চিতভাবে মুছতে চান?')) {
+                entries.splice(index, 1);
+                localStorage.setItem('entries', JSON.stringify(entries));
+                alert('এন্ট্রি মুছে ফেলা হয়েছে!');
+                displayReport(entries);
+            }
         }
 
         function printReport() {
