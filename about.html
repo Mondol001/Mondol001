@@ -1,67 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me</title>
-    <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
+    <title>রিপোর্ট</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #111;
-            color: #fff;
-            line-height: 1.6;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .container {
-            width: 80%;
-            max-width: 900px;
-            margin: 50px auto;
-            background: #222;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
         }
-        h1 {
-            font-size: 2.5rem;
-            color: #00ff00;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #ddd;
-        }
-        a {
-            color: #00ff00;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .back-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #00ff00;
-            color: #111;
-            text-decoration: none;
-            font-size: 1.2rem;
-            border-radius: 5px;
-        }
-        .back-btn:hover {
-            background: #fff;
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>About Me</h1>
-        <p>Hello! My name is Jubaer Hossain, and I am passionate about web development, technology, and creating innovative solutions. Over the years, I have worked on several projects, learning and growing along the way.</p>
-        <p>I specialize in creating user-friendly interfaces, designing responsive websites, and exploring the latest technologies. This website is a small reflection of my journey, skills, and interests.</p>
-        <p>Feel free to explore the site, check out the tools and resources, and get to know more about my work. If you have any questions or would like to collaborate, please don't hesitate to <a href="contact.html">get in touch</a>.</p>
-        <a href="index.html" class="back-btn">Back to Home</a>
-    </div>
+    <h1>রিপোর্ট</h1>
+    <button onclick="filterData()">ফিল্টার করুন</button>
+    <button onclick="printReport()">প্রিন্ট প্রিভিউ</button>
+    <table id="reportTable">
+        <thead>
+            <tr>
+                <th>অর্ডার নং</th>
+                <th>পার্টি নাম</th>
+                <th>শেড নং</th>
+                <th>অর্ডার কিউটি</th>
+                <th>ব্যাল কিউটি</th>
+                <th>রিমার্কস</th>
+            </tr>
+        </thead>
+        <tbody id="reportBody"></tbody>
+    </table>
+
+    <script>
+        let entries = JSON.parse(localStorage.getItem('entries')) || [];
+
+        function loadReport() {
+            let reportBody = document.getElementById('reportBody');
+            reportBody.innerHTML = '';
+            entries.forEach(entry => {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.orderNo}</td>
+                    <td>${entry.partyName}</td>
+                    <td>${entry.shadeNo}</td>
+                    <td>${entry.orderQty}</td>
+                    <td>${entry.balQty}</td>
+                    <td>${entry.remarks}</td>
+                `;
+                reportBody.appendChild(row);
+            });
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        window.onload = loadReport;
+    </script>
 </body>
 </html>
