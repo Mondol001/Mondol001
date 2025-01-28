@@ -259,7 +259,18 @@
             entries.splice(index, 1);
             localStorage.setItem('entries', JSON.stringify(entries));
             alert('এডিট মোডে প্রবেশ করেছেন!');
-        }
+        }  
+function printReport() {
+    const printContent = document.getElementById('reportTable').outerHTML; // টেবিলের HTML বের করা
+    const newWindow = window.open('', '', 'width=800,height=600'); // একটি নতুন উইন্ডো খুলুন
+    newWindow.document.write('<html><head><title>প্রিন্ট রিপোর্ট</title></head><body>'); // HTML শুরু
+    newWindow.document.write('<h1 style="text-align:center;">অর্ডার রিপোর্ট</h1>'); // টেবিল শিরোনাম
+    newWindow.document.write(printContent); // টেবিল যোগ করা
+    newWindow.document.write('</body></html>'); // HTML শেষ
+    newWindow.document.close();
+    newWindow.print(); // প্রিন্ট করুন
+}
+
 
         function deleteEntry(index) {
             if (confirm('আপনি কি নিশ্চিত যে আপনি এই এন্ট্রিটি মুছে ফেলতে চান?')) {
