@@ -1,136 +1,147 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ডেটা এডিট পেজ</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0f0f0f;
-            color: #00ff00;
-            text-align: center;
-            padding: 20px;
-        }
-        select, input[type="text"], input[type="number"] {
-            padding: 10px;
-            width: 300px;
-            margin: 5px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #008000;
-        }
-        .data-container {
-            margin-top: 20px;
-            border: 1px solid #00ff00;
-            padding: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ডেটা এডিট এবং ডিলিট</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #0f0f0f;
+      color: #00ff00;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #00ff00;
+      color: black;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #008000;
+    }
+    table {
+      width: 100%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #00ff00;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #008000;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      margin: 10px;
+    }
+    #dataContainer {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>ডেটা এডিট পেজ</h1>
+  <h1>ডেটা এডিট এবং ডিলিট পেজ</h1>
 
-    <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
-    <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
-    <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
-    <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
+  <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
+  <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
+  <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
-    <h2>অর্ডার নং নির্বাচন করুন বা লিখুন:</h2>
-    <select id="orderDropdown" onchange="populateSearchInput()">
-        <option value="">অর্ডার নির্বাচন করুন</option>
-    </select>
-    <br>
-    <input type="text" id="searchOrderNo" placeholder="অর্ডার নং লিখুন">
-    <button onclick="searchData()">সার্চ করুন</button>
+  <h2>অর্ডার অনুসন্ধান করুন:</h2>
+  <input type="text" id="searchOrderNo" placeholder="অর্ডার নং লিখুন">
+  <button onclick="searchOrder()">সার্চ করুন</button>
 
-    <div id="dataContainer" class="data-container" style="display:none;">
-        <h3>ডেটা এডিট করুন:</h3>
-        <form id="editForm">
-            <input type="text" id="editOrderNo" placeholder="অর্ডার নং" readonly><br>
-            <input type="text" id="editPartyName" placeholder="পার্টির নাম"><br>
-            <input type="text" id="editShadeNo" placeholder="শেড নং"><br>
-            <input type="number" id="editOrderQty" placeholder="অর্ডার পরিমাণ"><br>
-            <input type="number" id="editBalQty" placeholder="ব্যালেন্স পরিমাণ"><br>
-            <input type="text" id="editRemarks" placeholder="মন্তব্য"><br>
-            <button type="submit">এডিট সংরক্ষণ করুন</button>
-        </form>
-    </div>
+  <div id="dataContainer">
+    <h2>সংশোধনযোগ্য ডেটা</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>অর্ডার নং</th>
+          <th>পার্টি নাম</th>
+          <th>শেড নং</th>
+          <th>অর্ডার পরিমাণ</th>
+          <th>ব্যালেন্স পরিমাণ</th>
+          <th>মন্তব্য</th>
+          <th>কর্ম</th>
+        </tr>
+      </thead>
+      <tbody id="dataTable"></tbody>
+    </table>
+  </div>
 
-    <script>
-        // লোকাল স্টোরেজ থেকে ড্রপডাউন ভরাট করা
-        function loadOrderDropdown() {
-            const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const dropdown = document.getElementById('orderDropdown');
-            dropdown.innerHTML = '<option value="">অর্ডার নির্বাচন করুন</option>';
+  <script>
+    // অর্ডার অনুসন্ধান করে ডেটা লোড করা
+    function searchOrder() {
+      const orderNo = document.getElementById('searchOrderNo').value;
+      const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+      const filteredEntries = dataEntries.filter(entry => entry.orderNo === orderNo);
 
-            dataEntries.forEach(entry => {
-                const option = document.createElement('option');
-                option.value = entry.orderNo;
-                option.textContent = entry.orderNo;
-                dropdown.appendChild(option);
-            });
-        }
+      const dataTable = document.getElementById('dataTable');
+      dataTable.innerHTML = ''; // পূর্ববর্তী ডেটা মুছে ফেলা
 
-        // ড্রপডাউন থেকে ইনপুট ফিল্ডে অর্ডার সেট করা
-        function populateSearchInput() {
-            const selectedOrder = document.getElementById('orderDropdown').value;
-            document.getElementById('searchOrderNo').value = selectedOrder;
-        }
+      if (filteredEntries.length === 0) {
+        alert('কোনো ডেটা পাওয়া যায়নি!');
+        document.getElementById('dataContainer').style.display = 'none';
+        return;
+      }
 
-        // ডেটা সার্চ ফাংশন
-        function searchData() {
-            const searchOrderNo = document.getElementById('searchOrderNo').value;
-            const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const entry = dataEntries.find(item => item.orderNo === searchOrderNo);
+      document.getElementById('dataContainer').style.display = 'block';
 
-            if (entry) {
-                document.getElementById('dataContainer').style.display = 'block';
-                document.getElementById('editOrderNo').value = entry.orderNo;
-                document.getElementById('editPartyName').value = entry.partyName;
-                document.getElementById('editShadeNo').value = entry.shadeNo;
-                document.getElementById('editOrderQty').value = entry.orderQty;
-                document.getElementById('editBalQty').value = entry.balQty;
-                document.getElementById('editRemarks').value = entry.remarks;
-            } else {
-                alert("অর্ডার পাওয়া যায়নি!");
-                document.getElementById('dataContainer').style.display = 'none';
-            }
-        }
+      filteredEntries.forEach((entry, index) => {
+        const row = document.createElement('tr');
 
-        // ডেটা এডিট এবং আপডেট ফাংশন
-        document.getElementById('editForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+        row.innerHTML = `
+          <td><input type="text" value="${entry.orderNo}" disabled></td>
+          <td><input type="text" value="${entry.partyName}"></td>
+          <td><input type="text" value="${entry.shadeNo}"></td>
+          <td><input type="number" value="${entry.orderQty}"></td>
+          <td><input type="number" value="${entry.balQty}"></td>
+          <td><input type="text" value="${entry.remarks}"></td>
+          <td>
+            <button onclick="updateData(${index})">আপডেট করুন</button>
+            <button onclick="deleteData(${index})">ডিলিট করুন</button>
+          </td>
+        `;
+        dataTable.appendChild(row);
+      });
+    }
 
-            const orderNo = document.getElementById('editOrderNo').value;
-            const partyName = document.getElementById('editPartyName').value;
-            const shadeNo = document.getElementById('editShadeNo').value;
-            const orderQty = document.getElementById('editOrderQty').value;
-            const balQty = document.getElementById('editBalQty').value;
-            const remarks = document.getElementById('editRemarks').value;
+    // ডেটা আপডেট ফাংশন
+    function updateData(index) {
+      const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+      const updatedRow = document.querySelectorAll('#dataTable tr')[index];
 
-            let dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const index = dataEntries.findIndex(item => item.orderNo === orderNo);
+      const updatedEntry = {
+        orderNo: updatedRow.cells[0].querySelector('input').value,
+        partyName: updatedRow.cells[1].querySelector('input').value,
+        shadeNo: updatedRow.cells[2].querySelector('input').value,
+        orderQty: updatedRow.cells[3].querySelector('input').value,
+        balQty: updatedRow.cells[4].querySelector('input').value,
+        remarks: updatedRow.cells[5].querySelector('input').value,
+      };
 
-            if (index !== -1) {
-                dataEntries[index] = { orderNo, partyName, shadeNo, orderQty, balQty, remarks };
-                localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
-                alert("ডেটা সফলভাবে আপডেট হয়েছে!");
-                document.getElementById('editForm').reset();
-                document.getElementById('dataContainer').style.display = 'none';
-            } else {
-                alert("অর্ডার পাওয়া যায়নি!");
-            }
-        });
+      dataEntries[index] = updatedEntry;
+      localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
+      alert('ডেটা সফলভাবে আপডেট হয়েছে!');
+    }
 
-        // ড্রপডাউন ডাটা লোড করা
-        loadOrderDropdown();
-    </script>
+    // ডেটা ডিলিট ফাংশন
+    function deleteData(index) {
+      const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+
+      if (confirm('আপনি কি এই ডেটা মুছে ফেলতে চান?')) {
+        dataEntries.splice(index, 1);
+        localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
+        alert('ডেটা সফলভাবে ডিলিট হয়েছে!');
+        searchOrder(); // টেবিল আপডেট করা
+      }
+    }
+  </script>
 </body>
 </html>
