@@ -35,7 +35,7 @@
     th {
       background-color: #008000;
     }
-    input[type="text"] {
+    select, input[type="text"] {
       padding: 10px;
       width: 300px;
       margin: 10px;
@@ -54,6 +54,12 @@
   <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
   <h2>অর্ডার অনুসন্ধান করুন:</h2>
+  <select id="orderDropdown">
+    <option value="">অর্ডার নাম্বার নির্বাচন করুন</option>
+  </select>
+  <button onclick="searchByDropdown()">সিলেক্ট করুন</button>
+
+  <h3>অথবা অর্ডার নম্বর টাইপ করুন:</h3>
   <input type="text" id="searchOrderNo" placeholder="অর্ডার নং লিখুন">
   <button onclick="searchOrder()">সার্চ করুন</button>
 
@@ -76,9 +82,38 @@
   </div>
 
   <script>
-    // অর্ডার অনুসন্ধান করে ডেটা লোড করা
+    window.onload = populateDropdown;
+
+    // ড্রপডাউন অপশন তৈরি
+    function populateDropdown() {
+      const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+      const dropdown = document.getElementById('orderDropdown');
+
+      dataEntries.forEach(entry => {
+        const option = document.createElement('option');
+        option.value = entry.orderNo;
+        option.textContent = entry.orderNo;
+        dropdown.appendChild(option);
+      });
+    }
+
+    // ড্রপডাউন থেকে সার্চ
+    function searchByDropdown() {
+      const orderNo = document.getElementById('orderDropdown').value;
+      if (orderNo) {
+        searchOrderByNumber(orderNo);
+      } else {
+        alert('অনুগ্রহ করে একটি অর্ডার নির্বাচন করুন!');
+      }
+    }
+
+    // ম্যানুয়াল সার্চ
     function searchOrder() {
       const orderNo = document.getElementById('searchOrderNo').value;
+      searchOrderByNumber(orderNo);
+    }
+
+    function searchOrderByNumber(orderNo) {
       const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
       const filteredEntries = dataEntries.filter(entry => entry.orderNo === orderNo);
 
