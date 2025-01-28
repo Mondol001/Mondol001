@@ -1,88 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services | MK Learning Points (beginners)</title>
-    <link rel="icon" href="https://i.imgur.com/8oRVnuf.png" type="image/png">
+    <title>ডেটা এডিট</title>
     <style>
-        body {
-            font-family: 'Courier New', monospace;
-            margin: 0;
-            padding: 0;
-            background: #111;
-            color: #00ff00;
-        }
-        .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        input, button {
             width: 100%;
-            background-color: #222;
-            padding: 20px;
-        }
-        .header img {
-            width: 100px;
-            height: 100px;
-            border: 5px solid white;
-            margin-right: 20px;
-        }
-        .header h1 {
-            font-size: 2.5rem;
-            color: #00ff00;
-            margin: 0;
-        }
-        .content {
-            text-align: center;
-            padding: 50px;
-            color: #00ff00;
-        }
-        .service {
-            margin: 20px 0;
-        }
-        .service h2 {
-            font-size: 2rem;
-        }
-        .service p {
-            font-size: 1.2rem;
-            line-height: 1.5;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #00ff00;
-            font-size: 1.2rem;
-        }
-        .back-link:hover {
-            color: #fff;
+            padding: 10px;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <img src="https://i.imgur.com/VfM3TXY.png" alt="Developer Image">
-        <h1>MK Learning Points (beginners)</h1>
+    <h1>ডেটা এডিট করুন</h1>
+    <input type="text" id="searchOrderNo" placeholder="অর্ডার নং দিয়ে সার্চ করুন" />
+    <button onclick="searchOrder()">সার্চ</button>
+    <div id="editSection" style="display: none;">
+        <input type="text" id="editPartyName" />
+        <input type="text" id="editShadeNo" />
+        <input type="number" id="editOrderQty" />
+        <input type="number" id="editBalQty" />
+        <textarea id="editRemarks"></textarea>
+        <button onclick="updateData()">আপডেট করুন</button>
     </div>
 
-    <div class="content">
-        <h1>Our Services</h1>
-        <div class="service">
-            <h2>Web Development</h2>
-            <p>We offer web development services that help you create a stunning online presence. From static websites to dynamic web apps, we provide all kinds of web solutions.</p>
-        </div>
-        <div class="service">
-            <h2>App Development</h2>
-            <p>Our app development services focus on creating intuitive and efficient mobile apps for both Android and iOS platforms.</p>
-        </div>
-        <div class="service">
-            <h2>SEO Optimization</h2>
-            <p>We ensure that your website is optimized for search engines, improving its visibility and driving more traffic to your site.</p>
-        </div>
+    <script>
+        let entries = JSON.parse(localStorage.getItem('entries')) || [];
+        let currentIndex;
 
-        <a href="index.html" class="back-link">Back to Home</a>
-    </div>
+        function searchOrder() {
+            let searchOrderNo = document.getElementById('searchOrderNo').value;
+            currentIndex = entries.findIndex(entry => entry.orderNo === searchOrderNo);
 
+            if (currentIndex === -1) {
+                alert('অর্ডার পাওয়া যায়নি!');
+                return;
+            }
+
+            document.getElementById('editSection').style.display = 'block';
+            let entry = entries[currentIndex];
+            document.getElementById('editPartyName').value = entry.partyName;
+            document.getElementById('editShadeNo').value = entry.shadeNo;
+            document.getElementById('editOrderQty').value = entry.orderQty;
+            document.getElementById('editBalQty').value = entry.balQty;
+            document.getElementById('editRemarks').value = entry.remarks;
+        }
+
+        function updateData() {
+            entries[currentIndex].partyName = document.getElementById('editPartyName').value;
+            entries[currentIndex].shadeNo = document.getElementById('editShadeNo').value;
+            entries[currentIndex].orderQty = document.getElementById('editOrderQty').value;
+            entries[currentIndex].balQty = document.getElementById('editBalQty').value;
+            entries[currentIndex].remarks = document.getElementById('editRemarks').value;
+
+            localStorage.setItem('entries', JSON.stringify(entries));
+            alert('ডেটা আপডেট সফল হয়েছে!');
+        }
+    </script>
 </body>
 </html>
