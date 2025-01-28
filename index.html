@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Entry Website</title>
+    <title>ডায়নামিক ডেটা এন্ট্রি সিস্টেম</title>
     <style>
+        /* Styling for the page */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7fc;
@@ -78,10 +79,29 @@
             padding: 10px;
             cursor: pointer;
         }
+        .btn {
+            padding: 5px 10px;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn-edit {
+            background-color: #4CAF50; /* Green */
+        }
+        .btn-delete {
+            background-color: #f44336; /* Red */
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
+    <h2>ডায়নামিক ডেটা এন্ট্রি সিস্টেম</h2>
+
     <div class="container">
+        <!-- Form Section -->
         <h1>ডেটা এন্ট্রি ফর্ম</h1>
         <div class="form-section">
             <input type="text" id="orderNo" placeholder="অর্ডার নং" required />
@@ -93,40 +113,27 @@
             <button onclick="submitData()">এন্ট্রি সাবমিট</button>
         </div>
 
-        <h2>অর্ডার রিপোর্ট</h2>
-        <button onclick="showReportPopup()">রিপোর্ট দেখুন</button>
-
-        <!-- Report Search Popup -->
-        <div class="popup" id="reportPopup">
-            <div class="popup-content">
-                <h3>অর্ডার সার্চ করুন</h3>
-                <input type="text" id="searchOrderNo" placeholder="অর্ডার নং" />
-                <button onclick="searchOrder()">সার্চ</button>
-                <button onclick="showAllOrders()">সব দেখুন</button>
-                <button onclick="closeReportPopup()">বন্ধ করুন</button>
-            </div>
-        </div>
-
         <!-- Report Section -->
-        <div id="reportSection" style="display:none;">
-            <table id="reportTable">
-                <thead>
-                    <tr>
-                        <th>অর্ডার নং</th>
-                        <th>পার্টি নাম</th>
-                        <th>শেড নং</th>
-                        <th>অর্ডার কিউটি</th>
-                        <th>ব্যাল কিউটি</th>
-                        <th>রিমার্কস</th>
-                        <th>এডিট</th>
-                        <th>ডিলিট</th>
-                    </tr>
-                </thead>
-                <tbody id="reportBody"></tbody>
-            </table>
-            <button onclick="printReport()">প্রিন্ট প্রিভিউ</button>
-            <button onclick="closeReportPopup()">বন্ধ করুন</button>
-        </div>
+        <h2>অর্ডার রিপোর্ট</h2>
+        <input type="text" id="searchOrder" placeholder="অর্ডার নং অনুসন্ধান করুন" oninput="searchOrder()" />
+        <button onclick="showReportPopup()">রিপোর্ট দেখুন</button>
+        
+        <!-- Report Table -->
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>অর্ডার নং</th>
+                    <th>পার্টি নাম</th>
+                    <th>শেড নং</th>
+                    <th>অর্ডার কিউটি</th>
+                    <th>ব্যাল কিউটি</th>
+                    <th>রিমার্কস</th>
+                    <th>এডিট</th>
+                    <th>ডিলিট</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody"></tbody>
+        </table>
 
         <!-- Password Popup -->
         <div class="popup" id="passwordPopup">
@@ -137,150 +144,143 @@
                 <button onclick="closePasswordPopup()">বন্ধ করুন</button>
             </div>
         </div>
-    </div>
 
-    <script>
-        let entries = JSON.parse(localStorage.getItem('entries')) || [];
-        let filteredEntries = [];
-        let currentAction = null;
-        let currentIndex = null;
-        const PASSWORD = "12345"; // Change this password as needed
+        <script>
+            let entries = JSON.parse(localStorage.getItem('entries')) || [];
+            const PASSWORD = "12345"; // Update with secure password
 
-        function submitData() {
-            let orderNo = document.getElementById('orderNo').value;
-            let partyName = document.getElementById('partyName').value;
-            let shadeNo = document.getElementById('shadeNo').value;
-            let orderQty = document.getElementById('orderQty').value;
-            let balQty = document.getElementById('balQty').value;
-            let remarks = document.getElementById('remarks').value;
-
-            if (!orderNo || !partyName || !shadeNo || !orderQty || !balQty) {
-                alert('সব ক্ষেত্র পূর্ণ করতে হবে!');
-                return;
+            // Display the entries in the table
+            function renderTable() {
+                let tbody = document.getElementById("dataTableBody");
+                tbody.innerHTML = '';
+                entries.forEach((entry, index) => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${entry.orderNo}</td>
+                        <td>${entry.partyName}</td>
+                        <td>${entry.shadeNo}</td>
+                        <td>${entry.orderQty}</td>
+                        <td>${entry.balQty}</td>
+                        <td>${entry.remarks}</td>
+                        <td><button class="btn btn-edit" onclick="requestPassword('edit', ${index})">এডিট</button></td>
+                        <td><button class="btn btn-delete" onclick="requestPassword('delete', ${index})">ডিলিট</button></td>
+                    `;
+                    tbody.appendChild(row);
+                });
             }
 
-            let entry = {
-                orderNo,
-                partyName,
-                shadeNo,
-                orderQty,
-                balQty,
-                remarks
-            };
+            // Submit data and store it in localStorage
+            function submitData() {
+                let orderNo = document.getElementById('orderNo').value;
+                let partyName = document.getElementById('partyName').value;
+                let shadeNo = document.getElementById('shadeNo').value;
+                let orderQty = document.getElementById('orderQty').value;
+                let balQty = document.getElementById('balQty').value;
+                let remarks = document.getElementById('remarks').value;
 
-            entries.push(entry);
-            localStorage.setItem('entries', JSON.stringify(entries));
-            alert('এন্ট্রি সফলভাবে সংরক্ষিত হয়েছে!');
-            document.getElementById('orderNo').value = '';
-            document.getElementById('partyName').value = '';
-            document.getElementById('shadeNo').value = '';
-            document.getElementById('orderQty').value = '';
-            document.getElementById('balQty').value = '';
-            document.getElementById('remarks').value = '';
-        }
-
-        function showReportPopup() {
-            document.getElementById('reportPopup').style.display = 'flex';
-        }
-
-        function closeReportPopup() {
-            document.getElementById('reportPopup').style.display = 'none';
-        }
-
-        function searchOrder() {
-            let searchOrderNo = document.getElementById('searchOrderNo').value;
-            filteredEntries = entries.filter(entry => entry.orderNo === searchOrderNo);
-            if (filteredEntries.length > 0) {
-                displayReport(filteredEntries);
-            } else {
-                alert('অর্ডার না পাওয়া গেছে!');
-            }
-        }
-
-        function showAllOrders() {
-            filteredEntries = entries;
-            displayReport(filteredEntries);
-        }
-
-        function displayReport(filteredEntries) {
-            let reportBody = document.getElementById('reportBody');
-            reportBody.innerHTML = '';
-            filteredEntries.forEach((entry, index) => {
-                let row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${entry.orderNo}</td>
-                    <td>${entry.partyName}</td>
-                    <td>${entry.shadeNo}</td>
-                    <td>${entry.orderQty}</td>
-                    <td>${entry.balQty}</td>
-                    <td>${entry.remarks}</td>
-                    <td><button onclick="requestPassword('edit', ${index})">এডিট</button></td>
-                    <td><button onclick="requestPassword('delete', ${index})">ডিলিট</button></td>
-                `;
-                reportBody.appendChild(row);
-            });
-            document.getElementById('reportSection').style.display = 'block';
-            closeReportPopup();
-        }
-
-        function requestPassword(action, index) {
-            currentAction = action;
-            currentIndex = index;
-            document.getElementById('passwordPopup').style.display = 'flex';
-        }
-
-        function verifyPassword() {
-            let passwordInput = document.getElementById('passwordInput').value;
-            if (passwordInput === PASSWORD) {
-                if (currentAction === 'edit') {
-                    editEntry(currentIndex);
-                } else if (currentAction === 'delete') {
-                    deleteEntry(currentIndex);
+                if (!orderNo || !partyName || !shadeNo || !orderQty || !balQty) {
+                    alert('সব ক্ষেত্র পূর্ণ করতে হবে!');
+                    return;
                 }
-                closePasswordPopup();
-            } else {
-                alert('ভুল পাসওয়ার্ড!');
+
+                let newEntry = { orderNo, partyName, shadeNo, orderQty, balQty, remarks };
+                entries.push(newEntry);
+                localStorage.setItem('entries', JSON.stringify(entries));
+                renderTable(); // Re-render the table after adding new entry
+                alert('এন্ট্রি সফলভাবে সংরক্ষিত হয়েছে!');
+                clearForm(); // Clear the form fields
             }
-        }
 
-        function closePasswordPopup() {
-            document.getElementById('passwordPopup').style.display = 'none';
-            document.getElementById('passwordInput').value = '';
-        }
+            // Clear form fields after submitting
+            function clearForm() {
+                document.getElementById('orderNo').value = '';
+                document.getElementById('partyName').value = '';
+                document.getElementById('shadeNo').value = '';
+                document.getElementById('orderQty').value = '';
+                document.getElementById('balQty').value = '';
+                document.getElementById('remarks').value = '';
+            }
 
-        function editEntry(index) {
-            let entry = entries[index];
-            document.getElementById('orderNo').value = entry.orderNo;
-            document.getElementById('partyName').value = entry.partyName;
-            document.getElementById('shadeNo').value = entry.shadeNo;
-            document.getElementById('orderQty').value = entry.orderQty;
-            document.getElementById('balQty').value = entry.balQty;
-            document.getElementById('remarks').value = entry.remarks;
-            entries.splice(index, 1);
-            localStorage.setItem('entries', JSON.stringify(entries));
-            alert('এডিট মোডে প্রবেশ করেছেন!');
-        }  
-function printReport() {
-    const printContent = document.getElementById('reportTable').outerHTML; // টেবিলের HTML বের করা
-    const newWindow = window.open('', '', 'width=800,height=600'); // একটি নতুন উইন্ডো খুলুন
-    newWindow.document.write('<html><head><title>প্রিন্ট রিপোর্ট</title></head><body>'); // HTML শুরু
-    newWindow.document.write('<h1 style="text-align:center;">অর্ডার রিপোর্ট</h1>'); // টেবিল শিরোনাম
-    newWindow.document.write(printContent); // টেবিল যোগ করা
-    newWindow.document.write('</body></html>'); // HTML শেষ
-    newWindow.document.close();
-    newWindow.print(); // প্রিন্ট করুন
-}
+            // Search orders based on order number
+            function searchOrder() {
+                let searchValue = document.getElementById('searchOrder').value.toLowerCase();
+                let filteredEntries = entries.filter(entry => entry.orderNo.toLowerCase().includes(searchValue));
+                renderFilteredTable(filteredEntries);
+            }
 
+            // Render filtered table
+            function renderFilteredTable(filteredEntries) {
+                let tbody = document.getElementById("dataTableBody");
+                tbody.innerHTML = '';
+                filteredEntries.forEach((entry, index) => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${entry.orderNo}</td>
+                        <td>${entry.partyName}</td>
+                        <td>${entry.shadeNo}</td>
+                        <td>${entry.orderQty}</td>
+                        <td>${entry.balQty}</td>
+                        <td>${entry.remarks}</td>
+                        <td><button class="btn btn-edit" onclick="requestPassword('edit', ${index})">এডিট</button></td>
+                        <td><button class="btn btn-delete" onclick="requestPassword('delete', ${index})">ডিলিট</button></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
 
-        function deleteEntry(index) {
-            if (confirm('আপনি কি নিশ্চিত যে আপনি এই এন্ট্রিটি মুছে ফেলতে চান?')) {
+            // Request password for editing or deleting an entry
+            function requestPassword(action, index) {
+                currentAction = action;
+                currentIndex = index;
+                document.getElementById('passwordPopup').style.display = 'flex';
+            }
+
+            // Verify password
+            function verifyPassword() {
+                let passwordInput = document.getElementById('passwordInput').value;
+                if (passwordInput === PASSWORD) {
+                    if (currentAction === 'edit') {
+                        editEntry(currentIndex);
+                    } else if (currentAction === 'delete') {
+                        deleteEntry(currentIndex);
+                    }
+                    closePasswordPopup();
+                } else {
+                    alert('ভুল পাসওয়ার্ড!');
+                }
+            }
+
+            // Edit an entry
+            function editEntry(index) {
+                let entry = entries[index];
+                document.getElementById('orderNo').value = entry.orderNo;
+                document.getElementById('partyName').value = entry.partyName;
+                document.getElementById('shadeNo').value = entry.shadeNo;
+                document.getElementById('orderQty').value = entry.orderQty;
+                document.getElementById('balQty').value = entry.balQty;
+                document.getElementById('remarks').value = entry.remarks;
                 entries.splice(index, 1);
                 localStorage.setItem('entries', JSON.stringify(entries));
-                alert('এন্ট্রি মুছে ফেলা হয়েছে!');
-                displayReport(entries);
+                renderTable();
             }
-        }
-    </script>
+
+            // Delete an entry
+            function deleteEntry(index) {
+                if (confirm('আপনি কি নিশ্চিত যে আপনি এই এন্ট্রিটি মুছে ফেলতে চান?')) {
+                    entries.splice(index, 1);
+                    localStorage.setItem('entries', JSON.stringify(entries));
+                    renderTable();
+                }
+            }
+
+            // Close password popup
+            function closePasswordPopup() {
+                document.getElementById('passwordPopup').style.display = 'none';
+                document.getElementById('passwordInput').value = '';
+            }
+
+            // Initially render the table
+            renderTable();
+        </script>
 </body>
 </html>
-
