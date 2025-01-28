@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ড্যাশবোর্ড</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
       margin: 0;
@@ -83,6 +84,12 @@
         transform: translateX(-100%);
       }
     }
+
+    .chart-container {
+      margin-top: 30px;
+      width: 80%;
+      max-width: 800px;
+    }
   </style>
 </head>
 <body>
@@ -105,5 +112,43 @@
     <p class="notice-text">📢 নোটিশ: আজকের সমস্ত ডেটা সঠিকভাবে এন্ট্রি করুন এবং রিপোর্ট যাচাই করুন।</p>
   </div>
 
+  <h2>ডেটা অ্যানালাইসিস</h2>
+
+  <div class="chart-container">
+    <canvas id="dataChart"></canvas>
+  </div>
+
+  <script>
+    // ডামি ডেটা অ্যানালাইসিস (লোকাল স্টোরেজ থেকে ডেটা নিতে পারেন)
+    const labels = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন"];
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'মাসিক অর্ডার পরিমাণ',
+        backgroundColor: 'rgba(0, 255, 0, 0.5)',
+        borderColor: '#00ff00',
+        data: [5, 10, 15, 20, 25, 30],
+      }]
+    };
+
+    const config = {
+      type: 'bar',
+      data: data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true
+          }
+        }
+      }
+    };
+
+    const dataChart = new Chart(
+      document.getElementById('dataChart'),
+      config
+    );
+  </script>
+  
 </body>
 </html>
