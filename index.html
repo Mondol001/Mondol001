@@ -122,10 +122,13 @@
                 <tbody id="reportBody"></tbody>
             </table>
             <button onclick="exportToCSV()">CSV এ এক্সপোর্ট করুন</button>
+            <button onclick="generatePDF()">PDF তৈরি করুন</button>
             <button onclick="closeReportPopup()">বন্ধ করুন</button>
         </div>
 
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
         let entries = JSON.parse(localStorage.getItem('entries')) || [];
@@ -227,6 +230,31 @@
             link.href = URL.createObjectURL(blob);
             link.download = 'report.csv';
             link.click();
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont('Arial', 'normal');
+            doc.setFontSize(12);
+            doc.text('অর্ডার রিপোর্ট', 20, 20);
+            
+            let y = 30;
+            doc.autoTable({
+                startY: y,
+                head: [['অর্ডার নং', 'পার্টি নাম', 'শেড নং', 'অর্ডার কিউটি', 'ব্যাল কিউটি', 'রিমার্কস']],
+                body: entries.map(entry => [
+                    entry.orderNo, 
+                    entry.partyName, 
+                    entry.shadeNo, 
+                    entry.orderQty, 
+                    entry.balQty, 
+                    entry.remarks
+                ])
+            });
+
+            doc.save('report.pdf');
         }
     </script>
 </body>
