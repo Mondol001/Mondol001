@@ -118,7 +118,8 @@
                         <th>অর্ডার কিউটি</th>
                         <th>ব্যাল কিউটি</th>
                         <th>রিমার্কস</th>
-                        <th>একশন</th>
+                        <th>এডিট</th>
+                        <th>ডিলিট</th>
                     </tr>
                 </thead>
                 <tbody id="reportBody"></tbody>
@@ -127,11 +128,23 @@
             <button onclick="closeReportPopup()">বন্ধ করুন</button>
         </div>
 
+        <!-- Password Popup -->
+        <div class="popup" id="passwordPopup">
+            <div class="popup-content">
+                <h3>পাসওয়ার্ড দিন</h3>
+                <input type="password" id="passwordInput" placeholder="পাসওয়ার্ড" />
+                <button onclick="verifyPassword()">ঠিক আছে</button>
+                <button onclick="closePasswordPopup()">বন্ধ করুন</button>
+            </div>
+        </div>
     </div>
 
     <script>
         let entries = JSON.parse(localStorage.getItem('entries')) || [];
         let filteredEntries = [];
+        let currentAction = null;
+        let currentIndex = null;
+        const PASSWORD = "12345"; // Change this password as needed
 
         function submitData() {
             let orderNo = document.getElementById('orderNo').value;
@@ -201,10 +214,8 @@
                     <td>${entry.orderQty}</td>
                     <td>${entry.balQty}</td>
                     <td>${entry.remarks}</td>
-                    <td>
-                        <button onclick="editEntry(${index})">সম্পাদন করুন</button>
-                        <button onclick="deleteEntry(${index})">মুছুন</button>
-                    </td>
+                    <td><button onclick="requestPassword('edit', ${index})">এডিট</button></td>
+                    <td><button onclick="requestPassword('delete', ${index})">ডিলিট</button></td>
                 `;
                 reportBody.appendChild(row);
             });
@@ -212,68 +223,53 @@
             closeReportPopup();
         }
 
-        function editEntry(index) {
-            let entry = filteredEntries[index];
-            let updatedOrderNo = prompt('নতুন অর্ডার নং দিন:', entry.orderNo);
-            let updatedPartyName = prompt('নতুন পার্টি নাম দিন:', entry.partyName);
-            let updatedShadeNo = prompt('নতুন শেড নং দিন:', entry.shadeNo);
-            let updatedOrderQty = prompt('নতুন অর্ডার কিউটি দিন:', entry.orderQty);
-            let updatedBalQty = prompt('নতুন ব্যাল কিউটি দিন:', entry.balQty);
-            let updatedRemarks = prompt('নতুন রিমার্কস দিন:', entry.remarks);
+        function requestPassword(action, index) {
+            currentAction = action;
+            currentIndex = index;
+            document.getElementById('passwordPopup').style.display = 'flex';
+        }
 
-            if (updatedOrderNo && updatedPartyName && updatedShadeNo && updatedOrderQty && updatedBalQty) {
-                entries[index] = {
-                    orderNo: updatedOrderNo,
-                    partyName: updatedPartyName,
-                    shadeNo: updatedShadeNo,
-                    orderQty: updatedOrderQty,
-                    balQty: updatedBalQty,
-                    remarks: updatedRemarks
-                };
-                localStorage.setItem('entries', JSON.stringify(entries));
-                alert('এন্ট্রি আপডেট হয়েছে!');
-                displayReport(filteredEntries);
+        function verifyPassword() {
+            let passwordInput = document.getElementById('passwordInput').value;
+            if (passwordInput === PASSWORD) {
+                if (currentAction === 'edit') {
+                    editEntry(currentIndex);
+                } else if (currentAction === 'delete') {
+                    deleteEntry(currentIndex);
+                }
+                closePasswordPopup();
             } else {
-                alert('সব তথ্য দিন!');
+                alert('ভুল পাসওয়ার্ড!');
             }
+        }
+
+        function closePasswordPopup() {
+            document.getElementById('passwordPopup').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        function editEntry(index) {
+            let entry = entries[index];
+            document.getElementById('orderNo').value = entry.orderNo;
+            document.getElementById('partyName').value = entry.partyName;
+            document.getElementById('shadeNo').value = entry.shadeNo;
+            document.getElementById('orderQty').value = entry.orderQty;
+            document.getElementById('balQty').value = entry.balQty;
+            document.getElementById('remarks').value = entry.remarks;
+            entries.splice(index, 1);
+            localStorage.setItem('entries', JSON.stringify(entries));
+            alert('এডিট মোডে প্রবেশ করেছেন!');
         }
 
         function deleteEntry(index) {
-            if (confirm('আপনি কি নিশ্চিতভাবে মুছতে চান?')) {
+            if (confirm('আপনি কি নিশ্চিত যে আপনি এই এন্ট্রিটি মুছে ফেলতে চান?')) {
                 entries.splice(index, 1);
                 localStorage.setItem('entries', JSON.stringify(entries));
-                alert('এন্ট্রি মুছে ফেলা হয়েছে!');
+                alert('এন্ট্রি মুছে ফেলা হয়েছে!');
                 displayReport(entries);
             }
-        }
-
-        function printReport() {
-            const printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write('<html><head><title>প্রিন্ট প্রিভিউ</title>');
-            printWindow.document.write('<style>table {width: 100%; border-collapse: collapse;} th, td {padding: 10px; border: 1px solid #ddd; text-align: center;} th {background-color: #f2f2f2;} </style>');
-            printWindow.document.write('</head><body>');
-            printWindow.document.write('<h2>অর্ডার রিপোর্ট</h2>');
-            printWindow.document.write('<table>');
-            printWindow.document.write('<thead><tr><th>অর্ডার নং</th><th>পার্টি নাম</th><th>শেড নং</th><th>অর্ডার কিউটি</th><th>ব্যাল কিউটি</th><th>রিমার্কস</th></tr></thead><tbody>');
-
-            filteredEntries.forEach(entry => {
-                printWindow.document.write(`
-                    <tr>
-                        <td>${entry.orderNo}</td>
-                        <td>${entry.partyName}</td>
-                        <td>${entry.shadeNo}</td>
-                        <td>${entry.orderQty}</td>
-                        <td>${entry.balQty}</td>
-                        <td>${entry.remarks}</td>
-                    </tr>
-                `);
-            });
-
-            printWindow.document.write('</tbody></table>');
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
         }
     </script>
 </body>
 </html>
+
