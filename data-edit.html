@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডেটা এডিট পেজ</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f0f;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+        }
+        select, input[type="text"], input[type="number"] {
+            padding: 10px;
+            width: 300px;
+            margin: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #008000;
+        }
+        .data-container {
+            margin-top: 20px;
+            border: 1px solid #00ff00;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ডেটা এডিট পেজ</h1>
+
+    <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
+    <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
+    <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
+    <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
+
+    <h2>অর্ডার নং নির্বাচন করুন বা লিখুন:</h2>
+    <select id="orderDropdown" onchange="populateSearchInput()">
+        <option value="">অর্ডার নির্বাচন করুন</option>
+    </select>
+    <br>
+    <input type="text" id="searchOrderNo" placeholder="অর্ডার নং লিখুন">
+    <button onclick="searchData()">সার্চ করুন</button>
+
+    <div id="dataContainer" class="data-container" style="display:none;">
+        <h3>ডেটা এডিট করুন:</h3>
+        <form id="editForm">
+            <input type="text" id="editOrderNo" placeholder="অর্ডার নং" readonly><br>
+            <input type="text" id="editPartyName" placeholder="পার্টির নাম"><br>
+            <input type="text" id="editShadeNo" placeholder="শেড নং"><br>
+            <input type="number" id="editOrderQty" placeholder="অর্ডার পরিমাণ"><br>
+            <input type="number" id="editBalQty" placeholder="ব্যালেন্স পরিমাণ"><br>
+            <input type="text" id="editRemarks" placeholder="মন্তব্য"><br>
+            <button type="submit">এডিট সংরক্ষণ করুন</button>
+        </form>
+    </div>
+
+    <script>
+        // লোকাল স্টোরেজ থেকে ড্রপডাউন ভরাট করা
+        function loadOrderDropdown() {
+            const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+            const dropdown = document.getElementById('orderDropdown');
+            dropdown.innerHTML = '<option value="">অর্ডার নির্বাচন করুন</option>';
+
+            dataEntries.forEach(entry => {
+                const option = document.createElement('option');
+                option.value = entry.orderNo;
+                option.textContent = entry.orderNo;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // ড্রপডাউন থেকে ইনপুট ফিল্ডে অর্ডার সেট করা
+        function populateSearchInput() {
+            const selectedOrder = document.getElementById('orderDropdown').value;
+            document.getElementById('searchOrderNo').value = selectedOrder;
+        }
+
+        // ডেটা সার্চ ফাংশন
+        function searchData() {
+            const searchOrderNo = document.getElementById('searchOrderNo').value;
+            const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+            const entry = dataEntries.find(item => item.orderNo === searchOrderNo);
+
+            if (entry) {
+                document.getElementById('dataContainer').style.display = 'block';
+                document.getElementById('editOrderNo').value = entry.orderNo;
+                document.getElementById('editPartyName').value = entry.partyName;
+                document.getElementById('editShadeNo').value = entry.shadeNo;
+                document.getElementById('editOrderQty').value = entry.orderQty;
+                document.getElementById('editBalQty').value = entry.balQty;
+                document.getElementById('editRemarks').value = entry.remarks;
+            } else {
+                alert("অর্ডার পাওয়া যায়নি!");
+                document.getElementById('dataContainer').style.display = 'none';
+            }
+        }
+
+        // ডেটা এডিট এবং আপডেট ফাংশন
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const orderNo = document.getElementById('editOrderNo').value;
+            const partyName = document.getElementById('editPartyName').value;
+            const shadeNo = document.getElementById('editShadeNo').value;
+            const orderQty = document.getElementById('editOrderQty').value;
+            const balQty = document.getElementById('editBalQty').value;
+            const remarks = document.getElementById('editRemarks').value;
+
+            let dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
+            const index = dataEntries.findIndex(item => item.orderNo === orderNo);
+
+            if (index !== -1) {
+                dataEntries[index] = { orderNo, partyName, shadeNo, orderQty, balQty, remarks };
+                localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
+                alert("ডেটা সফলভাবে আপডেট হয়েছে!");
+                document.getElementById('editForm').reset();
+                document.getElementById('dataContainer').style.display = 'none';
+            } else {
+                alert("অর্ডার পাওয়া যায়নি!");
+            }
+        });
+
+        // ড্রপডাউন ডাটা লোড করা
+        loadOrderDropdown();
+    </script>
+</body>
+</html>
