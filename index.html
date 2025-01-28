@@ -128,6 +128,7 @@
 
     </div>
 
+    <!-- jsPDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
@@ -239,7 +240,7 @@
             doc.setFont('Arial', 'normal');
             doc.setFontSize(12);
             doc.text('অর্ডার রিপোর্ট', 20, 20);
-            
+
             let y = 30;
             doc.autoTable({
                 startY: y,
