@@ -3,167 +3,247 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
+  <title>Hacker Style Data Entry</title>
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+    /* Body and Basic Styling */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background: white;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 300px;
+      min-height: 100vh;
+    }
+
+    h1 {
       text-align: center;
-    }
-
-    h2, h3 {
       margin-bottom: 20px;
+      text-shadow: 0px 0px 5px #0f0;
     }
 
-    input {
-      width: 90%;
+    form, .popup {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input, button {
+      width: 100%;
       padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
+      margin: 5px 0;
+      background: rgba(0, 255, 0, 0.1);
+      color: #0f0;
+      border: 1px solid #0f0;
       border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    input:focus, button:hover {
+      background: rgba(0, 255, 0, 0.2);
+      outline: none;
     }
 
     button {
-      background-color: #007BFF;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #0f0;
     }
 
-    a {
-      color: #007BFF;
-      text-decoration: none;
+    th, td {
+      border: 1px solid #0f0;
+      padding: 10px;
+      text-align: left;
     }
 
-    a:hover {
-      text-decoration: underline;
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .popup button {
+      width: auto;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 5;
+    }
+
+    /* Responsive Design */
+    @media only screen and (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h2>Login System</h2>
-    <div id="loginForm">
-      <h3>Login</h3>
-      <input type="text" id="loginUsername" placeholder="Username" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <button onclick="login()">Login</button>
-      <p><a href="#" onclick="showPasswordRecovery()">Forgot Password?</a></p>
-      <p>Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a></p>
-    </div>
+  <h1>Data Entry - Hacker Theme</h1>
 
-    <div id="signUpForm" style="display: none;">
-      <h3>Sign Up</h3>
-      <input type="text" id="signUpUsername" placeholder="Username" required>
-      <input type="password" id="signUpPassword" placeholder="Password" required>
-      <input type="password" id="signUpConfirmPassword" placeholder="Confirm Password" required>
-      <button onclick="signUp()">Sign Up</button>
-      <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
-    </div>
+  <p>Last Entry Order No: <span id="lastOrderNo">None</span></p>
 
-    <div id="passwordRecoveryForm" style="display: none;">
-      <h3>Password Recovery</h3>
-      <input type="text" id="recoveryUsername" placeholder="Enter your username" required>
-      <button onclick="recoverPassword()">Recover Password</button>
-      <p><a href="#" onclick="showLogin()">Back to Login</a></p>
-    </div>
+  <form id="dataEntryForm">
+    <label for="orderNo">Order No</label>
+    <input type="text" id="orderNo" required>
+
+    <label for="partyName">Party Name</label>
+    <input type="text" id="partyName" required>
+
+    <label for="shadeNo">Shade No</label>
+    <input type="text" id="shadeNo">
+
+    <label for="orderQty">Order Qty</label>
+    <input type="number" id="orderQty" required>
+
+    <label for="balQty">Bal Qty</label>
+    <input type="number" id="balQty">
+
+    <label for="remarks">Remarks</label>
+    <input type="text" id="remarks">
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <button id="reportBtn">View Report</button>
+
+  <!-- Popups -->
+  <div class="overlay" id="overlay"></div>
+
+  <div class="popup" id="successPopup">
+    <p>Entry Successful!</p>
+    <button onclick="closePopup('successPopup')">OK</button>
   </div>
+
+  <div class="popup" id="reportPopup">
+    <h3>Report</h3>
+    <div id="reportTable"></div>
+    <button onclick="printReport()">Print Report</button>
+    <button onclick="closePopup('reportPopup')">Close</button>
+  </div>
+
   <script>
-    // Show login form
-    function showLogin() {
-      document.getElementById("loginForm").style.display = "block";
-      document.getElementById("signUpForm").style.display = "none";
-      document.getElementById("passwordRecoveryForm").style.display = "none";
+    updateLastOrderNo();
+
+    // Submit Form
+    document.getElementById('dataEntryForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const entry = {
+        orderNo: document.getElementById('orderNo').value,
+        partyName: document.getElementById('partyName').value,
+        shadeNo: document.getElementById('shadeNo').value,
+        orderQty: document.getElementById('orderQty').value,
+        balQty: document.getElementById('balQty').value,
+        remarks: document.getElementById('remarks').value,
+      };
+
+      let entries = JSON.parse(localStorage.getItem('entries')) || [];
+      entries.push(entry);
+      localStorage.setItem('entries', JSON.stringify(entries));
+
+      updateLastOrderNo();
+      document.getElementById('dataEntryForm').reset();
+      showPopup('successPopup');
+    });
+
+    // Update Last Order
+    function updateLastOrderNo() {
+      const entries = JSON.parse(localStorage.getItem('entries')) || [];
+      document.getElementById('lastOrderNo').innerText = entries.length > 0 ? entries[entries.length - 1].orderNo : 'None';
     }
 
-    // Show sign-up form
-    function showSignUp() {
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("signUpForm").style.display = "block";
-      document.getElementById("passwordRecoveryForm").style.display = "none";
+    // Show Popup
+    function showPopup(id) {
+      document.getElementById(id).style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
     }
 
-    // Show password recovery form
-    function showPasswordRecovery() {
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("signUpForm").style.display = "none";
-      document.getElementById("passwordRecoveryForm").style.display = "block";
+    // Close Popup
+    function closePopup(id) {
+      document.getElementById(id).style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
     }
 
-    // Sign up function
-    function signUp() {
-      const username = document.getElementById("signUpUsername").value.trim();
-      const password = document.getElementById("signUpPassword").value.trim();
-      const confirmPassword = document.getElementById("signUpConfirmPassword").value.trim();
+    // Report Button
+    document.getElementById('reportBtn').addEventListener('click', function () {
+      displayReport();
+      showPopup('reportPopup');
+    });
 
-      if (password !== confirmPassword) {
-        alert("Passwords do not match!");
+    // Display Report
+    function displayReport() {
+      const entries = JSON.parse(localStorage.getItem('entries')) || [];
+      let table = `<table>
+        <tr>
+          <th>Order No</th>
+          <th>Party Name</th>
+          <th>Shade No</th>
+          <th>Order Qty</th>
+          <th>Bal Qty</th>
+          <th>Remarks</th>
+        </tr>`;
+      entries.forEach(entry => {
+        table += `<tr>
+          <td>${entry.orderNo}</td>
+          <td>${entry.partyName}</td>
+          <td>${entry.shadeNo}</td>
+          <td>${entry.orderQty}</td>
+          <td>${entry.balQty}</td>
+          <td>${entry.remarks}</td>
+        </tr>`;
+      });
+      table += '</table>';
+      document.getElementById('reportTable').innerHTML = table;
+    }
+
+    // Print Report
+    function printReport() {
+      const reportContent = document.getElementById('reportTable').innerHTML;
+      if (!reportContent) {
+        alert('No report to print');
         return;
       }
-
-      // Get existing users from localStorage
-      let users = JSON.parse(localStorage.getItem("users")) || {};
-
-      if (users[username]) {
-        alert("Username already exists!");
-        return;
-      }
-
-      // Save new user
-      users[username] = password;
-      localStorage.setItem("users", JSON.stringify(users));
-      alert("Account created successfully!");
-      showLogin();
-    }
-
-    // Login function
-    function login() {
-      const username = document.getElementById("loginUsername").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
-
-      // Get users from localStorage
-      let users = JSON.parse(localStorage.getItem("users")) || {};
-
-      if (users[username] === password) {
-        alert("Login successful!");
-      } else {
-        alert("Invalid username or password!");
-      }
-    }
-
-    // Recover password function
-    function recoverPassword() {
-      const username = document.getElementById("recoveryUsername").value.trim();
-
-      // Get users from localStorage
-      let users = JSON.parse(localStorage.getItem("users")) || {};
-
-      if (users[username]) {
-        alert(`Your password is: ${users[username]}`);
-      } else {
-        alert("Username not found!");
-      }
+      const originalContent = document.body.innerHTML;
+      document.body.innerHTML = reportContent;
+      window.print();
+      document.body.innerHTML = originalContent;
     }
   </script>
+
 </body>
 </html>
