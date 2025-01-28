@@ -96,13 +96,14 @@
         <h2>অর্ডার রিপোর্ট</h2>
         <button onclick="showReportPopup()">রিপোর্ট দেখুন</button>
 
-        <!-- Search Popup -->
-        <div class="popup" id="searchPopup">
+        <!-- Report Search Popup -->
+        <div class="popup" id="reportPopup">
             <div class="popup-content">
                 <h3>অর্ডার সার্চ করুন</h3>
                 <input type="text" id="searchOrderNo" placeholder="অর্ডার নং" />
                 <button onclick="searchOrder()">সার্চ</button>
-                <button onclick="closeSearchPopup()">বন্ধ করুন</button>
+                <button onclick="showAllOrders()">সব দেখুন</button>
+                <button onclick="closeReportPopup()">বন্ধ করুন</button>
             </div>
         </div>
 
@@ -164,18 +165,31 @@
         }
 
         function showReportPopup() {
-            document.getElementById('reportSection').style.display = 'block';
-            displayReport();
+            document.getElementById('reportPopup').style.display = 'flex';
         }
 
         function closeReportPopup() {
-            document.getElementById('reportSection').style.display = 'none';
+            document.getElementById('reportPopup').style.display = 'none';
         }
 
-        function displayReport() {
+        function searchOrder() {
+            let searchOrderNo = document.getElementById('searchOrderNo').value;
+            let filteredEntries = entries.filter(entry => entry.orderNo === searchOrderNo);
+            if (filteredEntries.length > 0) {
+                displayReport(filteredEntries);
+            } else {
+                alert('অর্ডার না পাওয়া গেছে!');
+            }
+        }
+
+        function showAllOrders() {
+            displayReport(entries);
+        }
+
+        function displayReport(filteredEntries) {
             let reportBody = document.getElementById('reportBody');
             reportBody.innerHTML = '';
-            entries.forEach(entry => {
+            filteredEntries.forEach(entry => {
                 let row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${entry.orderNo}</td>
@@ -187,30 +201,8 @@
                 `;
                 reportBody.appendChild(row);
             });
-        }
-
-        function searchOrder() {
-            let searchOrderNo = document.getElementById('searchOrderNo').value;
-            let filteredEntries = entries.filter(entry => entry.orderNo === searchOrderNo);
-            if (filteredEntries.length > 0) {
-                let reportBody = document.getElementById('reportBody');
-                reportBody.innerHTML = '';
-                filteredEntries.forEach(entry => {
-                    let row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${entry.orderNo}</td>
-                        <td>${entry.partyName}</td>
-                        <td>${entry.shadeNo}</td>
-                        <td>${entry.orderQty}</td>
-                        <td>${entry.balQty}</td>
-                        <td>${entry.remarks}</td>
-                    `;
-                    reportBody.appendChild(row);
-                });
-                closeSearchPopup();
-            } else {
-                alert('অর্ডার না পাওয়া গেছে!');
-            }
+            document.getElementById('reportSection').style.display = 'block';
+            closeReportPopup();
         }
 
         function printReport() {
