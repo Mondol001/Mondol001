@@ -30,12 +30,18 @@
         button:hover {
             background-color: #008000;
         }
-        .last-entry {
-            background: #111;
-            padding: 15px;
-            color: #00ff00;
-            margin: 20px 0;
-            border: 1px solid #444;
+        .last-entry-table {
+            margin: 20px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        .last-entry-table th, .last-entry-table td {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            text-align: left;
+        }
+        .last-entry-table th {
+            background-color: #111;
         }
     </style>
 </head>
@@ -47,7 +53,21 @@
     <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
     <h2>লাস্ট এন্ট্রি:</h2>
-    <div id="lastEntry" class="last-entry">কোনো এন্ট্রি নেই।</div>
+    <table class="last-entry-table" id="lastEntryTable">
+        <thead>
+            <tr>
+                <th>অর্ডার নং</th>
+                <th>পার্টির নাম</th>
+                <th>শেড নং</th>
+                <th>অর্ডার পরিমাণ</th>
+                <th>ব্যালেন্স পরিমাণ</th>
+                <th>মন্তব্য</th>
+            </tr>
+        </thead>
+        <tbody id="lastEntryBody">
+            <tr><td colspan="6">কোনো এন্ট্রি নেই।</td></tr>
+        </tbody>
+    </table>
 
     <h2>নতুন ডেটা এন্ট্রি করুন:</h2>
     <form id="entryForm">
@@ -66,17 +86,23 @@
             const entries = JSON.parse(localStorage.getItem('dataEntries')) || [];
             const lastEntry = entries[entries.length - 1];
 
+            const tbody = document.getElementById('lastEntryBody');
+            tbody.innerHTML = '';
+
             if (lastEntry) {
-                document.getElementById('lastEntry').innerHTML = `
-                    <p>অর্ডার নং: ${lastEntry.orderNo}</p>
-                    <p>পার্টির নাম: ${lastEntry.partyName}</p>
-                    <p>শেড নং: ${lastEntry.shadeNo}</p>
-                    <p>অর্ডার পরিমাণ: ${lastEntry.orderQty}</p>
-                    <p>ব্যালেন্স পরিমাণ: ${lastEntry.balQty}</p>
-                    <p>মন্তব্য: ${lastEntry.remarks}</p>
+                const row = `
+                    <tr>
+                        <td>${lastEntry.orderNo}</td>
+                        <td>${lastEntry.partyName}</td>
+                        <td>${lastEntry.shadeNo}</td>
+                        <td>${lastEntry.orderQty}</td>
+                        <td>${lastEntry.balQty}</td>
+                        <td>${lastEntry.remarks}</td>
+                    </tr>
                 `;
+                tbody.innerHTML = row;
             } else {
-                document.getElementById('lastEntry').innerText = "কোনো এন্ট্রি নেই।";
+                tbody.innerHTML = `<tr><td colspan="6">কোনো এন্ট্রি নেই।</td></tr>`;
             }
         }
 
