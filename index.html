@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ড্যাশবোর্ড</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
       margin: 0;
@@ -14,8 +13,8 @@
     }
 
     body {
-      background-color: #0e0e0e;
-      color: #00ff00;
+      background-color: #1e1e2f;
+      color: #ffffff;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -26,75 +25,70 @@
     h1 {
       margin-bottom: 20px;
       text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+      color: #ffcc00;
     }
 
     .dashboard-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
       width: 100%;
-      max-width: 900px;
+      max-width: 1200px;
     }
 
     .dashboard-card {
-      background: #1a1a1a;
+      background: linear-gradient(135deg, #ff6600, #ffcc00);
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 15px;
       text-align: center;
       cursor: pointer;
       transition: all 0.3s;
-      border: 2px solid #00ff00;
+      width: 260px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      font-size: 20px;
+      font-weight: bold;
     }
 
     .dashboard-card:hover {
-      background: #00ff00;
-      color: black;
-      transform: scale(1.05);
+      background: #ffffff;
+      color: #000;
+      transform: scale(1.1);
     }
 
     .dashboard-card a {
       text-decoration: none;
-      color: inherit;
-      font-size: 18px;
-      font-weight: bold;
+      color: white;
+      font-size: 20px;
     }
 
     .notice-board {
-      background: #000;
-      border: 2px solid #00ff00;
-      padding: 10px;
+      background: #2a2a3b;
+      border: 2px solid #ffcc00;
+      padding: 15px;
       margin-top: 30px;
       width: 100%;
-      max-width: 900px;
-      overflow: hidden;
-      position: relative;
+      max-width: 1000px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffcc00;
     }
 
-    .notice-text {
-      display: inline-block;
-      white-space: nowrap;
-      animation: move 10s linear infinite;
-    }
-
-    @keyframes move {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
-
-    .chart-container {
+    .video-container {
       margin-top: 30px;
       width: 80%;
       max-width: 800px;
+      display: flex;
+      justify-content: center;
     }
 
-    .chart-title {
-      margin-top: 30px;
-      font-size: 20px;
-      color: #00ff00;
+    video {
+      width: 100%;
+      border-radius: 10px;
+      border: 2px solid #ffcc00;
     }
   </style>
 </head>
@@ -104,84 +98,26 @@
 
   <div class="dashboard-container">
     <div class="dashboard-card">
-      <a href="data-entry.html">ডেটা এন্ট্রি</a>
+      <a href="data-entry.html">📋 ডেটা এন্ট্রি</a>
     </div>
     <div class="dashboard-card">
-      <a href="data-edit.html">ডেটা এডিট</a>
+      <a href="data-edit.html">✏️ ডেটা এডিট</a>
     </div>
     <div class="dashboard-card">
-      <a href="report.html">রিপোর্ট</a>
+      <a href="report.html">📊 রিপোর্ট</a>
     </div>
   </div>
 
   <div class="notice-board">
-    <p class="notice-text">📢 নোটিশ: আজকের সমস্ত ডেটা সঠিকভাবে এন্ট্রি করুন এবং রিপোর্ট যাচাই করুন।</p>
+    📢 নোটিশ: আজকের সমস্ত ডেটা সঠিকভাবে এন্ট্রি করুন এবং রিপোর্ট যাচাই করুন।
   </div>
 
-  <h2 class="chart-title">ডেটা অ্যানালাইসিস</h2>
-
-  <div class="chart-container">
-    <canvas id="barChart"></canvas>
+  <div class="video-container">
+    <video controls autoplay loop>
+      <source src="your-video.mp4" type="video/mp4">
+      আপনার ব্রাউজার এই ভিডিও ফরম্যাট সমর্থন করে না।
+    </video>
   </div>
-
-  <div class="chart-container">
-    <canvas id="pieChart"></canvas>
-  </div>
-
-  <script>
-    // বার চার্ট ডেটা
-    const barLabels = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন"];
-    const barData = {
-      labels: barLabels,
-      datasets: [{
-        label: 'মাসিক অর্ডার পরিমাণ',
-        backgroundColor: 'rgba(0, 255, 0, 0.5)',
-        borderColor: '#00ff00',
-        data: [5, 10, 15, 20, 25, 30],
-      }]
-    };
-
-    const barConfig = {
-      type: 'bar',
-      data: barData,
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true
-          }
-        }
-      }
-    };
-
-    new Chart(document.getElementById('barChart'), barConfig);
-
-    // Pie চার্ট ডেটা
-    const pieData = {
-      labels: ["অর্ডার A", "অর্ডার B", "অর্ডার C", "অর্ডার D"],
-      datasets: [{
-        label: 'অর্ডার বণ্টন',
-        data: [10, 20, 30, 40],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.7)',
-          'rgba(54, 162, 235, 0.7)',
-          'rgba(255, 206, 86, 0.7)',
-          'rgba(75, 192, 192, 0.7)'
-        ],
-        borderWidth: 1
-      }]
-    };
-
-    const pieConfig = {
-      type: 'pie',
-      data: pieData,
-      options: {
-        responsive: true
-      }
-    };
-
-    new Chart(document.getElementById('pieChart'), pieConfig);
-  </script>
 
 </body>
 </html>
