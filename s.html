@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>লাইভ ডাটা এন্ট্রি</title>
+    <title>Google Sheet লাইভ ডাটা এন্ট্রি</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
         table { width: 80%; margin: 20px auto; border-collapse: collapse; }
         th, td { border: 1px solid black; padding: 10px; text-align: left; }
         th { background-color: #f2f2f2; }
         .message { color: green; font-weight: bold; margin: 10px; display: none; }
+        .loader { display: none; margin: 10px auto; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -17,14 +19,15 @@
     <h2>Google Sheet লাইভ ডাটা এন্ট্রি</h2>
 
     <form id="dataForm">
-        <input type="text" name="name" placeholder="নাম" required>
-        <input type="email" name="email" placeholder="ইমেল" required>
-        <input type="text" name="phone" placeholder="ফোন নম্বর" required>
-        <input type="text" name="address" placeholder="ঠিকানা" required>
+        <input type="text" id="name" name="name" placeholder="নাম" required>
+        <input type="email" id="email" name="email" placeholder="ইমেল" required>
+        <input type="text" id="phone" name="phone" placeholder="ফোন নম্বর" required>
+        <input type="text" id="address" name="address" placeholder="ঠিকানা" required>
         <button type="submit">✅ ডাটা সাবমিট করুন</button>
     </form>
 
     <p class="message" id="successMessage">✅ সফলভাবে ডাটা এন্ট্রি হয়েছে!</p>
+    <div class="loader" id="loader"></div>
 
     <h3>📌 এন্ট্রি হওয়া ডাটা</h3>
     <table id="dataTable">
@@ -40,24 +43,45 @@
         const scriptURL = "https://script.google.com/macros/s/AKfycbyxwi8Y991IGkNP2Lfv5oY8GjErSCpMcNJy2y8RBBN7zFGmbekvUSf4yGSm91u1Z6xQ/exec";
 
         document.getElementById("dataForm").onsubmit = function(event) {
-            event.preventDefault(); // পেজ রিফ্রেশ বন্ধ রাখবে
+            event.preventDefault(); // রিফ্রেশ বন্ধ
+
+            // লোডার দেখাও
+            document.getElementById("loader").style.display = "block";
+
             var formData = new FormData(event.target);
-            
+
             fetch(scriptURL, { method: "POST", body: formData })
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById("successMessage").style.display = "block"; // মেসেজ দেখাবে
-                    setTimeout(() => { document.getElementById("successMessage").style.display = "none"; }, 3000); // ৩ সেকেন্ড পর মেসেজ অদৃশ্য হবে
-                    event.target.reset(); // ফর্ম খালি করবে
-                    fetchData(); // নতুন ডাটা রিফ্রেশ ছাড়া দেখাবে
+                    // লোডার বন্ধ করো
+                    document.getElementById("loader").style.display = "none";
+                    
+                    // সফলতার মেসেজ দেখাও
+                    document.getElementById("successMessage").style.display = "block";
+                    setTimeout(() => { document.getElementById("successMessage").style.display = "none"; }, 2000);
+                    
+                    // ইনপুট ঘর খালি করো
+                    document.getElementById("name").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("phone").value = "";
+                    document.getElementById("address").value = "";
+
+                    fetchData(); // রিফ্রেশ ছাড়াই নতুন ডাটা দেখাও
                 })
-                .catch(error => console.error("❌ Error:", error));
+                .catch(error => {
+                    document.getElementById("loader").style.display = "none";
+                    console.error("❌ Error:", error);
+                });
         };
 
         function fetchData() {
+            document.getElementById("loader").style.display = "block";
+
             fetch(scriptURL)
                 .then(response => response.json())
                 .then(data => {
+                    document.getElementById("loader").style.display = "none";
+
                     var table = document.getElementById("dataTable");
                     table.innerHTML = "<tr><th>নাম</th><th>ইমেল</th><th>ফোন</th><th>ঠিকানা</th></tr>";
 
@@ -71,7 +95,10 @@
                         table.appendChild(tr);
                     });
                 })
-                .catch(error => console.error("❌ Error:", error));
+                .catch(error => {
+                    document.getElementById("loader").style.display = "none";
+                    console.error("❌ Error:", error);
+                });
         }
 
         fetchData();
