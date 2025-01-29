@@ -1,110 +1,60 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ডেটা এন্ট্রি</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0f0f0f;
-            color: #00ff00;
-            text-align: center;
-            padding: 20px;
-        }
-        form {
-            margin-top: 20px;
-        }
-        input[type="text"], input[type="number"] {
-            padding: 10px;
-            width: 300px;
-            margin: 5px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #008000;
-        }
-        .last-entry {
-            background: #111;
-            padding: 15px;
-            color: #00ff00;
-            margin: 20px 0;
-            border: 1px solid #444;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Data Entry</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
 </head>
 <body>
-    <h1>ডেটা এন্ট্রি পেজ</h1>
-    <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
-    <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
-    <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
-    <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
+  <h1>Firebase Realtime Database Entry</h1>
 
-    <h2>লাস্ট এন্ট্রি:</h2>
-    <div id="lastEntry" class="last-entry">কোনো এন্ট্রি নেই।</div>
+  <form id="dataForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" placeholder="Enter your name" required><br><br>
 
-    <h2>নতুন ডেটা এন্ট্রি করুন:</h2>
-    <form id="entryForm">
-        <input type="text" id="orderNo" placeholder="অর্ডার নং" required><br>
-        <input type="text" id="partyName" placeholder="পার্টির নাম" required><br>
-        <input type="text" id="shadeNo" placeholder="শেড নং" required><br>
-        <input type="number" id="orderQty" placeholder="অর্ডার পরিমাণ" required><br>
-        <input type="number" id="balQty" placeholder="ব্যালেন্স পরিমাণ" required><br>
-        <input type="text" id="remarks" placeholder="মন্তব্য"><br>
-        <button type="submit">সাবমিট</button>
-    </form>
+    <label for="email">Email:</label>
+    <input type="email" id="email" placeholder="Enter your email" required><br><br>
 
-    <script>
-        // লাস্ট এন্ট্রি দেখানো ফাংশন
-        function displayLastEntry() {
-            const entries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const lastEntry = entries[entries.length - 1];
+    <button type="submit">Submit</button>
+  </form>
 
-            if (lastEntry) {
-                document.getElementById('lastEntry').innerHTML = `
-                    <p>অর্ডার নং: ${lastEntry.orderNo}</p>
-                    <p>পার্টির নাম: ${lastEntry.partyName}</p>
-                    <p>শেড নং: ${lastEntry.shadeNo}</p>
-                    <p>অর্ডার পরিমাণ: ${lastEntry.orderQty}</p>
-                    <p>ব্যালেন্স পরিমাণ: ${lastEntry.balQty}</p>
-                    <p>মন্তব্য: ${lastEntry.remarks}</p>
-                `;
-            } else {
-                document.getElementById('lastEntry').innerText = "কোনো এন্ট্রি নেই।";
-            }
-        }
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBwNwMElOcbFR7xrIGz-_M11EyBvaSdRpI",
+      authDomain: "real-b12ac.firebaseapp.com",
+      databaseURL: "https://real-b12ac-default-rtdb.firebaseio.com",
+      projectId: "real-b12ac",
+      storageBucket: "real-b12ac.firebasestorage.app",
+      messagingSenderId: "500079018179",
+      appId: "1:500079018179:web:788a94fcdd48d344d56276",
+      measurementId: "G-30N8HGL6QC"
+    };
 
-        // ডেটা সেভ ফাংশন
-        document.getElementById('entryForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-            const orderNo = document.getElementById('orderNo').value;
-            const partyName = document.getElementById('partyName').value;
-            const shadeNo = document.getElementById('shadeNo').value;
-            const orderQty = document.getElementById('orderQty').value;
-            const balQty = document.getElementById('balQty').value;
-            const remarks = document.getElementById('remarks').value;
+    // Form submission handler
+    document.getElementById('dataForm').addEventListener('submit', function(e) {
+      e.preventDefault();
 
-            const entry = { orderNo, partyName, shadeNo, orderQty, balQty, remarks };
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
 
-            let dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            dataEntries.push(entry);
-            localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
-
-            alert("এন্ট্রি সফল হয়েছে!");
-            document.getElementById('entryForm').reset();
-
-            displayLastEntry();
-        });
-
-        // লোড হলে লাস্ট এন্ট্রি দেখাও
-        window.onload = displayLastEntry;
-    </script>
+      // Save data to Firebase
+      database.ref('users/').push({
+        name: name,
+        email: email
+      }).then(() => {
+        alert('Data saved successfully!');
+        document.getElementById('dataForm').reset();
+      }).catch(error => {
+        alert('Error: ' + error.message);
+      });
+    });
+  </script>
 </body>
 </html>
