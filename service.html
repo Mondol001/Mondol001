@@ -3,22 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Firebase Data Entry</title>
+  <title>Firebase Data View</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+  <style>
+    table {
+      width: 50%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
-  <h1>Firebase Realtime Database Entry</h1>
-
-  <form id="dataForm">
-    <label for="name">Name:</label>
-    <input type="text" id="name" placeholder="Enter your name" required><br><br>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" placeholder="Enter your email" required><br><br>
-
-    <button type="submit">Submit</button>
-  </form>
+  <h1>Firebase Data Display</h1>
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
 
   <script>
     // Firebase configuration
@@ -37,22 +52,24 @@
     const app = firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // Form submission handler
-    document.getElementById('dataForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    // Fetch data and display in table
+    database.ref('users/').on('value', (snapshot) => {
+      const tableBody = document.querySelector('#dataTable tbody');
+      tableBody.innerHTML = ''; // Clear previous data
 
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
+      snapshot.forEach(childSnapshot => {
+        const childData = childSnapshot.val();
 
-      // Save data to Firebase
-      database.ref('users/').push({
-        name: name,
-        email: email
-      }).then(() => {
-        alert('Data saved successfully!');
-        document.getElementById('dataForm').reset();
-      }).catch(error => {
-        alert('Error: ' + error.message);
+        const row = document.createElement('tr');
+        const nameCell = document.createElement('td');
+        const emailCell = document.createElement('td');
+
+        nameCell.textContent = childData.name;
+        emailCell.textContent = childData.email;
+
+        row.appendChild(nameCell);
+        row.appendChild(emailCell);
+        tableBody.appendChild(row);
       });
     });
   </script>
