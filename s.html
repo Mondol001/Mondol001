@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডাটা এন্ট্রি সিস্টেম</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        table { width: 80%; margin: 20px auto; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+    <h2>Google Sheet লাইভ ডাটা এন্ট্রি</h2>
+
+    <form id="dataForm">
+        <input type="text" name="name" placeholder="নাম" required>
+        <input type="email" name="email" placeholder="ইমেল" required>
+        <input type="text" name="phone" placeholder="ফোন নম্বর" required>
+        <input type="text" name="address" placeholder="ঠিকানা" required>
+        <button type="submit">ডাটা সাবমিট করুন</button>
+    </form>
+
+    <h3>✅ এন্ট্রি হওয়া ডাটা</h3>
+    <table id="dataTable">
+        <tr>
+            <th>নাম</th>
+            <th>ইমেল</th>
+            <th>ফোন</th>
+            <th>ঠিকানা</th>
+        </tr>
+    </table>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyxwi8Y991IGkNP2Lfv5oY8GjErSCpMcNJy2y8RBBN7zFGmbekvUSf4yGSm91u1Z6xQ/exec";
+
+        document.getElementById("dataForm").onsubmit = function(event) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+
+            fetch(scriptURL, { method: "POST", body: formData })
+                .then(response => response.text())
+                .then(data => {
+                    alert("✅ " + data);
+                    fetchData();
+                })
+                .catch(error => console.error("❌ Error:", error));
+        };
+
+        function fetchData() {
+            fetch(scriptURL)
+                .then(response => response.json())
+                .then(data => {
+                    var table = document.getElementById("dataTable");
+                    table.innerHTML = "<tr><th>নাম</th><th>ইমেল</th><th>ফোন</th><th>ঠিকানা</th></tr>";
+
+                    data.slice(1).forEach(row => {
+                        var tr = document.createElement("tr");
+                        row.forEach(cell => {
+                            var td = document.createElement("td");
+                            td.textContent = cell;
+                            tr.appendChild(td);
+                        });
+                        table.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error("❌ Error:", error));
+        }
+
+        fetchData();
+    </script>
+
+</body>
+</html>
