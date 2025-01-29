@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ডাটা এন্ট্রি সিস্টেম</title>
+    <title>লাইভ ডাটা এন্ট্রি</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
         table { width: 80%; margin: 20px auto; border-collapse: collapse; }
         th, td { border: 1px solid black; padding: 10px; text-align: left; }
         th { background-color: #f2f2f2; }
+        .message { color: green; font-weight: bold; margin: 10px; display: none; }
     </style>
 </head>
 <body>
@@ -20,10 +21,12 @@
         <input type="email" name="email" placeholder="ইমেল" required>
         <input type="text" name="phone" placeholder="ফোন নম্বর" required>
         <input type="text" name="address" placeholder="ঠিকানা" required>
-        <button type="submit">ডাটা সাবমিট করুন</button>
+        <button type="submit">✅ ডাটা সাবমিট করুন</button>
     </form>
 
-    <h3>✅ এন্ট্রি হওয়া ডাটা</h3>
+    <p class="message" id="successMessage">✅ সফলভাবে ডাটা এন্ট্রি হয়েছে!</p>
+
+    <h3>📌 এন্ট্রি হওয়া ডাটা</h3>
     <table id="dataTable">
         <tr>
             <th>নাম</th>
@@ -37,14 +40,16 @@
         const scriptURL = "https://script.google.com/macros/s/AKfycbyxwi8Y991IGkNP2Lfv5oY8GjErSCpMcNJy2y8RBBN7zFGmbekvUSf4yGSm91u1Z6xQ/exec";
 
         document.getElementById("dataForm").onsubmit = function(event) {
-            event.preventDefault();
+            event.preventDefault(); // পেজ রিফ্রেশ বন্ধ রাখবে
             var formData = new FormData(event.target);
-
+            
             fetch(scriptURL, { method: "POST", body: formData })
                 .then(response => response.text())
                 .then(data => {
-                    alert("✅ " + data);
-                    fetchData();
+                    document.getElementById("successMessage").style.display = "block"; // মেসেজ দেখাবে
+                    setTimeout(() => { document.getElementById("successMessage").style.display = "none"; }, 3000); // ৩ সেকেন্ড পর মেসেজ অদৃশ্য হবে
+                    event.target.reset(); // ফর্ম খালি করবে
+                    fetchData(); // নতুন ডাটা রিফ্রেশ ছাড়া দেখাবে
                 })
                 .catch(error => console.error("❌ Error:", error));
         };
