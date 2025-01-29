@@ -1,77 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Firebase Data View</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
-  <style>
-    table {
-      width: 50%;
-      margin: 20px auto;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
-</head>
-<body>
-  <h1>Firebase Data Display</h1>
-  <table id="dataTable">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+<html>
+  <head>
+    <title>Data Entry Form</title>
+  </head>
+  <body>
+    <h1>Data Entry Form</h1>
+    <form id="dataEntryForm">
+      Order No: <input type="text" id="orderNo" required><br>
+      Party Name: <input type="text" id="partyName" required><br>
+      Shade No: <input type="text" id="shadeNo"><br>
+      Order Qty: <input type="number" id="orderQty" required><br>
+      Bal Qty: <input type="number" id="balQty"><br>
+      Remarks: <input type="text" id="remarks"><br>
+      <button type="submit">Submit</button>
+    </form>
+    <p id="response"></p>
 
-  <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBwNwMElOcbFR7xrIGz-_M11EyBvaSdRpI",
-      authDomain: "real-b12ac.firebaseapp.com",
-      databaseURL: "https://real-b12ac-default-rtdb.firebaseio.com",
-      projectId: "real-b12ac",
-      storageBucket: "real-b12ac.firebasestorage.app",
-      messagingSenderId: "500079018179",
-      appId: "1:500079018179:web:788a94fcdd48d344d56276",
-      measurementId: "G-30N8HGL6QC"
-    };
+    <script>
+      document.getElementById('dataEntryForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const data = {
+          orderNo: document.getElementById('orderNo').value,
+          partyName: document.getElementById('partyName').value,
+          shadeNo: document.getElementById('shadeNo').value,
+          orderQty: document.getElementById('orderQty').value,
+          balQty: document.getElementById('balQty').value,
+          remarks: document.getElementById('remarks').value,
+        };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // Fetch data and display in table
-    database.ref('users/').on('value', (snapshot) => {
-      const tableBody = document.querySelector('#dataTable tbody');
-      tableBody.innerHTML = ''; // Clear previous data
-
-      snapshot.forEach(childSnapshot => {
-        const childData = childSnapshot.val();
-
-        const row = document.createElement('tr');
-        const nameCell = document.createElement('td');
-        const emailCell = document.createElement('td');
-
-        nameCell.textContent = childData.name;
-        emailCell.textContent = childData.email;
-
-        row.appendChild(nameCell);
-        row.appendChild(emailCell);
-        tableBody.appendChild(row);
+        google.script.run.withSuccessHandler(function(response) {
+          document.getElementById('response').textContent = response;
+        }).submitData(data);
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
