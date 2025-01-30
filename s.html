@@ -1,107 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Firebase Data Entry App</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
-  <script type="module" defer>
-    // Import Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
-      authDomain: "online-data-6dcae.firebaseapp.com",
-      projectId: "online-data-6dcae",
-      storageBucket: "online-data-6dcae.firebasestorage.app",
-      messagingSenderId: "848937873609",
-      appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
-      measurementId: "G-41Q88XT5J5"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Form Submission
-    document.addEventListener("DOMContentLoaded", () => {
-      const orderForm = document.getElementById("orderForm");
-
-      orderForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const orderNo = document.getElementById("orderNo").value;
-        const partyName = document.getElementById("partyName").value;
-        const shadeNo = document.getElementById("shadeNo").value;
-        const orderQty = document.getElementById("orderQty").value;
-        const balQty = document.getElementById("balQty").value;
-        const remarks = document.getElementById("remarks").value;
-
-        try {
-          await addDoc(collection(db, "orders"), {
-            orderNo,
-            partyName,
-            shadeNo,
-            orderQty,
-            balQty,
-            remarks,
-          });
-          alert("Data added successfully!");
-          orderForm.reset();
-          loadOrders();
-        } catch (error) {
-          console.error("Error adding document: ", error);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডেটা এন্ট্রি</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f0f;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
         }
-      });
-
-      // Load Orders
-      async function loadOrders() {
-        const querySnapshot = await getDocs(collection(db, "orders"));
-        const orderList = document.getElementById("orderList");
-        orderList.innerHTML = "";
-
-        querySnapshot.forEach((doc) => {
-          const order = doc.data();
-          const orderItem = document.createElement("div");
-          orderItem.textContent = `Order No: ${order.orderNo}, Party Name: ${order.partyName}, Shade No: ${order.shadeNo}, Order Qty: ${order.orderQty}, Bal Qty: ${order.balQty}, Remarks: ${order.remarks}`;
-          orderList.appendChild(orderItem);
-        });
-      }
-
-      loadOrders();
-    });
-  </script>
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            width: 300px;
+            margin: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #008000;
+        }
+        .last-entry-table {
+            margin: 20px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        .last-entry-table th, .last-entry-table td {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            text-align: left;
+        }
+        .last-entry-table th {
+            background-color: #111;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Order Data Entry</h1>
+    <h1>ডেটা এন্ট্রি পেজ</h1>
+    <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
+    <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
+    <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
-    <form id="orderForm">
-      <label for="orderNo">Order No:</label>
-      <input type="text" id="orderNo" required />
+    <h2>লাস্ট এন্ট্রি:</h2>
+    <table class="last-entry-table" id="lastEntryTable">
+        <thead>
+            <tr>
+                <th>অর্ডার নং</th>
+                <th>পার্টির নাম</th>
+                <th>শেড নং</th>
+                <th>অর্ডার পরিমাণ</th>
+                <th>ব্যালেন্স পরিমাণ</th>
+                <th>মন্তব্য</th>
+            </tr>
+        </thead>
+        <tbody id="lastEntryBody">
+            <tr><td colspan="6">কোনো এন্ট্রি নেই।</td></tr>
+        </tbody>
+    </table>
 
-      <label for="partyName">Party Name:</label>
-      <input type="text" id="partyName" required />
-
-      <label for="shadeNo">Shade No:</label>
-      <input type="text" id="shadeNo" required />
-
-      <label for="orderQty">Order Qty:</label>
-      <input type="number" id="orderQty" required />
-
-      <label for="balQty">Balance Qty:</label>
-      <input type="number" id="balQty" required />
-
-      <label for="remarks">Remarks:</label>
-      <input type="text" id="remarks" required />
-
-      <button type="submit">Submit</button>
+    <h2>নতুন ডেটা এন্ট্রি করুন:</h2>
+    <form id="entryForm">
+        <input type="text" id="orderNo" placeholder="অর্ডার নং" required><br>
+        <input type="text" id="partyName" placeholder="পার্টির নাম" required><br>
+        <input type="text" id="shadeNo" placeholder="শেড নং" required><br>
+        <input type="number" id="orderQty" placeholder="অর্ডার পরিমাণ" required><br>
+        <input type="number" id="balQty" placeholder="ব্যালেন্স পরিমাণ" required><br>
+        <input type="text" id="remarks" placeholder="মন্তব্য"><br>
+        <button type="submit">সাবমিট</button>
     </form>
 
-    <h2>Order List</h2>
-    <div id="orderList"></div>
-  </div>
+    <script type="module">
+        // Firebase configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
+            authDomain: "online-data-6dcae.firebaseapp.com",
+            projectId: "online-data-6dcae",
+            storageBucket: "online-data-6dcae.firebasestorage.app",
+            messagingSenderId: "848937873609",
+            appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
+            measurementId: "G-41Q88XT5J5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Firestore এ ডেটা সেভ করা
+        document.getElementById('entryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const orderNo = document.getElementById('orderNo').value;
+            const partyName = document.getElementById('partyName').value;
+            const shadeNo = document.getElementById('shadeNo').value;
+            const orderQty = document.getElementById('orderQty').value;
+            const balQty = document.getElementById('balQty').value;
+            const remarks = document.getElementById('remarks').value;
+
+            try {
+                await addDoc(collection(db, "orders"), {
+                    orderNo,
+                    partyName,
+                    shadeNo,
+                    orderQty,
+                    balQty,
+                    remarks
+                });
+
+                alert("এন্ট্রি সফল হয়েছে!");
+                document.getElementById('entryForm').reset();
+
+                loadLastEntry();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+            }
+        });
+
+        // Firestore থেকে শেষ এন্ট্রি রিড করা
+        async function loadLastEntry() {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            const orders = querySnapshot.docs.map(doc => doc.data());
+
+            const lastEntry = orders[orders.length - 1];
+
+            const tbody = document.getElementById('lastEntryBody');
+            tbody.innerHTML = '';
+
+            if (lastEntry) {
+                const row = `
+                    <tr>
+                        <td>${lastEntry.orderNo}</td>
+                        <td>${lastEntry.partyName}</td>
+                        <td>${lastEntry.shadeNo}</td>
+                        <td>${lastEntry.orderQty}</td>
+                        <td>${lastEntry.balQty}</td>
+                        <td>${lastEntry.remarks}</td>
+                    </tr>
+                `;
+                tbody.innerHTML = row;
+            } else {
+                tbody.innerHTML = `<tr><td colspan="6">কোনো এন্ট্রি নেই।</td></tr>`;
+            }
+        }
+
+        // পেজ লোড হলে শেষ এন্ট্রি দেখাও
+        window.onload = loadLastEntry;
+    </script>
 </body>
 </html>
