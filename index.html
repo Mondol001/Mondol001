@@ -30,35 +30,34 @@
       color: #ffcc00;
     }
 
-    .dashboard-container {
+    .dashboard-menu {
+      list-style: none;
+      padding: 0;
       display: flex;
       justify-content: center;
-      gap: 30px;
+      gap: 20px;
       flex-wrap: wrap;
-      width: 100%;
-      max-width: 1200px;
     }
 
-    .dashboard-card {
+    .dashboard-menu li {
       background: linear-gradient(135deg, #ff6600, #ffcc00);
-      padding: 20px;
-      border-radius: 15px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 20px;
+      font-weight: bold;
       text-align: center;
       cursor: pointer;
       transition: all 0.3s;
-      width: 260px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-      font-size: 20px;
-      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
 
-    .dashboard-card:hover {
+    .dashboard-menu li:hover {
       background: #ffffff;
       color: #000;
       transform: scale(1.1);
     }
 
-    .dashboard-card a {
+    .dashboard-menu li a {
       text-decoration: none;
       color: white;
       font-size: 20px;
@@ -77,47 +76,77 @@
       color: #ffcc00;
     }
 
-    .video-container {
-      margin-top: 30px;
-      width: 80%;
-      max-width: 800px;
-      display: flex;
-      justify-content: center;
-    }
-
-    video {
-      width: 100%;
-      border-radius: 10px;
-      border: 2px solid #ffcc00;
-    }
   </style>
 </head>
 <body>
 
   <h1>ড্যাশবোর্ড</h1>
 
-  <div class="dashboard-container">
-    <div class="dashboard-card">
-      <a href="data-entry.html">📋 ডেটা এন্ট্রি</a>
-    </div>
-    <div class="dashboard-card">
-      <a href="data-edit.html">✏️ ডেটা এডিট</a>
-    </div>
-    <div class="dashboard-card">
-      <a href="report.html">📊 রিপোর্ট</a>
-    </div>
-  </div>
+  <ul class="dashboard-menu">
+    <li><a href="data-entry.html">📋 ডেটা এন্ট্রি</a></li>
+    <li><a href="data-edit.html">✏️ ডেটা এডিট</a></li>
+    <li><a href="report.html">📊 রিপোর্ট</a></li>
+  </ul>
 
   <div class="notice-board">
-    📢 নোটিশ: আজকের সমস্ত ডেটা সঠিকভাবে এন্ট্রি করুন এবং রিপোর্ট যাচাই করুন।
-  </div>
+  📢 নোটিশ: আজকের সমস্ত ডেটা সঠিকভাবে এন্ট্রি করুন এবং রিপোর্ট যাচাই করুন।
+  <hr style="border: 2px solid #ffcc00; margin: 10px 0;">
+  <p style="font-size: 18px; color: #ffffff;">
+    ⚠️ দয়া করে ডাটা এন্ট্রির পর পুনরায় যাচাই করুন যাতে কোনো ভুল না থাকে।
+  </p>
+</div>
 
-  <div class="video-container">
-    <video controls autoplay loop>
-      <source src="your-video.mp4" type="video/mp4">
-      আপনার ব্রাউজার এই ভিডিও ফরম্যাট সমর্থন করে না।
-    </video>
-  </div>
+<style>
+  @keyframes glow {
+    0% { box-shadow: 0 0 5px #ffcc00; }
+    50% { box-shadow: 0 0 20px #ffcc00; }
+    100% { box-shadow: 0 0 5px #ffcc00; }
+  }
+
+  .developer-box {
+    background: #2a2a3b;
+    border: 2px solid #ffcc00;
+    padding: 15px;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffcc00;
+    border-radius: 10px;
+    animation: glow 2s infinite alternate;
+    transition: transform 0.3s;
+  }
+
+  .developer-box:hover {
+    transform: scale(1.05);
+  }
+
+  .developer-box a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .developer-box a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="developer-box">
+  💻 <strong>ডেভেলপার:</strong> জুবায়ের হোসেন <br>
+  🏢 <strong>কোম্পানি:</strong> Faiza Button & Zipper Ltd. <br>
+  📅 <strong>যোগদান:</strong> ২১ সেপ্টেম্বর ২০২১ <br>
+  🏭 <strong>অফিস ঠিকানা:</strong> টঙ্গী, গাজীপুর <br>
+  📧 <strong>ইমেইল:</strong> <a href="mailto:jubaer@example.com">jubaer@example.com</a> <br>
+  📱 <strong>ফোন:</strong> +৮৮০ ১৭XXXXXXXX <br>
+  🌐 <strong>ওয়েবসাইট:</strong> <a href="https://yourwebsite.com" target="_blank">yourwebsite.com</a>
+</div>
+
+
+
+
 
 </body>
 </html>
