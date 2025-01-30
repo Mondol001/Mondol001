@@ -48,9 +48,7 @@
 <body>
     <h1>ডেটা এন্ট্রি পেজ</h1>
     <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
-
-  <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
-
+    <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
     <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
     <h2>লাস্ট এন্ট্রি:</h2>
@@ -81,11 +79,55 @@
         <button type="submit">সাবমিট</button>
     </form>
 
-    <script>
-        // লাস্ট এন্ট্রি দেখানো ফাংশন
-        function displayLastEntry() {
-            const entries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const lastEntry = entries[entries.length - 1];
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
+            authDomain: "online-data-6dcae.firebaseapp.com",
+            projectId: "online-data-6dcae",
+            storageBucket: "online-data-6dcae.firebasestorage.app",
+            messagingSenderId: "848937873609",
+            appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
+            measurementId: "G-41Q88XT5J5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('entryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const orderNo = document.getElementById('orderNo').value;
+            const partyName = document.getElementById('partyName').value;
+            const shadeNo = document.getElementById('shadeNo').value;
+            const orderQty = document.getElementById('orderQty').value;
+            const balQty = document.getElementById('balQty').value;
+            const remarks = document.getElementById('remarks').value;
+
+            try {
+                await addDoc(collection(db, "orders"), {
+                    orderNo,
+                    partyName,
+                    shadeNo,
+                    orderQty,
+                    balQty,
+                    remarks
+                });
+
+                alert("এন্ট্রি সফল হয়েছে!");
+                document.getElementById('entryForm').reset();
+                loadLastEntry();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+            }
+        });
+
+        async function loadLastEntry() {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            const orders = querySnapshot.docs.map(doc => doc.data());
+            const lastEntry = orders[orders.length - 1];
 
             const tbody = document.getElementById('lastEntryBody');
             tbody.innerHTML = '';
@@ -107,31 +149,7 @@
             }
         }
 
-        // ডেটা সেভ ফাংশন
-        document.getElementById('entryForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const orderNo = document.getElementById('orderNo').value;
-            const partyName = document.getElementById('partyName').value;
-            const shadeNo = document.getElementById('shadeNo').value;
-            const orderQty = document.getElementById('orderQty').value;
-            const balQty = document.getElementById('balQty').value;
-            const remarks = document.getElementById('remarks').value;
-
-            const entry = { orderNo, partyName, shadeNo, orderQty, balQty, remarks };
-
-            let dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            dataEntries.push(entry);
-            localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
-
-            alert("এন্ট্রি সফল হয়েছে!");
-            document.getElementById('entryForm').reset();
-
-            displayLastEntry();
-        });
-
-        // লোড হলে লাস্ট এন্ট্রি দেখাও
-        window.onload = displayLastEntry;
+        window.onload = loadLastEntry;
     </script>
 </body>
 </html>
