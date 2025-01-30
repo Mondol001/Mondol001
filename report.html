@@ -1,139 +1,126 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>রিপোর্ট পেজ</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #0f0f0f;
-      color: #00ff00;
-      text-align: center;
-      padding: 20px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #00ff00;
-      color: black;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #008000;
-    }
-    table {
-      width: 100%;
-      margin: 20px auto;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #00ff00;
-      padding: 10px;
-      text-align: center;
-    }
-    th {
-      background-color: #008000;
-    }
-    input[type="text"] {
-      padding: 10px;
-      width: 300px;
-      margin: 10px;
-    }
-    #reportContainer {
-      display: none;
-      margin-top: 20px;
-    }
-    @media print {
-      body {
-        background-color: white;
-        color: black;
-      }
-      button, input {
-        display: none;
-      }
-      table {
-        width: 100%;
-        border: 1px solid black;
-      }
-      th, td {
-        border: 1px solid black;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রিপোর্ট</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f0f;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+        }
+        .report-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .report-table th, .report-table td {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            text-align: left;
+        }
+        .report-table th {
+            background-color: #111;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #008000;
+        }
+    </style>
 </head>
 <body>
-  <h1>রিপোর্ট পেজ</h1>
+    <h1>রিপোর্ট পেজ</h1>
+    <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
+    <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
+    <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
 
-  <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
-  <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
-  <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
-  
-
-  <h2>অর্ডার অনুসন্ধান করুন:</h2>
-  <input type="text" id="searchOrderNo" placeholder="অর্ডার নং লিখুন">
-  <button onclick="filterReport()">ফিল্টার করুন</button>
-  <button onclick="showAllReports()">সব দেখুন</button>
-
-  <div id="reportContainer">
-    <h2>রিপোর্ট</h2>
-    <table id="reportTable">
-      <thead>
-        <tr>
-          <th>অর্ডার নং</th>
-          <th>পার্টি নাম</th>
-          <th>শেড নং</th>
-          <th>অর্ডার পরিমাণ</th>
-          <th>ব্যালেন্স পরিমাণ</th>
-          <th>মন্তব্য</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
+    <h2>অর্ডারের রিপোর্ট:</h2>
+    <table class="report-table" id="reportTable">
+        <thead>
+            <tr>
+                <th>অর্ডার নং</th>
+                <th>পার্টির নাম</th>
+                <th>শেড নং</th>
+                <th>অর্ডার পরিমাণ</th>
+                <th>ব্যালেন্স পরিমাণ</th>
+                <th>মন্তব্য</th>
+            </tr>
+        </thead>
+        <tbody id="reportBody">
+            <tr><td colspan="6">কোনো ডেটা নেই।</td></tr>
+        </tbody>
     </table>
-    <button onclick="window.print()">প্রিন্ট প্রিভিউ</button>
-  </div>
 
-  <script>
-    // লোকাল স্টোরেজ থেকে ডেটা লোড করে টেবিল ফিল করা
-    function loadReportTable(dataEntries) {
-      const reportTableBody = document.getElementById('reportTable').querySelector('tbody');
-      reportTableBody.innerHTML = ''; // পুরানো ডেটা মুছে ফেলা
+    <button onclick="printReport()">প্রিন্ট করুন</button>
 
-      if (dataEntries.length === 0) {
-        reportTableBody.innerHTML = '<tr><td colspan="6">কোন ডেটা পাওয়া যায়নি!</td></tr>';
-        return;
-      }
+    <script type="module">
+        // Firebase configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
-      dataEntries.forEach(entry => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${entry.orderNo}</td>
-          <td>${entry.partyName}</td>
-          <td>${entry.shadeNo}</td>
-          <td>${entry.orderQty}</td>
-          <td>${entry.balQty}</td>
-          <td>${entry.remarks}</td>
-        `;
-        reportTableBody.appendChild(row);
-      });
-    }
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
+            authDomain: "online-data-6dcae.firebaseapp.com",
+            projectId: "online-data-6dcae",
+            storageBucket: "online-data-6dcae.firebasestorage.app",
+            messagingSenderId: "848937873609",
+            appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
+            measurementId: "G-41Q88XT5J5"
+        };
 
-    // রিপোর্ট ফিল্টার ফাংশন
-    function filterReport() {
-      const searchOrderNo = document.getElementById('searchOrderNo').value;
-      const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-      const filteredEntries = dataEntries.filter(item => item.orderNo === searchOrderNo);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-      document.getElementById('reportContainer').style.display = 'block';
-      loadReportTable(filteredEntries);
-    }
+        // Firestore থেকে ডেটা লোড করা
+        async function loadReport() {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            const orders = querySnapshot.docs.map(doc => doc.data());
 
-    // সব রিপোর্ট দেখানোর ফাংশন
-    function showAllReports() {
-      const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-      document.getElementById('reportContainer').style.display = 'block';
-      loadReportTable(dataEntries);
-    }
-  </script>
+            const tbody = document.getElementById('reportBody');
+            tbody.innerHTML = '';
+
+            if (orders.length > 0) {
+                orders.forEach(order => {
+                    const row = `
+                        <tr>
+                            <td>${order.orderNo}</td>
+                            <td>${order.partyName}</td>
+                            <td>${order.shadeNo}</td>
+                            <td>${order.orderQty}</td>
+                            <td>${order.balQty}</td>
+                            <td>${order.remarks}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="6">কোনো ডেটা নেই।</td></tr>`;
+            }
+        }
+
+        // পেজ লোড হলে রিপোর্ট লোড হবে
+        window.onload = loadReport;
+
+        // রিপোর্ট প্রিন্ট করার ফাংশন
+        function printReport() {
+            const reportTable = document.getElementById('reportTable');
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>প্রিন্ট রিপোর্ট</title></head><body>');
+            printWindow.document.write(reportTable.outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
 </body>
 </html>
