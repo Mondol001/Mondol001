@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ডেইলি এক্সপেনস এন্ট্রি</title>
+  <title>ডেইলি এক্সপেন্স এন্ট্রি</title>
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
   <style>
@@ -14,10 +14,14 @@
       text-align: center;
       padding: 20px;
     }
+    form {
+      margin: 20px auto;
+      width: 300px;
+    }
     input {
       padding: 10px;
       margin: 10px;
-      width: 300px;
+      width: 100%;
     }
     button {
       padding: 10px 20px;
@@ -25,21 +29,24 @@
       color: white;
       border: none;
       cursor: pointer;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>ডেইলি এক্সপেনস এন্ট্রি</h1>
+  <h1>ডেইলি এক্সপেন্স এন্ট্রি</h1>
   <button onclick="window.location.href='dashboard.html'">ড্যাশবোর্ডে ফিরে যান</button>
+
   <form id="entryForm">
     <input type="date" id="date" required><br>
     <input type="text" id="itemName" placeholder="আইটেম নাম" required><br>
     <input type="number" id="amount" placeholder="মূল্য (টাকা)" required><br>
     <input type="text" id="notes" placeholder="মন্তব্য"><br>
-    <button type="submit">সাবমিট করুন</button>
+    <button type="submit">ডেটা সাবমিট করুন</button>
   </form>
 
   <script>
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
       authDomain: "online-data-6dcae.firebaseapp.com",
@@ -50,6 +57,7 @@
       measurementId: "G-41Q88XT5J5"
     };
 
+    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
@@ -61,17 +69,23 @@
       const amount = parseFloat(document.getElementById("amount").value);
       const notes = document.getElementById("notes").value;
 
+      if (!date || !itemName || !amount) {
+        alert("সব ফিল্ড পূরণ করুন");
+        return;
+      }
+
       try {
         await db.collection("expenses").add({
-          date,
-          itemName,
-          amount,
-          notes
+          date: date,
+          itemName: itemName,
+          amount: amount,
+          notes: notes
         });
-        alert("ডেটা সফলভাবে সংরক্ষণ হয়েছে!");
+        alert("এন্ট্রি সফল হয়েছে!");
         document.getElementById("entryForm").reset();
       } catch (error) {
-        console.error("ডেটা সংরক্ষণে সমস্যা:", error);
+        console.error("ডেটা এন্ট্রি করতে সমস্যা:", error);
+        alert("ডেটা এন্ট্রি ব্যর্থ হয়েছে!");
       }
     });
   </script>
