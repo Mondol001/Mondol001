@@ -75,48 +75,50 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // ড্রপডাউন লোড করে অর্ডার নংগুলি
         async function loadOrderNos() {
             const querySnapshot = await getDocs(collection(db, "orders"));
             const dropdown = document.getElementById("orderNoDropdown");
 
-            // ড্রপডাউন পরিষ্কার করা
             dropdown.innerHTML = '<option value="">অর্ডার নং নির্বাচন করুন</option>';
 
             querySnapshot.forEach((doc) => {
                 const orderData = doc.data();
                 const option = document.createElement("option");
-                option.value = doc.id; // ডকুমেন্ট আইডি
+                option.value = doc.id;
                 option.textContent = `অর্ডার নং: ${orderData.orderNo}`;
                 dropdown.appendChild(option);
             });
         }
 
-        // ফর্ম সাবমিট করার সময় ডেটা আপডেট করা
         document.getElementById('editForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const orderNo = document.getElementById('orderNoDropdown').value;
             const partyName = document.getElementById('partyName').value;
-            const shadeNo = document.getElementById('shadeNo').value;
-            const orderQty = document.getElementById('orderQty').value;
+            const shadeNo = document.getElementById('shadeNo').value;const orderQty = document.getElementById('orderQty').value;
             const balQty = document.getElementById('balQty').value;
             const remarks = document.getElementById('remarks').value;
 
-            const orderRef = doc(db, "orders", orderNo);
-            await updateDoc(orderRef, {
-                partyName,
-                shadeNo,
-                orderQty,
-                balQty,
-                remarks
-            });
+            if (orderNo) {
+                try {
+                    const orderRef = doc(db, "orders", orderNo);
+                    await updateDoc(orderRef, {
+                        partyName,
+                        shadeNo,
+                        orderQty,
+                        balQty,
+                        remarks
+                    });
 
-            alert("এন্ট্রি আপডেট হয়েছে!");
-            document.getElementById('editForm').reset();
+                    alert("এডিট সফল হয়েছে!");
+                } catch (error) {
+                    console.error("Error updating document: ", error);
+                }
+            } else {
+                alert("অনুগ্রহ করে একটি অর্ডার নং নির্বাচন করুন।");
+            }
         });
 
-        // পেজ লোড হলে ড্রপডাউন লোড হবে
         window.onload = loadOrderNos;
     </script>
 </body>
