@@ -1,60 +1,116 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এডিট ইউর এন্ট্রি</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0f0f0f;
-            color: #00ff00;
-            text-align: center;
-            padding: 20px;
-        }
-        input, button {
-            padding: 10px;
-            width: 300px;
-            margin: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>এডিট ইউর এন্ট্রি</title>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      width: 300px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin: 5px;
+    }
+    select {
+      padding: 10px;
+      width: 320px;
+    }
+  </style>
 </head>
 <body>
-    <h1>এডিট ইউর এন্ট্রি</h1>
-    <button onclick="window.location.href='index.html'">ড্যাশবোর্ড</button>
+  <h1>এডিট ইউর এন্ট্রি</h1>
+  <button onclick="window.location.href='dashboard.html'">ড্যাশবোর্ডে ফিরে যান</button>
 
-    <div id="entryList"></div>
+  <h3>তারিখ অনুযায়ী এন্ট্রি নির্বাচন করুন</h3>
+  <select id="entrySelect"></select>
 
-    <script type="module">
-        import { db } from './firebaseConfig.js';
-        import { collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+  <form id="editForm">
+    <input type="date" id="date" required><br>
+    <input type="text" id="itemName" placeholder="আইটেম নাম" required><br>
+    <input type="number" id="amount" placeholder="মূল্য (টাকা)" required><br>
+    <input type="text" id="notes" placeholder="মন্তব্য"><br>
+    <button type="submit">এডিট করুন</button>
+  </form>
 
-        async function loadEntries() {
-            const querySnapshot = await getDocs(collection(db, "expenses"));
-            const entryList = document.getElementById('entryList');
-            entryList.innerHTML = '';
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
+      authDomain: "online-data-6dcae.firebaseapp.com",
+      projectId: "online-data-6dcae",
+      storageBucket: "online-data-6dcae.appspot.com",
+      messagingSenderId: "848937873609",
+      appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
+      measurementId: "G-41Q88XT5J5"
+    };
 
-            querySnapshot.forEach(async (docSnap) => {
-                const data = docSnap.data();
-                const div = document.createElement('div');
-                div.innerHTML = `
-                    <p>${data.date} | ${data.itemName} | ${data.amount} টাকা</p>
-                    <button onclick="editEntry('${docSnap.id}', '${data.date}', '${data.itemName}', '${data.amount}')">এডিট</button>
-                `;
-                entryList.appendChild(div);
-            });
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const entrySelect = document.getElementById("entrySelect");
+
+    async function loadEntries() {
+      const snapshot = await db.collection("expenses").get();
+      snapshot.forEach(doc => {
+        const entry = doc.data();
+        const option = document.createElement("option");
+        option.value = doc.id;
+        option.textContent = `${entry.date} - ${entry.itemName} - ৳${entry.amount}`;
+        entrySelect.appendChild(option);
+      });
+    }
+
+    loadEntries();
+
+    entrySelect.addEventListener("change", async () => {
+      const entryId = entrySelect.value;
+      if (entryId) {
+        const doc = await db.collection("expenses").doc(entryId).get();
+        if (doc.exists) {
+          const data = doc.data();
+          document.getElementById("date").value = data.date;
+          document.getElementById("itemName").value = data.itemName;
+          document.getElementById("amount").value = data.amount;
+          document.getElementById("notes").value = data.notes;
         }
+      }
+    });
 
-        window.editEntry = async (id, date, itemName, amount) => {
-            const newAmount = prompt("নতুন মূল্য দিন:", amount);
-            if (newAmount) {
-                await updateDoc(doc(db, "expenses", id), { amount: newAmount });
-                alert("ডেটা সফলভাবে আপডেট হয়েছে!");
-                loadEntries();
-            }
-        };
-
-        loadEntries();
-    </script>
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const entryId = entrySelect.value;
+      if (entryId) {
+        try {
+          await db.collection("expenses").doc(entryId).update({
+            date: document.getElementById("date").value,
+            itemName: document.getElementById("itemName").value,
+            amount: parseFloat(document.getElementById("amount").value),
+            notes: document.getElementById("notes").value
+          });
+          alert("ডেটা সফলভাবে এডিট হয়েছে!");
+          location.reload();
+        } catch (error) {
+          console.error("এডিট করতে সমস্যা:", error);
+        }
+      } else {
+        alert("একটি এন্ট্রি নির্বাচন করুন।");
+      }
+    });
+  </script>
 </body>
 </html>
