@@ -1,152 +1,72 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ড্যাশবোর্ড</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
-    }
-
-    body {
-      background-color: #1e1e2f;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 36px;
-      font-weight: bold;
-      color: #ffcc00;
-    }
-
-    .dashboard-menu {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .dashboard-menu li {
-      background: linear-gradient(135deg, #ff6600, #ffcc00);
-      padding: 15px 25px;
-      border-radius: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .dashboard-menu li:hover {
-      background: #ffffff;
-      color: #000;
-      transform: scale(1.1);
-    }
-
-    .dashboard-menu li a {
-      text-decoration: none;
-      color: white;
-      font-size: 20px;
-    }
-
-    .notice-board {
-      background: #2a2a3b;
-      border: 2px solid #ffcc00;
-      padding: 15px;
-      margin-top: 30px;
-      width: 100%;
-      max-width: 1000px;
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      color: #ffcc00;
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মাসিক হিসাব নিকাশ</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f0f;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #008000;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+    <h1>মাসিক হিসাব নিকাশ</h1>
+    <button onclick="window.location.href='entry.html'">ডেইলি এক্সপেনস এন্ট্রি</button>
+    <button onclick="window.location.href='edit.html'">এডিট ইউর এন্ট্রি</button>
+    <button onclick="window.location.href='report.html'">রিপোর্ট</button>
 
-  <h1>ড্যাশবোর্ড</h1>
+    <h2>পাই চার্ট</h2>
+    <canvas id="expenseChart" width="400" height="400"></canvas>
 
-  <ul class="dashboard-menu">
-    <li><a href="data-entry.html">📋 ডেটা এন্ট্রি</a></li>
-    <li><a href="data-edit.html">✏️ ডেটা এডিট</a></li>
-    <li><a href="report.html">📊 রিপোর্ট</a></li>
-  </ul>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        import { db } from './firebaseConfig.js';
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
-  <div class="notice-board">
-  📢 নোটিশ: আজকের সমস্ত ডেটা সঠিকভাবে এন্ট্রি করুন এবং রিপোর্ট যাচাই করুন।
-  <hr style="border: 2px solid #ffcc00; margin: 10px 0;">
-  <p style="font-size: 18px; color: #ffffff;">
-    ⚠️ দয়া করে ডাটা এন্ট্রির পর পুনরায় যাচাই করুন যাতে কোনো ভুল না থাকে।
-  </p>
-</div>
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        const expenseData = {};
 
-<style>
-  @keyframes glow {
-    0% { box-shadow: 0 0 5px #ffcc00; }
-    50% { box-shadow: 0 0 20px #ffcc00; }
-    100% { box-shadow: 0 0 5px #ffcc00; }
-  }
+        async function loadChartData() {
+            const querySnapshot = await getDocs(collection(db, "expenses"));
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                const month = new Date(data.date).toLocaleString('bn-BD', { month: 'long' });
+                expenseData[month] = (expenseData[month] || 0) + Number(data.amount);
+            });
 
-  .developer-box {
-    background: #2a2a3b;
-    border: 2px solid #ffcc00;
-    padding: 15px;
-    margin-top: 30px;
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #ffcc00;
-    border-radius: 10px;
-    animation: glow 2s infinite alternate;
-    transition: transform 0.3s;
-  }
+            const chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(expenseData),
+                    datasets: [{
+                        label: 'মাসিক খরচ',
+                        data: Object.values(expenseData),
+                        backgroundColor: ['#00ff00', '#008000', '#00cccc', '#ff6600'],
+                    }]
+                }
+            });
+        }
 
-  .developer-box:hover {
-    transform: scale(1.05);
-  }
-
-  .developer-box a {
-    color: #ffcc00;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .developer-box a:hover {
-    text-decoration: underline;
-  }
-</style>
-
-<div class="developer-box">
-  💻 <strong>ডেভেলপার:</strong> জুবায়ের হোসেন <br>
-  🏢 <strong>কোম্পানি:</strong> Faiza Button & Zipper Ltd. <br>
-  📅 <strong>যোগদান:</strong> ২১ সেপ্টেম্বর ২০২১ <br>
-  🏭 <strong>অফিস ঠিকানা:</strong> টঙ্গী, গাজীপুর <br>
-  📧 <strong>ইমেইল:</strong> <a href="mailto:jubaer@example.com">jubaer@example.com</a> <br>
-  📱 <strong>ফোন:</strong> +৮৮০ ১৭XXXXXXXX <br>
-  🌐 <strong>ওয়েবসাইট:</strong> <a href="https://yourwebsite.com" target="_blank">yourwebsite.com</a>
-</div>
-
-
-
-
-
+        loadChartData();
+    </script>
 </body>
 </html>
