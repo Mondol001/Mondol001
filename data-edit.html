@@ -15,7 +15,7 @@
         form {
             margin-top: 20px;
         }
-        input[type="text"], input[type="number"] {
+        select, input[type="text"], input[type="number"] {
             padding: 10px;
             width: 300px;
             margin: 5px;
@@ -30,11 +30,6 @@
         button:hover {
             background-color: #008000;
         }
-        select {
-            padding: 10px;
-            width: 300px;
-            margin: 5px;
-        }
     </style>
 </head>
 <body>
@@ -43,19 +38,19 @@
     <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
     <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
-    <h2>অর্ডার নং নির্বাচন করুন:</h2>
-    <select id="orderNoDropdown">
-        <option value="">অর্ডার নং নির্বাচন করুন</option>
-    </select>
-
-    <h2>এডিট করুন:</h2>
+    <h2>এডিট করার জন্য অর্ডার নং নির্বাচন করুন:</h2>
     <form id="editForm">
+        <select id="orderSelect" required>
+            <option value="">অর্ডার নং নির্বাচন করুন</option>
+        </select><br><br>
+
         <input type="text" id="partyName" placeholder="পার্টির নাম" required><br>
         <input type="text" id="shadeNo" placeholder="শেড নং" required><br>
         <input type="number" id="orderQty" placeholder="অর্ডার পরিমাণ" required><br>
         <input type="number" id="balQty" placeholder="ব্যালেন্স পরিমাণ" required><br>
-        <input type="text" id="remarks" placeholder="মন্তব্য"><br>
-        <button type="submit">এডিট সাবমিট</button>
+        <input type="text" id="remarks" placeholder="মন্তব্য"><br><br>
+        
+        <button type="submit">এডিট করুন</button>
     </form>
 
     <script type="module">
@@ -77,25 +72,45 @@
 
         async function loadOrderNos() {
             const querySnapshot = await getDocs(collection(db, "orders"));
-            const dropdown = document.getElementById("orderNoDropdown");
+            const orders = querySnapshot.docs.map(doc => doc.data());
 
-            dropdown.innerHTML = '<option value="">অর্ডার নং নির্বাচন করুন</option>';
-
-            querySnapshot.forEach((doc) => {
-                const orderData = doc.data();
-                const option = document.createElement("option");
-                option.value = doc.id;
-                option.textContent = `অর্ডার নং: ${orderData.orderNo}`;
-                dropdown.appendChild(option);
+            const orderSelect = document.getElementById('orderSelect');
+            orders.forEach(order => {
+                const option = document.createElement('option');
+                option.value = order.orderNo;
+                option.textContent = order.orderNo;
+                orderSelect.appendChild(option);
             });
         }
+
+        async function loadOrderData(orderNo) {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            const orders = querySnapshot.docs.map(doc => doc.data());
+            const selectedOrder = orders.find(order => order.orderNo === orderNo);
+
+            if (selectedOrder) {
+                document.getElementById('partyName').value = selectedOrder.partyName;
+                document.getElementById('shadeNo').value = selectedOrder.shadeNo;
+                document.getElementById('orderQty').value = selectedOrder.orderQty;
+                document.getElementById('balQty').value = selectedOrder.balQty;
+                document.getElementById('remarks').value = selectedOrder.remarks;
+            }
+        }
+
+        document.getElementById('orderSelect').addEventListener('change', function() {
+            const orderNo = this.value;
+            if (orderNo) {
+                loadOrderData(orderNo);
+            }
+        });
 
         document.getElementById('editForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const orderNo = document.getElementById('orderNoDropdown').value;
+            const orderNo = document.getElementById('orderSelect').value;
             const partyName = document.getElementById('partyName').value;
-            const shadeNo = document.getElementById('shadeNo').value;const orderQty = document.getElementById('orderQty').value;
+            const shadeNo = document.getElementById('shadeNo').value;
+            const orderQty = document.getElementById('orderQty').value;
             const balQty = document.getElementById('balQty').value;
             const remarks = document.getElementById('remarks').value;
 
