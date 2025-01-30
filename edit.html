@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>এডিট ইউর এন্ট্রি</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f0f;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+        }
+        input, button {
+            padding: 10px;
+            width: 300px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>এডিট ইউর এন্ট্রি</h1>
+    <button onclick="window.location.href='index.html'">ড্যাশবোর্ড</button>
+
+    <div id="entryList"></div>
+
+    <script type="module">
+        import { db } from './firebaseConfig.js';
+        import { collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+        async function loadEntries() {
+            const querySnapshot = await getDocs(collection(db, "expenses"));
+            const entryList = document.getElementById('entryList');
+            entryList.innerHTML = '';
+
+            querySnapshot.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <p>${data.date} | ${data.itemName} | ${data.amount} টাকা</p>
+                    <button onclick="editEntry('${docSnap.id}', '${data.date}', '${data.itemName}', '${data.amount}')">এডিট</button>
+                `;
+                entryList.appendChild(div);
+            });
+        }
+
+        window.editEntry = async (id, date, itemName, amount) => {
+            const newAmount = prompt("নতুন মূল্য দিন:", amount);
+            if (newAmount) {
+                await updateDoc(doc(db, "expenses", id), { amount: newAmount });
+                alert("ডেটা সফলভাবে আপডেট হয়েছে!");
+                loadEntries();
+            }
+        };
+
+        loadEntries();
+    </script>
+</body>
+</html>
