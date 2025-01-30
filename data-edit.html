@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ডেটা এডিট পেজ</title>
+    <title>ডেটা এডিট</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -12,7 +12,10 @@
             text-align: center;
             padding: 20px;
         }
-        select, input[type="text"], input[type="number"] {
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"], input[type="number"] {
             padding: 10px;
             width: 300px;
             margin: 5px;
@@ -27,125 +30,69 @@
         button:hover {
             background-color: #008000;
         }
-        .data-container {
-            margin-top: 20px;
-            border: 1px solid #00ff00;
-            padding: 15px;
-        }
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #00ff00;
-            text-align: center;
-        }
-        .delete-btn {
-            background-color: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .delete-btn:hover {
-            background-color: darkred;
-        }
     </style>
 </head>
 <body>
     <h1>ডেটা এডিট পেজ</h1>
-
     <button onclick="window.open('index.html', '_self')">ড্যাশবোর্ড</button>
     <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
     <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
-    <h2>অর্ডার নং নির্বাচন করুন বা লিখুন:</h2>
-    <select id="orderDropdown" onchange="populateSearchInput()">
-        <option value="">অর্ডার নির্বাচন করুন</option>
-    </select>
-    <br>
-    <input type="text" id="searchOrderNo" placeholder="অর্ডার নং লিখুন">
-    <button onclick="searchData()">সার্চ করুন</button>
+    <h2>অর্ডার নং দিয়ে অনুসন্ধান করুন:</h2>
+    <input type="text" id="searchOrderNo" placeholder="অর্ডার নং">
+    <button onclick="searchOrder()">সার্চ করুন</button>
 
-    <div id="dataContainer" class="data-container" style="display:none;">
-        <h3>ডেটা এডিট করুন:</h3>
-        <form id="editForm">
-            <input type="text" id="editOrderNo" placeholder="অর্ডার নং" readonly><br>
-            <input type="text" id="editPartyName" placeholder="পার্টির নাম"><br>
-            <input type="text" id="editShadeNo" placeholder="শেড নং"><br>
-            <input type="number" id="editOrderQty" placeholder="অর্ডার পরিমাণ"><br>
-            <input type="number" id="editBalQty" placeholder="ব্যালেন্স পরিমাণ"><br>
-            <input type="text" id="editRemarks" placeholder="মন্তব্য"><br>
-            <button type="submit">এডিট সংরক্ষণ করুন</button>
-        </form>
-    </div>
+    <h2>এডিট করুন:</h2>
+    <form id="editForm">
+        <input type="text" id="editOrderNo" placeholder="অর্ডার নং" disabled><br>
+        <input type="text" id="editPartyName" placeholder="পার্টির নাম" required><br>
+        <input type="text" id="editShadeNo" placeholder="শেড নং" required><br>
+        <input type="number" id="editOrderQty" placeholder="অর্ডার পরিমাণ" required><br>
+        <input type="number" id="editBalQty" placeholder="ব্যালেন্স পরিমাণ" required><br>
+        <input type="text" id="editRemarks" placeholder="মন্তব্য"><br>
+        <button type="submit">সাবমিট</button>
+    </form>
 
-    <button onclick="showAllOrders()">সব অর্ডার দেখুন</button>
+    <script type="module">
+        // Firebase configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, where, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
-    <div id="allOrdersTable" style="display:none; margin-top: 20px;">
-        <h2>সব অর্ডার</h2>
-        <table id="ordersTable">
-            <thead>
-                <tr>
-                    <th>অর্ডার নং</th>
-                    <th>পার্টির নাম</th>
-                    <th>শেড নং</th>
-                    <th>অর্ডার পরিমাণ</th>
-                    <th>ব্যালেন্স পরিমাণ</th>
-                    <th>মন্তব্য</th>
-                    <th>ডিলেট</th>
-                </tr>
-            </thead>
-            <tbody id="ordersTableBody">
-                <!-- All orders will be listed here -->
-            </tbody>
-        </table>
-    </div>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
+            authDomain: "online-data-6dcae.firebaseapp.com",
+            projectId: "online-data-6dcae",
+            storageBucket: "online-data-6dcae.firebasestorage.app",
+            messagingSenderId: "848937873609",
+            appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
+            measurementId: "G-41Q88XT5J5"
+        };
 
-    <script>
-        // লোকাল স্টোরেজ থেকে ড্রপডাউন ভরাট করা
-        function loadOrderDropdown() {
-            const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const dropdown = document.getElementById('orderDropdown');
-            dropdown.innerHTML = '<option value="">অর্ডার নির্বাচন করুন</option>';
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-            dataEntries.forEach(entry => {
-                const option = document.createElement('option');
-                option.value = entry.orderNo;
-                option.textContent = entry.orderNo;
-                dropdown.appendChild(option);
-            });
-        }
-
-        // ড্রপডাউন থেকে ইনপুট ফিল্ডে অর্ডার সেট করা
-        function populateSearchInput() {
-            const selectedOrder = document.getElementById('orderDropdown').value;
-            document.getElementById('searchOrderNo').value = selectedOrder;
-        }
-
-        // ডেটা সার্চ ফাংশন
-        function searchData() {
+        // অর্ডার সার্চ করার ফাংশন
+        async function searchOrder() {
             const searchOrderNo = document.getElementById('searchOrderNo').value;
-            const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const entry = dataEntries.find(item => item.orderNo === searchOrderNo);
+            const q = query(collection(db, "orders"), where("orderNo", "==", searchOrderNo));
+            const querySnapshot = await getDocs(q);
 
-            if (entry) {
-                document.getElementById('dataContainer').style.display = 'block';
-                document.getElementById('editOrderNo').value = entry.orderNo;
-                document.getElementById('editPartyName').value = entry.partyName;
-                document.getElementById('editShadeNo').value = entry.shadeNo;
-                document.getElementById('editOrderQty').value = entry.orderQty;
-                document.getElementById('editBalQty').value = entry.balQty;
-                document.getElementById('editRemarks').value = entry.remarks;
+            if (!querySnapshot.empty) {
+                const order = querySnapshot.docs[0].data();
+                document.getElementById('editOrderNo').value = order.orderNo;
+                document.getElementById('editPartyName').value = order.partyName;
+                document.getElementById('editShadeNo').value = order.shadeNo;
+                document.getElementById('editOrderQty').value = order.orderQty;
+                document.getElementById('editBalQty').value = order.balQty;
+                document.getElementById('editRemarks').value = order.remarks;
             } else {
                 alert("অর্ডার পাওয়া যায়নি!");
-                document.getElementById('dataContainer').style.display = 'none';
             }
         }
 
-        // ডেটা এডিট এবং আপডেট ফাংশন
-        document.getElementById('editForm').addEventListener('submit', function (e) {
+        // ডেটা আপডেট করার ফাংশন
+        document.getElementById('editForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const orderNo = document.getElementById('editOrderNo').value;
@@ -155,54 +102,23 @@
             const balQty = document.getElementById('editBalQty').value;
             const remarks = document.getElementById('editRemarks').value;
 
-            let dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const index = dataEntries.findIndex(item => item.orderNo === orderNo);
+            const orderRef = doc(db, "orders", orderNo); // সঠিক ডকুমেন্ট রেফারেন্স
 
-            if (index !== -1) {
-                dataEntries[index] = { orderNo, partyName, shadeNo, orderQty, balQty, remarks };
-                localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
-                alert("ডেটা সফলভাবে আপডেট হয়েছে!");
+            try {
+                await updateDoc(orderRef, {
+                    partyName,
+                    shadeNo,
+                    orderQty,
+                    balQty,
+                    remarks
+                });
+
+                alert("এডিট সফল হয়েছে!");
                 document.getElementById('editForm').reset();
-                document.getElementById('dataContainer').style.display = 'none';
-            } else {
-                alert("অর্ডার পাওয়া যায়নি!");
+            } catch (error) {
+                console.error("Error updating document: ", error);
             }
         });
-
-        // ড্রপডাউন ডাটা লোড করা
-        loadOrderDropdown();
-
-        // Show All Orders ফাংশন
-        function showAllOrders() {
-            const dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            const ordersTableBody = document.getElementById('ordersTableBody');
-            ordersTableBody.innerHTML = ''; // Clear existing table rows
-
-            dataEntries.forEach(entry => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${entry.orderNo}</td>
-                    <td>${entry.partyName}</td>
-                    <td>${entry.shadeNo}</td>
-                    <td>${entry.orderQty}</td>
-                    <td>${entry.balQty}</td>
-                    <td>${entry.remarks}</td>
-                    <td><button class="delete-btn" onclick="deleteOrder('${entry.orderNo}')">ডিলেট</button></td>
-                `;
-                ordersTableBody.appendChild(row);
-            });
-
-            document.getElementById('allOrdersTable').style.display = 'block';
-        }
-
-        // অর্ডার ডিলেট ফাংশন
-        function deleteOrder(orderNo) {
-            let dataEntries = JSON.parse(localStorage.getItem('dataEntries')) || [];
-            dataEntries = dataEntries.filter(item => item.orderNo !== orderNo);
-            localStorage.setItem('dataEntries', JSON.stringify(dataEntries));
-            alert("অর্ডার সফলভাবে ডিলেট হয়েছে!");
-            showAllOrders(); // পুনরায় সব অর্ডার দেখান
-        }
     </script>
 </body>
 </html>
