@@ -1,56 +1,74 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ডেইলি এক্সপেনস এন্ট্রি</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0f0f0f;
-            color: #00ff00;
-            text-align: center;
-            padding: 20px;
-        }
-        input, textarea, button {
-            padding: 10px;
-            width: 300px;
-            margin: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>মাসিক হিসাব নিকাশ</title>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h1>ডেইলি এক্সপেনস এন্ট্রি</h1>
-    <button onclick="window.location.href='index.html'">ড্যাশবোর্ড</button>
+  <h1>মাসিক হিসাব নিকাশ</h1>
+  <button onclick="window.location.href='data-entry.html'">ডেইলি এক্সপেনস এন্ট্রি</button>
+  <button onclick="window.location.href='edit.html'">এডিট ইউর এন্ট্রি</button>
+  <button onclick="window.location.href='report.html'">রিপোর্ট</button>
 
-    <form id="entryForm">
-        <input type="date" id="date" required><br>
-        <input type="text" id="itemName" placeholder="আইটেম নাম" required><br>
-        <input type="number" id="amount" placeholder="মূল্য (টাকা)" required><br>
-        <textarea id="notes" placeholder="মন্তব্য"></textarea><br>
-        <button type="submit">এন্ট্রি করুন</button>
-    </form>
+  <h2>মাসিক খরচের চিত্র</h2>
+  <canvas id="expenseChart" width="400" height="400"></canvas>
 
-    <script type="module">
-        import { db } from './firebaseConfig.js';
-        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
+      authDomain: "online-data-6dcae.firebaseapp.com",
+      projectId: "online-data-6dcae",
+      storageBucket: "online-data-6dcae.appspot.com",
+      messagingSenderId: "848937873609",
+      appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
+      measurementId: "G-41Q88XT5J5"
+    };
 
-        document.getElementById('entryForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-            const date = document.getElementById('date').value;
-            const itemName = document.getElementById('itemName').value;
-            const amount = document.getElementById('amount').value;
-            const notes = document.getElementById('notes').value;
+    const data = {
+      labels: ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল'],
+      datasets: [{
+        label: 'খরচ (টাকা)',
+        data: [5000, 3000, 7000, 2000],
+        backgroundColor: ['#f44336', '#2196f3', '#ffeb3b', '#4caf50']
+      }]
+    };
 
-            try {
-                await addDoc(collection(db, "expenses"), { date, itemName, amount, notes });
-                alert("এন্ট্রি সফল হয়েছে!");
-                document.getElementById('entryForm').reset();
-            } catch (error) {
-                console.error("ডেটা এন্ট্রিতে সমস্যা হয়েছে: ", error);
-            }
-        });
-    </script>
+    const config = {
+      type: 'pie',
+      data: data
+    };
+
+    const expenseChart = new Chart(
+      document.getElementById('expenseChart'),
+      config
+    );
+  </script>
 </body>
 </html>
