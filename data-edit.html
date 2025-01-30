@@ -38,25 +38,24 @@
     <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
     <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
-    <h2>অর্ডার নং দিয়ে অনুসন্ধান করুন:</h2>
-    <input type="text" id="searchOrderNo" placeholder="অর্ডার নং">
-    <button onclick="searchOrder()">সার্চ করুন</button>
+    <h2>এডিট করার জন্য অর্ডার নং নির্বাচন করুন:</h2>
+    <input type="text" id="editOrderNo" placeholder="অর্ডার নং" oninput="loadOrderData()" /><br>
 
     <h2>এডিট করুন:</h2>
     <form id="editForm">
-        <input type="text" id="editOrderNo" placeholder="অর্ডার নং" disabled><br>
-        <input type="text" id="editPartyName" placeholder="পার্টির নাম" required><br>
-        <input type="text" id="editShadeNo" placeholder="শেড নং" required><br>
-        <input type="number" id="editOrderQty" placeholder="অর্ডার পরিমাণ" required><br>
-        <input type="number" id="editBalQty" placeholder="ব্যালেন্স পরিমাণ" required><br>
-        <input type="text" id="editRemarks" placeholder="মন্তব্য"><br>
-        <button type="submit">সাবমিট</button>
+        <input type="text" id="orderNo" placeholder="অর্ডার নং" required><br>
+        <input type="text" id="partyName" placeholder="পার্টির নাম" required><br>
+        <input type="text" id="shadeNo" placeholder="শেড নং" required><br>
+        <input type="number" id="orderQty" placeholder="অর্ডার পরিমাণ" required><br>
+        <input type="number" id="balQty" placeholder="ব্যালেন্স পরিমাণ" required><br>
+        <input type="text" id="remarks" placeholder="মন্তব্য"><br>
+        <button type="submit">আপডেট করুন</button>
     </form>
 
     <script type="module">
         // Firebase configuration
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, where, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
@@ -72,37 +71,42 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // অর্ডার সার্চ করার ফাংশন
-        async function searchOrder() {
-            const searchOrderNo = document.getElementById('searchOrderNo').value;
-            const q = query(collection(db, "orders"), where("orderNo", "==", searchOrderNo));
-            const querySnapshot = await getDocs(q);
+        // অর্ডার নং দিয়ে ডেটা লোড করা
+        async function loadOrderData() {
+            const orderNo = document.getElementById('editOrderNo').value;
 
-            if (!querySnapshot.empty) {
-                const order = querySnapshot.docs[0].data();
-                document.getElementById('editOrderNo').value = order.orderNo;
-                document.getElementById('editPartyName').value = order.partyName;
-                document.getElementById('editShadeNo').value = order.shadeNo;
-                document.getElementById('editOrderQty').value = order.orderQty;
-                document.getElementById('editBalQty').value = order.balQty;
-                document.getElementById('editRemarks').value = order.remarks;
-            } else {
-                alert("অর্ডার পাওয়া যায়নি!");
+            if (orderNo) {
+                const orderRef = doc(db, "orders", orderNo);
+                const docSnap = await getDoc(orderRef);
+
+                if (docSnap.exists()) {
+                    const orderData = docSnap.data();
+
+                    // ফর্মে ডেটা সেট করা
+                    document.getElementById('orderNo').value = orderData.orderNo;
+                    document.getElementById('partyName').value = orderData.partyName;
+                    document.getElementById('shadeNo').value = orderData.shadeNo;
+                    document.getElementById('orderQty').value = orderData.orderQty;
+                    document.getElementById('balQty').value = orderData.balQty;
+                    document.getElementById('remarks').value = orderData.remarks;
+                } else {
+                    alert("এই অর্ডার নং এর ডেটা পাওয়া যায়নি!");
+                }
             }
         }
 
-        // ডেটা আপডেট করার ফাংশন
+        // ডেটা আপডেট করা
         document.getElementById('editForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const orderNo = document.getElementById('editOrderNo').value;
-            const partyName = document.getElementById('editPartyName').value;
-            const shadeNo = document.getElementById('editShadeNo').value;
-            const orderQty = document.getElementById('editOrderQty').value;
-            const balQty = document.getElementById('editBalQty').value;
-            const remarks = document.getElementById('editRemarks').value;
+            const orderNo = document.getElementById('orderNo').value;
+            const partyName = document.getElementById('partyName').value;
+            const shadeNo = document.getElementById('shadeNo').value;
+            const orderQty = document.getElementById('orderQty').value;
+            const balQty = document.getElementById('balQty').value;
+            const remarks = document.getElementById('remarks').value;
 
-            const orderRef = doc(db, "orders", orderNo); // সঠিক ডকুমেন্ট রেফারেন্স
+            const orderRef = doc(db, "orders", orderNo);
 
             try {
                 await updateDoc(orderRef, {
@@ -113,10 +117,10 @@
                     remarks
                 });
 
-                alert("এডিট সফল হয়েছে!");
-                document.getElementById('editForm').reset();
+                alert("ডেটা সফলভাবে আপডেট করা হয়েছে!");
             } catch (error) {
                 console.error("Error updating document: ", error);
+                alert("ডেটা আপডেট করতে সমস্যা হয়েছে!");
             }
         });
     </script>
