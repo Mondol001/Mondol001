@@ -48,6 +48,7 @@
     </form>
 
     <script type="module">
+        // Firebase Config
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
@@ -64,7 +65,21 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // ডেটা লোড করে ফর্মে প্রিভিউ দেখাবে
+        // অর্ডার নম্বর লোড করা ড্রপডাউন এ
+        async function loadOrderNos() {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            const orderNos = querySnapshot.docs.map(doc => doc.id);
+
+            const orderNoSelect = document.getElementById("orderNo");
+            orderNos.forEach(orderNo => {
+                const option = document.createElement("option");
+                option.value = orderNo;
+                option.textContent = orderNo;
+                orderNoSelect.appendChild(option);
+            });
+        }
+
+        // অর্ডারের তথ্য লোড করা
         async function loadOrderData() {
             const orderNo = document.getElementById("orderNo").value;
             if (orderNo === "") return;
@@ -84,7 +99,7 @@
             }
         }
 
-        // অর্ডার আপডেট করার জন্য ফর্ম সাবমিট হ্যান্ডলার
+        // ডেটা আপডেট
         document.getElementById("editForm").addEventListener("submit", async function(e) {
             e.preventDefault();
 
@@ -114,19 +129,6 @@
         });
 
         // পেজ লোড হলে অর্ডার নম্বরগুলি লোড করুন
-        async function loadOrderNos() {
-            const querySnapshot = await getDocs(collection(db, "orders"));
-            const orderNos = querySnapshot.docs.map(doc => doc.id);
-
-            const orderNoSelect = document.getElementById("orderNo");
-            orderNos.forEach(orderNo => {
-                const option = document.createElement("option");
-                option.value = orderNo;
-                option.textContent = orderNo;
-                orderNoSelect.appendChild(option);
-            });
-        }
-
         window.onload = loadOrderNos;
     </script>
 </body>
