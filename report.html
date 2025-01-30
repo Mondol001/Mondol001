@@ -1,71 +1,91 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>রিপোর্ট</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0f0f0f;
-            color: #00ff00;
-            text-align: center;
-            padding: 20px;
-        }
-        table {
-            width: 90%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #00ff00;
-            padding: 10px;
-        }
-        th {
-            background-color: #111;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>রিপোর্ট</title>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin: 5px;
+    }
+  </style>
 </head>
 <body>
-    <h1>রিপোর্ট</h1>
-    <button onclick="window.location.href='index.html'">ড্যাশবোর্ড</button>
-    <button onclick="window.print()">প্রিন্ট করুন</button>
-    <table id="reportTable">
-        <thead>
-            <tr>
-                <th>তারিখ</th>
-                <th>আইটেম নাম</th>
-                <th>মূল্য</th>
-                <th>মন্তব্য</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+  <h1>রিপোর্ট</h1>
+  <button onclick="window.location.href='dashboard.html'">ড্যাশবোর্ডে ফিরে যান</button>
 
-    <script type="module">
-        import { db } from './firebaseConfig.js';
-        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+  <h3>রিপোর্ট টেবিল</h3>
+  <table id="reportTable">
+    <thead>
+      <tr>
+        <th>তারিখ</th>
+        <th>আইটেম নাম</th>
+        <th>মূল্য (টাকা)</th>
+        <th>মন্তব্য</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <button onclick="printReport()">প্রিন্ট করুন</button>
 
-        async function loadReport() {
-            const querySnapshot = await getDocs(collection(db, "expenses"));
-            const tbody = document.querySelector('#reportTable tbody');
-            tbody.innerHTML = '';
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
+      authDomain: "online-data-6dcae.firebaseapp.com",
+      projectId: "online-data-6dcae",
+      storageBucket: "online-data-6dcae.appspot.com",
+      messagingSenderId: "848937873609",
+      appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
+      measurementId: "G-41Q88XT5J5"
+    };
 
-            querySnapshot.forEach(doc => {
-                const data = doc.data();
-                const row = `
-                    <tr>
-                        <td>${data.date}</td>
-                        <td>${data.itemName}</td>
-                        <td>${data.amount} টাকা</td>
-                        <td>${data.notes || ''}</td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
-            });
-        }
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-        loadReport();
-    </script>
+    async function loadReport() {
+      const snapshot = await db.collection("expenses").get();
+      const tableBody = document.querySelector("#reportTable tbody");
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${data.date}</td>
+          <td>${data.itemName}</td>
+          <td>৳${data.amount}</td>
+          <td>${data.notes}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    loadReport();
+
+    function printReport() {
+      window.print();
+    }
+  </script>
 </body>
 </html>
