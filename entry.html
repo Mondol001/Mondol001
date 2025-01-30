@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডেইলি এক্সপেনস এন্ট্রি</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0f0f0f;
+            color: #00ff00;
+            text-align: center;
+            padding: 20px;
+        }
+        input, textarea, button {
+            padding: 10px;
+            width: 300px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ডেইলি এক্সপেনস এন্ট্রি</h1>
+    <button onclick="window.location.href='index.html'">ড্যাশবোর্ড</button>
+
+    <form id="entryForm">
+        <input type="date" id="date" required><br>
+        <input type="text" id="itemName" placeholder="আইটেম নাম" required><br>
+        <input type="number" id="amount" placeholder="মূল্য (টাকা)" required><br>
+        <textarea id="notes" placeholder="মন্তব্য"></textarea><br>
+        <button type="submit">এন্ট্রি করুন</button>
+    </form>
+
+    <script type="module">
+        import { db } from './firebaseConfig.js';
+        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+        document.getElementById('entryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const date = document.getElementById('date').value;
+            const itemName = document.getElementById('itemName').value;
+            const amount = document.getElementById('amount').value;
+            const notes = document.getElementById('notes').value;
+
+            try {
+                await addDoc(collection(db, "expenses"), { date, itemName, amount, notes });
+                alert("এন্ট্রি সফল হয়েছে!");
+                document.getElementById('entryForm').reset();
+            } catch (error) {
+                console.error("ডেটা এন্ট্রিতে সমস্যা হয়েছে: ", error);
+            }
+        });
+    </script>
+</body>
+</html>
