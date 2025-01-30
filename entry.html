@@ -3,39 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>মাসিক হিসাব নিকাশ</title>
+  <title>ডেইলি এক্সপেনস এন্ট্রি</title>
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #f0f0f0;
+      background-color: #f9f9f9;
       color: #333;
       text-align: center;
       padding: 20px;
     }
-    canvas {
-      margin-top: 20px;
+    input {
+      padding: 10px;
+      margin: 10px;
+      width: 300px;
     }
     button {
       padding: 10px 20px;
-      background-color: #00bcd4;
+      background-color: #4CAF50;
       color: white;
       border: none;
       cursor: pointer;
-      margin: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>মাসিক হিসাব নিকাশ</h1>
-  <button onclick="window.location.href='data-entry.html'">ডেইলি এক্সপেনস এন্ট্রি</button>
-  <button onclick="window.location.href='edit.html'">এডিট ইউর এন্ট্রি</button>
-  <button onclick="window.location.href='report.html'">রিপোর্ট</button>
-
-  <h2>মাসিক খরচের চিত্র</h2>
-  <canvas id="expenseChart" width="400" height="400"></canvas>
+  <h1>ডেইলি এক্সপেনস এন্ট্রি</h1>
+  <button onclick="window.location.href='dashboard.html'">ড্যাশবোর্ডে ফিরে যান</button>
+  <form id="entryForm">
+    <input type="date" id="date" required><br>
+    <input type="text" id="itemName" placeholder="আইটেম নাম" required><br>
+    <input type="number" id="amount" placeholder="মূল্য (টাকা)" required><br>
+    <input type="text" id="notes" placeholder="মন্তব্য"><br>
+    <button type="submit">সাবমিট করুন</button>
+  </form>
 
   <script>
     const firebaseConfig = {
@@ -51,24 +53,27 @@
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    const data = {
-      labels: ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল'],
-      datasets: [{
-        label: 'খরচ (টাকা)',
-        data: [5000, 3000, 7000, 2000],
-        backgroundColor: ['#f44336', '#2196f3', '#ffeb3b', '#4caf50']
-      }]
-    };
+    document.getElementById("entryForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const config = {
-      type: 'pie',
-      data: data
-    };
+      const date = document.getElementById("date").value;
+      const itemName = document.getElementById("itemName").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+      const notes = document.getElementById("notes").value;
 
-    const expenseChart = new Chart(
-      document.getElementById('expenseChart'),
-      config
-    );
+      try {
+        await db.collection("expenses").add({
+          date,
+          itemName,
+          amount,
+          notes
+        });
+        alert("ডেটা সফলভাবে সংরক্ষণ হয়েছে!");
+        document.getElementById("entryForm").reset();
+      } catch (error) {
+        console.error("ডেটা সংরক্ষণে সমস্যা:", error);
+      }
+    });
   </script>
 </body>
 </html>
