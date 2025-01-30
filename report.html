@@ -12,19 +12,6 @@
             text-align: center;
             padding: 20px;
         }
-        .report-table {
-            margin-top: 20px;
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .report-table th, .report-table td {
-            border: 1px solid #00ff00;
-            padding: 10px;
-            text-align: left;
-        }
-        .report-table th {
-            background-color: #111;
-        }
         button {
             padding: 10px 20px;
             background-color: #00ff00;
@@ -35,6 +22,19 @@
         button:hover {
             background-color: #008000;
         }
+        .report-table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        .report-table th, .report-table td {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            text-align: left;
+        }
+        .report-table th {
+            background-color: #111;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +43,7 @@
     <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
     <button onclick="window.open('data-edit.html', '_self')">ডেটা এডিট</button>
 
-    <h2>অর্ডারের রিপোর্ট:</h2>
+    <h2>রিপোর্ট:</h2>
     <table class="report-table" id="reportTable">
         <thead>
             <tr>
@@ -60,10 +60,7 @@
         </tbody>
     </table>
 
-    <button onclick="printReport()">প্রিন্ট করুন</button>
-
     <script type="module">
-        // Firebase configuration
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
@@ -77,11 +74,9 @@
             measurementId: "G-41Q88XT5J5"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Firestore থেকে ডেটা লোড করা
         async function loadReport() {
             const querySnapshot = await getDocs(collection(db, "orders"));
             const orders = querySnapshot.docs.map(doc => doc.data());
@@ -108,19 +103,7 @@
             }
         }
 
-        // পেজ লোড হলে রিপোর্ট লোড হবে
         window.onload = loadReport;
-
-        // রিপোর্ট প্রিন্ট করার ফাংশন
-        function printReport() {
-            const reportTable = document.getElementById('reportTable');
-            const printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write('<html><head><title>প্রিন্ট রিপোর্ট</title></head><body>');
-            printWindow.document.write(reportTable.outerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        }
     </script>
 </body>
 </html>
