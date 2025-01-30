@@ -15,7 +15,7 @@
         form {
             margin-top: 20px;
         }
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], select {
             padding: 10px;
             width: 300px;
             margin: 5px;
@@ -38,12 +38,14 @@
     <button onclick="window.open('data-entry.html', '_self')">ডেটা এন্ট্রি</button>
     <button onclick="window.open('report.html', '_self')">রিপোর্ট</button>
 
-    <h2>এডিট করার জন্য অর্ডার নং নির্বাচন করুন:</h2>
-    <input type="text" id="editOrderNo" placeholder="অর্ডার নং" oninput="loadOrderData()" /><br>
+    <h2>অর্ডার নির্বাচন করুন:</h2>
+    <select id="orderDropdown" onchange="loadOrderData()">
+        <option value="">অর্ডার নির্বাচন করুন</option>
+    </select><br>
 
     <h2>এডিট করুন:</h2>
     <form id="editForm">
-        <input type="text" id="orderNo" placeholder="অর্ডার নং" required><br>
+        <input type="text" id="orderNo" placeholder="অর্ডার নং" required readonly><br>
         <input type="text" id="partyName" placeholder="পার্টির নাম" required><br>
         <input type="text" id="shadeNo" placeholder="শেড নং" required><br>
         <input type="number" id="orderQty" placeholder="অর্ডার পরিমাণ" required><br>
@@ -55,7 +57,7 @@
     <script type="module">
         // Firebase configuration
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
@@ -71,9 +73,22 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // অর্ডার নং দিয়ে ডেটা লোড করা
+        // অর্ডার নং এর ড্রপডাউন লোড করা
+        async function loadOrderDropdown() {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            const dropdown = document.getElementById('orderDropdown');
+
+            querySnapshot.forEach((doc) => {
+                const option = document.createElement("option");
+                option.value = doc.id;
+                option.textContent = `অর্ডার নং: ${doc.id}`;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // অর্ডার সিলেক্ট করার পর ডেটা লোড করা
         async function loadOrderData() {
-            const orderNo = document.getElementById('editOrderNo').value;
+            const orderNo = document.getElementById('orderDropdown').value;
 
             if (orderNo) {
                 const orderRef = doc(db, "orders", orderNo);
@@ -123,6 +138,9 @@
                 alert("ডেটা আপডেট করতে সমস্যা হয়েছে!");
             }
         });
+
+        // পেজ লোড হওয়ার সময় ড্রপডাউন লোড করা
+        window.onload = loadOrderDropdown;
     </script>
 </body>
 </html>
