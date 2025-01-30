@@ -5,26 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheet লাইভ ডাটা এন্ট্রি</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        table { width: 80%; margin: 20px auto; border-collapse: collapse; }
-        th, td { border: 1px solid black; padding: 10px; text-align: left; }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        table { width: 80%; margin: 20px auto; border-collapse: collapse; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
         th { background-color: #f2f2f2; }
         .message { color: green; font-weight: bold; margin: 10px; display: none; }
         .loader { display: none; margin: 10px auto; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        .form-container { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: inline-block; margin: 20px auto; }
+        .form-container input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
+        .form-container button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        .form-container button:hover { background-color: #45a049; }
+        .action-buttons button { padding: 5px 10px; margin: 2px; border: none; border-radius: 4px; cursor: pointer; }
+        .action-buttons .edit { background-color: #ffc107; color: black; }
+        .action-buttons .delete { background-color: #dc3545; color: white; }
     </style>
 </head>
 <body>
 
     <h2>Google Sheet লাইভ ডাটা এন্ট্রি</h2>
 
-    <form id="dataForm">
-        <input type="text" id="name" name="name" placeholder="নাম" required>
-        <input type="email" id="email" name="email" placeholder="ইমেল" required>
-        <input type="text" id="phone" name="phone" placeholder="ফোন নম্বর" required>
-        <input type="text" id="address" name="address" placeholder="ঠিকানা" required>
-        <button type="submit">✅ ডাটা সাবমিট করুন</button>
-    </form>
+    <div class="form-container">
+        <form id="dataForm">
+            <input type="text" id="name" name="name" placeholder="নাম" required>
+            <input type="email" id="email" name="email" placeholder="ইমেল" required>
+            <input type="text" id="phone" name="phone" placeholder="ফোন নম্বর" required>
+            <input type="text" id="address" name="address" placeholder="ঠিকানা" required>
+            <button type="submit">✅ ডাটা সাবমিট করুন</button>
+        </form>
+    </div>
 
     <p class="message" id="successMessage">✅ সফলভাবে ডাটা এন্ট্রি হয়েছে!</p>
     <div class="loader" id="loader"></div>
@@ -36,6 +45,7 @@
             <th>ইমেল</th>
             <th>ফোন</th>
             <th>ঠিকানা</th>
+            <th>অ্যাকশন</th>
         </tr>
     </table>
 
@@ -83,15 +93,25 @@
                     document.getElementById("loader").style.display = "none";
 
                     var table = document.getElementById("dataTable");
-                    table.innerHTML = "<tr><th>নাম</th><th>ইমেল</th><th>ফোন</th><th>ঠিকানা</th></tr>";
+                    table.innerHTML = "<tr><th>নাম</th><th>ইমেল</th><th>ফোন</th><th>ঠিকানা</th><th>অ্যাকশন</th></tr>";
 
-                    data.slice(1).forEach(row => {
+                    data.slice(1).forEach((row, index) => {
                         var tr = document.createElement("tr");
                         row.forEach(cell => {
                             var td = document.createElement("td");
                             td.textContent = cell;
                             tr.appendChild(td);
                         });
+
+                        // অ্যাকশন বাটন যোগ করুন
+                        var actionTd = document.createElement("td");
+                        actionTd.className = "action-buttons";
+                        actionTd.innerHTML = `
+                            <button class="edit" onclick="editData(${index + 1})">✏️</button>
+                            <button class="delete" onclick="deleteData(${index + 1})">🗑️</button>
+                        `;
+                        tr.appendChild(actionTd);
+
                         table.appendChild(tr);
                     });
                 })
@@ -99,6 +119,28 @@
                     document.getElementById("loader").style.display = "none";
                     console.error("❌ Error:", error);
                 });
+        }
+
+        function editData(rowIndex) {
+            // এডিট ফাংশনালিটি যোগ করুন
+            alert("এডিট অপশনটি এখনও ইমপ্লিমেন্ট করা হয়নি।");
+        }
+
+        function deleteData(rowIndex) {
+            if (confirm("আপনি কি এই ডাটা ডিলেট করতে চান?")) {
+                document.getElementById("loader").style.display = "block";
+
+                fetch(scriptURL + "?action=delete&row=" + rowIndex, { method: "GET" })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("loader").style.display = "none";
+                        fetchData(); // ডাটা রিফ্রেশ করুন
+                    })
+                    .catch(error => {
+                        document.getElementById("loader").style.display = "none";
+                        console.error("❌ Error:", error);
+                    });
+            }
         }
 
         fetchData();
