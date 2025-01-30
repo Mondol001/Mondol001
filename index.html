@@ -38,7 +38,6 @@
   <canvas id="expenseChart" width="400" height="400"></canvas>
 
   <script>
-    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
       authDomain: "online-data-6dcae.firebaseapp.com",
@@ -49,11 +48,9 @@
       measurementId: "G-41Q88XT5J5"
     };
 
-    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Sample chart data
     const data = {
       labels: ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল'],
       datasets: [{
