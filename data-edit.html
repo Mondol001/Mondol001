@@ -80,6 +80,9 @@
             const querySnapshot = await getDocs(collection(db, "orders"));
             const dropdown = document.getElementById("orderNoDropdown");
 
+            // ড্রপডাউন পরিষ্কার করা
+            dropdown.innerHTML = '<option value="">অর্ডার নং নির্বাচন করুন</option>';
+
             querySnapshot.forEach((doc) => {
                 const orderData = doc.data();
                 const option = document.createElement("option");
