@@ -80,6 +80,13 @@
       color: #007bff;
       font-size: 1.2rem;
     }
+
+    select {
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
   </style>
 </head>
 <body>
@@ -102,6 +109,12 @@
   </form>
 
   <h2>Expense Report</h2>
+
+  <label for="filterDate">Filter by Date:</label>
+  <select id="filterDate">
+    <option value="all">All Dates</option>
+  </select>
+
   <table id="expenseTable" class="display">
     <thead>
       <tr>
@@ -124,13 +137,16 @@
     const expenseForm = document.getElementById('expenseForm');
     const expenseTableBody = document.querySelector('#expenseTable tbody');
     const totalAmountDisplay = document.getElementById('totalAmount');
+    const filterDateSelect = document.getElementById('filterDate');
 
     let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
     // Render expenses in the table
-    function renderExpenses() {
+    function renderExpenses(filterDate = 'all') {
       expenseTableBody.innerHTML = '';
-      expenses.forEach((expense, index) => {
+      let filteredExpenses = filterDate === 'all' ? expenses : expenses.filter(expense => expense.date === filterDate);
+
+      filteredExpenses.forEach((expense, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${formatDate(expense.date)}</td>
@@ -144,23 +160,24 @@
         expenseTableBody.appendChild(row);
       });
 
-      // Initialize or Reinitialize DataTables
+      // Calculate subtotal for filtered data
+      const subtotal = filteredExpenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+      totalAmountDisplay.innerHTML = `Total Amount: ${subtotal}`;
+
+      populateFilterDates();
+
       if ($.fn.DataTable.isDataTable('#expenseTable')) {
         $('#expenseTable').DataTable().destroy();
       }
-
-      const table = $('#expenseTable').DataTable({
-        footerCallback: function () {
-          let api = this.api();
-          let total = api
-            .column(2, { search: 'applied' }) // Filtered total from amount column
-            .data()
-            .reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-          totalAmountDisplay.innerHTML = `Total Amount: ${total}`;
-        }
-      });
-
+      $('#expenseTable').DataTable();
+      
       localStorage.setItem('expenses', JSON.stringify(expenses));
+    }
+
+    // Populate date dropdown filter
+    function populateFilterDates() {
+      const uniqueDates = ['all', ...new Set(expenses.map(expense => expense.date))];
+      filterDateSelect.innerHTML = uniqueDates.map(date => `<option value="${date}">${date === 'all' ? 'All Dates' : formatDate(date)}</option>`).join('');
     }
 
     // Format date to DD-MM-YYYY
@@ -172,7 +189,7 @@
     // Delete expense by index
     function deleteExpense(index) {
       expenses.splice(index, 1);
-      renderExpenses();
+      renderExpenses(filterDateSelect.value);
     }
 
     // Handle form submission
@@ -186,9 +203,14 @@
 
       const expense = { date, item, amount, notes };
       expenses.push(expense);
-      renderExpenses();
+      renderExpenses(filterDateSelect.value);
 
       expenseForm.reset();
+    });
+
+    // Handle date filter change
+    filterDateSelect.addEventListener('change', () => {
+      renderExpenses(filterDateSelect.value);
     });
 
     // Initial render
