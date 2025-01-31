@@ -7,31 +7,37 @@
 
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-  
+
   <style>
     body {
       font-family: 'Arial', sans-serif;
       padding: 20px;
-      background: #f8f9fa;
+      background: #f3f4f7;
     }
+
     h1 {
       font-size: 2.5rem;
       color: #007bff;
       text-align: center;
       margin-bottom: 20px;
     }
+
     form {
       margin-bottom: 20px;
       padding: 15px;
-      background: #ffffff;
+      background: white;
       border: 1px solid #ddd;
       border-radius: 8px;
+      max-width: 600px;
+      margin: auto;
     }
+
     label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
+
     input, textarea {
       width: 100%;
       padding: 10px;
@@ -39,6 +45,7 @@
       border: 1px solid #ddd;
       border-radius: 5px;
     }
+
     button {
       background: #007bff;
       color: white;
@@ -47,57 +54,68 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     button:hover {
       background: #0056b3;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
+
     th, td {
       padding: 10px;
       border: 1px solid #ddd;
       text-align: left;
     }
+
     th {
       background: #007bff;
       color: white;
     }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
   </style>
 </head>
 <body>
-  <h1>Daily Expense Tracker</h1>
+  <div class="container">
+    <h1>Daily Expense Tracker</h1>
 
-  <form id="expenseForm">
-    <label for="date">Date</label>
-    <input type="date" id="date" required>
+    <form id="expenseForm">
+      <label for="date">Date</label>
+      <input type="date" id="date" required>
 
-    <label for="item">Item Name</label>
-    <input type="text" id="item" placeholder="Enter item name" required>
+      <label for="item">Item Name</label>
+      <input type="text" id="item" placeholder="Enter item name" required>
 
-    <label for="amount">Amount</label>
-    <input type="number" id="amount" placeholder="Enter amount" required>
+      <label for="amount">Amount</label>
+      <input type="number" id="amount" placeholder="Enter amount" required>
 
-    <label for="notes">Notes</label>
-    <textarea id="notes" placeholder="Enter any notes"></textarea>
+      <label for="notes">Notes</label>
+      <textarea id="notes" placeholder="Enter any notes"></textarea>
 
-    <button type="submit">Submit</button>
-  </form>
+      <button type="submit">Submit</button>
+    </form>
 
-  <h2>Expenses Report</h2>
-  <table id="expenseTable" class="display">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Item</th>
-        <th>Amount</th>
-        <th>Notes</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <h2>Expense Report</h2>
+    <table id="expenseTable" class="display">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Item</th>
+          <th>Amount</th>
+          <th>Notes</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -108,6 +126,7 @@
 
     let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
+    // Render expenses in the table
     function renderExpenses() {
       expenseTableBody.innerHTML = '';
       expenses.forEach((expense, index) => {
@@ -124,21 +143,28 @@
         expenseTableBody.appendChild(row);
       });
 
-      $('#expenseTable').DataTable().clear().destroy(); // Clear previous DataTables instance
-      $('#expenseTable').DataTable(); // Reinitialize DataTable
+      // Initialize or Reinitialize DataTables
+      if ($.fn.DataTable.isDataTable('#expenseTable')) {
+        $('#expenseTable').DataTable().destroy();
+      }
+      $('#expenseTable').DataTable();
+      
       localStorage.setItem('expenses', JSON.stringify(expenses));
     }
 
+    // Format date to DD-MM-YYYY
     function formatDate(dateStr) {
       const [year, month, day] = dateStr.split('-');
-      return `${day}-${month}-${year}`; // দিন-মাস-বছর ফরম্যাট
+      return `${day}-${month}-${year}`;
     }
 
+    // Delete expense by index
     function deleteExpense(index) {
       expenses.splice(index, 1);
       renderExpenses();
     }
 
+    // Handle form submission
     expenseForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
@@ -154,6 +180,7 @@
       expenseForm.reset();
     });
 
+    // Initial render
     renderExpenses();
   </script>
 </body>
