@@ -3,89 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultimate Expense Pro</title>
+  <title>Professional Expense Tracker</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
   <style>
     :root {
-      --primary-color: #4361ee;
-      --secondary-color: #3f37c9;
-      --success-color: #06d6a0;
-      --danger-color: #ef476f;
-      --light-color: #f8f9fa;
-      --dark-color: #212529;
+      --primary: #4a90e2;
+      --secondary: #6c757d;
+      --success: #28a745;
+      --danger: #dc3545;
+      --light: #f8f9fa;
+      --dark: #212529;
     }
 
     body {
-      background: var(--light-color);
-      transition: background 0.3s ease;
+      background: var(--light);
+      min-height: 100vh;
     }
 
     .card {
       border: none;
       border-radius: 15px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
     }
 
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     }
 
     .table-hover tbody tr {
-      transition: all 0.2s ease;
+      transition: all 0.2s;
     }
 
     .table-hover tbody tr:hover {
-      background-color: rgba(var(--primary-color), 0.05);
+      background-color: rgba(var(--primary), 0.05) !important;
     }
 
     .badge {
+      font-weight: 500;
       padding: 0.5em 0.75em;
-      border-radius: 10px;
-    }
-
-    .currency-input {
-      position: relative;
-    }
-
-    .currency-symbol {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 2;
-      color: var(--primary-color);
-      font-weight: bold;
-    }
-
-    .preview-image {
-      border-radius: 10px;
-      border: 2px solid var(--primary-color);
-      transition: transform 0.3s ease;
-    }
-
-    .preview-image:hover {
-      transform: scale(1.05);
-    }
-
-    .chart-container {
-      height: 400px;
-      opacity: 0;
-      animation: fadeIn 0.5s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
     [data-bs-theme=dark] {
-      --light-color: #1a1a1a;
-      --dark-color: #f8f9fa;
+      --light: #1a1a1a;
+      --dark: #f8f9fa;
     }
   </style>
 </head>
@@ -93,32 +57,76 @@
   <!-- Toast Container -->
   <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
-  <!-- Main Header -->
+  <!-- Header -->
   <header class="d-flex justify-content-between align-items-center mb-5">
-    <h1 class="display-4 fw-bold text-primary">
-      <i class="bi bi-piggy-bank-fill"></i> Expense Pro
+    <h1 class="display-5 fw-bold text-primary">
+      <i class="bi bi-wallet2"></i> Expense Pro
     </h1>
     <div class="d-flex gap-2">
       <button class="btn btn-outline-primary" onclick="toggleTheme()">
-        <i class="bi bi-moon-stars"></i>
+        <i class="bi bi-moon"></i>
       </button>
       <button class="btn btn-primary" onclick="showBackupModal()">
-        <i class="bi bi-cloud-arrow-up"></i> Manage Data
+        <i class="bi bi-cloud-arrow-up"></i> Backup
       </button>
     </div>
   </header>
 
-  <!-- Main Grid -->
+  <!-- Main Content -->
   <div class="row g-4">
-    <!-- Input Section -->
+    <!-- Input Form -->
     <div class="col-lg-4">
       <div class="card border-primary">
         <div class="card-body">
-          <h5 class="card-title text-primary mb-4">
-            <i class="bi bi-plus-circle-dotted"></i> Add Transaction
-          </h5>
+          <h5 class="card-title text-primary mb-4"><i class="bi bi-plus-circle"></i> Add Transaction</h5>
           <form id="expenseForm" novalidate>
-            <!-- Form Fields Remain Same -->
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="date" required>
+              <div class="invalid-feedback">Please select a date</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Category</label>
+              <select class="form-select" id="category" required>
+                <option value="">Select Category</option>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Housing">Housing</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="invalid-feedback">Please select a category</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Item Name</label>
+              <input type="text" class="form-control" id="item" required>
+              <div class="invalid-feedback">Please enter item name</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input type="number" class="form-control" id="amount" step="0.01" required>
+                <div class="invalid-feedback">Please enter amount</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Notes</label>
+              <textarea class="form-control" id="notes" rows="2"></textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary" id="submitBtn">
+                <i class="bi bi-save"></i> Save Expense
+              </button>
+              <button type="button" class="btn btn-secondary d-none" onclick="cancelEdit()" id="cancelBtn">
+                <i class="bi bi-x-circle"></i> Cancel
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -129,16 +137,9 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="card-title text-primary mb-0">
-              <i class="bi bi-table"></i> Transaction History
-            </h5>
+            <h5 class="card-title text-primary mb-0"><i class="bi bi-table"></i> Transactions</h5>
             <div class="d-flex gap-2">
-              <div class="input-group w-auto">
-                <input type="text" class="form-control" placeholder="Search..." id="searchInput">
-                <button class="btn btn-primary" type="button">
-                  <i class="bi bi-search"></i>
-                </button>
-              </div>
+              <input type="text" class="form-control" placeholder="Search..." id="searchInput">
             </div>
           </div>
 
@@ -146,26 +147,20 @@
             <table class="table table-hover align-middle">
               <thead class="table-primary">
                 <tr>
-                  <th class="cursor-pointer" onclick="sortTable('date')">
-                    Date <i class="bi bi-arrow-down-up"></i>
-                  </th>
+                  <th>Date</th>
                   <th>Category</th>
                   <th>Item</th>
-                  <th class="cursor-pointer" onclick="sortTable('amount')">
-                    Amount <i class="bi bi-arrow-down-up"></i>
-                  </th>
-                  <th>Tags</th>
+                  <th>Amount</th>
+                  <th>Notes</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="expenseTableBody" class="table-group-divider">
-                <!-- Dynamic Content -->
-              </tbody>
+              <tbody id="expenseTableBody"></tbody>
             </table>
           </div>
 
-          <div class="chart-container mt-5">
-            <canvas id="analyticsChart"></canvas>
+          <div class="mt-4">
+            <canvas id="chart"></canvas>
           </div>
         </div>
       </div>
@@ -173,111 +168,236 @@
   </div>
 
   <!-- Backup Modal -->
-  <!-- Previous Modal Code with Styling Improvements -->
+  <div class="modal fade" id="backupModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Data Management</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary" onclick="exportData('json')">
+              <i class="bi bi-filetype-json"></i> Export as JSON
+            </button>
+            <button class="btn btn-outline-success" onclick="exportData('csv')">
+              <i class="bi bi-filetype-csv"></i> Export as CSV
+            </button>
+            <input type="file" class="form-control mt-3" id="restoreFile">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
 const ExpenseManager = (() => {
-  // Previous Logic with Following Fixes:
-  // 1. Fixed Data Rendering Issue
-  // 2. Enhanced Form Validation
-  // 3. Improved Sorting Functionality
-  // 4. Added Animation Transitions
+  let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+  let editId = null;
+  let chartInstance = null;
 
-  const renderTable = () => {
-    const filtered = filterExpenses();
-    const sorted = sortExpenses(filtered);
-    
-    document.getElementById('expenseTableBody').innerHTML = sorted
-      .map(expense => `
-        <tr class="animate__animated animate__fadeIn">
-          <td>${DateTime.fromISO(expense.date).toLocaleString()}</td>
-          <td>
-            <span class="badge bg-primary">${expense.category}</span>
-          </td>
-          <td>${expense.item}</td>
-          <td class="fw-bold ${expense.amount < 0 ? 'text-danger' : 'text-success'}">
-            ${expense.currency} ${Math.abs(expense.amount).toFixed(2)}
-          </td>
-          <td>${expense.tags.map(t => `<span class="badge bg-secondary me-1">#${t}</span>`).join('')}</td>
-          <td>
-            <button class="btn btn-sm btn-warning" onclick="ExpenseManager.editExpense(${expense.id})">
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button class="btn btn-sm btn-danger" onclick="ExpenseManager.deleteExpense(${expense.id})">
-              <i class="bi bi-trash3"></i>
-            </button>
-          </td>
-        </tr>
-      `).join('');
+  // Initialize
+  const init = () => {
+    document.getElementById('searchInput').addEventListener('input', renderTable);
+    document.getElementById('restoreFile').addEventListener('change', handleFileImport);
+    renderAll();
   };
 
-  // Enhanced Form Validation
+  // Handle Form Submit
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
     
     if (!form.checkValidity()) {
       form.classList.add('was-validated');
-      Array.from(form.elements).forEach(element => {
-        if (element.required && !element.value) {
-          element.classList.add('is-invalid');
-        }
-      });
       return;
     }
-    // Rest of submit logic
+
+    const expense = {
+      id: editId || Date.now(),
+      date: document.getElementById('date').value,
+      category: document.getElementById('category').value,
+      item: document.getElementById('item').value,
+      amount: parseFloat(document.getElementById('amount').value).toFixed(2),
+      notes: document.getElementById('notes').value,
+      timestamp: new Date().toISOString()
+    };
+
+    if (editId) {
+      const index = expenses.findIndex(e => e.id === editId);
+      expenses[index] = expense;
+      showToast('Expense updated successfully!', 'success');
+    } else {
+      expenses.push(expense);
+      showToast('Expense added successfully!', 'success');
+    }
+
+    resetForm();
+    renderAll();
+    editId = null;
   };
 
-  // Improved Sorting
-  const sortExpenses = (data) => {
-    return data.sort((a, b) => {
-      const modifier = currentSort.ascending ? 1 : -1;
-      if (currentSort.column === 'date') {
-        return DateTime.fromISO(a.date) > DateTime.fromISO(b.date) ? modifier : -modifier;
+  // Render Table
+  const renderTable = () => {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = expenses.filter(e => 
+      e.item.toLowerCase().includes(searchTerm) ||
+      e.category.toLowerCase().includes(searchTerm) ||
+      e.notes.toLowerCase().includes(searchTerm)
+    );
+
+    document.getElementById('expenseTableBody').innerHTML = filtered
+      .map(expense => `
+        <tr>
+          <td>${new Date(expense.date).toLocaleDateString()}</td>
+          <td><span class="badge bg-primary">${expense.category}</span></td>
+          <td>${expense.item}</td>
+          <td class="fw-bold ${expense.amount < 0 ? 'text-danger' : 'text-success'}">
+            ₹${expense.amount}
+          </td>
+          <td>${expense.notes}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" onclick="editExpense(${expense.id})">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteExpense(${expense.id})">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+  };
+
+  // Edit Expense
+  const editExpense = (id) => {
+    const expense = expenses.find(e => e.id === id);
+    document.getElementById('date').value = expense.date;
+    document.getElementById('category').value = expense.category;
+    document.getElementById('item').value = expense.item;
+    document.getElementById('amount').value = expense.amount;
+    document.getElementById('notes').value = expense.notes;
+    editId = id;
+    document.getElementById('submitBtn').innerHTML = `<i class="bi bi-save"></i> Update`;
+    document.getElementById('cancelBtn').classList.remove('d-none');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Delete Expense
+  const deleteExpense = (id) => {
+    if (confirm('Are you sure you want to delete this expense?')) {
+      expenses = expenses.filter(e => e.id !== id);
+      renderAll();
+      showToast('Expense deleted successfully!', 'success');
+    }
+  };
+
+  // Reset Form
+  const resetForm = () => {
+    document.getElementById('expenseForm').reset();
+    document.getElementById('expenseForm').classList.remove('was-validated');
+    document.getElementById('submitBtn').innerHTML = `<i class="bi bi-save"></i> Save Expense`;
+    document.getElementById('cancelBtn').classList.add('d-none');
+  };
+
+  // Handle File Import
+  const handleFileImport = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      try {
+        expenses = JSON.parse(event.target.result);
+        renderAll();
+        showToast('Data imported successfully!', 'success');
+      } catch {
+        showToast('Invalid file format!', 'danger');
       }
-      return a[currentSort.column] > b[currentSort.column] ? modifier : -modifier;
+    };
+    reader.readAsText(file);
+  };
+
+  // Render All Components
+  const renderAll = () => {
+    renderTable();
+    renderChart();
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+  };
+
+  // Render Chart
+  const renderChart = () => {
+    const ctx = document.getElementById('chart').getContext('2d');
+    if (chartInstance) chartInstance.destroy();
+
+    const categories = [...new Set(expenses.map(e => e.category))];
+    const amounts = categories.map(cat => 
+      expenses.filter(e => e.category === cat)
+        .reduce((sum, e) => sum + parseFloat(e.amount), 0)
+    );
+
+    chartInstance = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: categories,
+        datasets: [{
+          data: amounts,
+          backgroundColor: ['#4a90e2', '#50e3c2', '#f5a623', '#9013fe', '#bd10e0']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: 'Expense Distribution' }
+        }
+      }
     });
   };
 
-  return {
-    // Previous Exposed Methods
-  };
+  return { init, handleSubmit, editExpense, deleteExpense };
 })();
 
-// Initialize with New Features
+// Initialize App
 document.addEventListener('DOMContentLoaded', () => {
   ExpenseManager.init();
-  
-  // Input Formatting
-  document.getElementById('amount').addEventListener('input', function(e) {
-    this.value = this.value.replace(/[^0-9.]/g, '');
-  });
-
-  // Real-time Search
-  document.getElementById('searchInput').addEventListener('input', debounce(() => {
-    ExpenseManager.renderTable();
-  }, 300));
+  document.getElementById('expenseForm').addEventListener('submit', (e) => ExpenseManager.handleSubmit(e));
 });
 
-// Utility Functions
-function debounce(func, timeout = 300) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
-  };
+// Global Functions
+function showToast(message, type = 'primary') {
+  const toast = document.createElement('div');
+  toast.className = `toast show align-items-center text-bg-${type} border-0`;
+  toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body">${message}</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  `;
+  document.querySelector('.toast-container').appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
 }
 
-// Enhanced Export Function
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-bs-theme') === 'dark';
+  html.setAttribute('data-bs-theme', isDark ? 'light' : 'dark');
+}
+
+function showBackupModal() {
+  new bootstrap.Modal('#backupModal').show();
+}
+
+function cancelEdit() {
+  ExpenseManager.resetForm();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function exportData(type) {
-  // Implement error handling and progress indicators
-  try {
-    showToast('Preparing data for export...', 'info');
-    // Export logic
-    showToast('Export completed successfully!', 'success');
-  } catch (error) {
-    showToast('Export failed! Please try again.', 'danger');
-  }
+  const data = JSON.stringify(ExpenseManager.expenses, null, 2);
+  const blob = new Blob([data], { type: type === 'json' ? 'application/json' : 'text/csv' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `expenses.${type}`;
+  link.click();
 }
 </script>
 
