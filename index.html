@@ -4,50 +4,88 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Expense Tracker</title>
+
   <style>
+    /* Body Styling */
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       padding: 20px;
-      background: #f9f9f9;
+      background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+      color: #333;
     }
     h1 {
-      color: #2a9d8f;
+      font-size: 2.5rem;
+      color: #ff9800;
+      text-shadow: 2px 2px 5px #666;
+      animation: slideText 5s linear infinite;
     }
+
+    /* Animation for Heading */
+    @keyframes slideText {
+      0% { transform: translateX(100%); opacity: 0; }
+      50% { opacity: 1; transform: translateX(0); }
+      100% { transform: translateX(-100%); opacity: 0; }
+    }
+
     form {
       margin-bottom: 20px;
+      padding: 15px;
+      background: #ffffff;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
     }
+
     label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
+
     input, textarea {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin-bottom: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 5px;
+      box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
+
     button {
-      background: #2a9d8f;
+      background: linear-gradient(145deg, #ff9800, #f57c00);
       color: white;
-      padding: 10px 15px;
+      padding: 12px 20px;
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      text-transform: uppercase;
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
     }
+
+    button:hover {
+      background: #ff5722;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 20px;
+      box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
     }
+
     th, td {
       border: 1px solid #ddd;
-      padding: 10px;
+      padding: 12px;
       text-align: left;
     }
-    .actions {
-      display: flex;
-      gap: 10px;
+
+    th {
+      background: #ff9800;
+      color: white;
+    }
+
+    td {
+      background: #ffffff;
     }
   </style>
 </head>
@@ -102,11 +140,11 @@
 
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${expense.date}</td>
+          <td>${formatDate(expense.date)}</td>
           <td>${expense.item}</td>
           <td>${expense.amount}</td>
           <td>${expense.notes}</td>
-          <td class="actions">
+          <td>
             <button onclick="editExpense(${index})">Edit</button>
             <button onclick="deleteExpense(${index})">Delete</button>
           </td>
@@ -116,6 +154,11 @@
 
       totalAmountEl.textContent = `Total Amount: ${totalAmount}`;
       localStorage.setItem('expenses', JSON.stringify(expenses));
+    }
+
+    function formatDate(dateStr) {
+      const [year, month, day] = dateStr.split('-');
+      return `${day}-${month}-${year}`; // দিন-মাস-বছর ফরম্যাট
     }
 
     function editExpense(index) {
