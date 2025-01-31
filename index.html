@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Expense Tracker</title>
 
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -115,7 +112,7 @@
     <option value="all">All Dates</option>
   </select>
 
-  <table id="expenseTable" class="display">
+  <table id="expenseTable">
     <thead>
       <tr>
         <th>Date</th>
@@ -129,9 +126,6 @@
   </table>
 
   <div id="totalAmount">Total Amount: 0</div>
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
   <script>
     const expenseForm = document.getElementById('expenseForm');
@@ -165,12 +159,6 @@
       totalAmountDisplay.innerHTML = `Total Amount: ${subtotal}`;
 
       populateFilterDates();
-
-      if ($.fn.DataTable.isDataTable('#expenseTable')) {
-        $('#expenseTable').DataTable().destroy();
-      }
-      $('#expenseTable').DataTable();
-      
       localStorage.setItem('expenses', JSON.stringify(expenses));
     }
 
