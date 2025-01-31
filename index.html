@@ -1,74 +1,154 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>মাসিক হিসাব নিকাশ</title>
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Daily Expense Tracker</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f0f0f0;
-      color: #333;
-      text-align: center;
+      font-family: Arial, sans-serif;
       padding: 20px;
+      background: #f9f9f9;
     }
-    canvas {
-      margin-top: 20px;
+    h1 {
+      color: #2a9d8f;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
     button {
-      padding: 10px 20px;
-      background-color: #00bcd4;
+      background: #2a9d8f;
       color: white;
+      padding: 10px 15px;
       border: none;
       cursor: pointer;
-      margin: 10px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>মাসিক হিসাব নিকাশ</h1>
-  <button onclick="window.location.href='entry.html'">ডেইলি এক্সপেনস এন্ট্রি</button>
-  <button onclick="window.location.href='edit.html'">এডিট ইউর এন্ট্রি</button>
-  <button onclick="window.location.href='report.html'">রিপোর্ট</button>
+  <h1>Daily Expense Tracker</h1>
 
-  <h2>মাসিক খরচের চিত্র</h2>
-  <canvas id="expenseChart" width="400" height="400"></canvas>
+  <form id="expenseForm">
+    <label for="date">Date</label>
+    <input type="date" id="date" required>
+
+    <label for="item">Item Name</label>
+    <input type="text" id="item" placeholder="Enter item name" required>
+
+    <label for="amount">Amount</label>
+    <input type="number" id="amount" placeholder="Enter amount" required>
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" placeholder="Enter any notes"></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Expenses Report</h2>
+  <table id="expenseTable">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Item</th>
+        <th>Amount</th>
+        <th>Notes</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h3 id="totalAmount">Total Amount: 0</h3>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
-      authDomain: "online-data-6dcae.firebaseapp.com",
-      projectId: "online-data-6dcae",
-      storageBucket: "online-data-6dcae.appspot.com",
-      messagingSenderId: "848937873609",
-      appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
-      measurementId: "G-41Q88XT5J5"
-    };
+    const expenseForm = document.getElementById('expenseForm');
+    const expenseTable = document.getElementById('expenseTable').querySelector('tbody');
+    const totalAmountEl = document.getElementById('totalAmount');
 
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
-    const data = {
-      labels: ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল'],
-      datasets: [{
-        label: 'খরচ (টাকা)',
-        data: [5000, 3000, 7000, 2000],
-        backgroundColor: ['#f44336', '#2196f3', '#ffeb3b', '#4caf50']
-      }]
-    };
+    function renderExpenses() {
+      expenseTable.innerHTML = '';
+      let totalAmount = 0;
 
-    const config = {
-      type: 'pie',
-      data: data
-    };
+      expenses.forEach((expense, index) => {
+        totalAmount += parseFloat(expense.amount);
 
-    const expenseChart = new Chart(
-      document.getElementById('expenseChart'),
-      config
-    );
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${expense.date}</td>
+          <td>${expense.item}</td>
+          <td>${expense.amount}</td>
+          <td>${expense.notes}</td>
+          <td class="actions">
+            <button onclick="editExpense(${index})">Edit</button>
+            <button onclick="deleteExpense(${index})">Delete</button>
+          </td>
+        `;
+        expenseTable.appendChild(row);
+      });
+
+      totalAmountEl.textContent = `Total Amount: ${totalAmount}`;
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+    }
+
+    function editExpense(index) {
+      const expense = expenses[index];
+      document.getElementById('date').value = expense.date;
+      document.getElementById('item').value = expense.item;
+      document.getElementById('amount').value = expense.amount;
+      document.getElementById('notes').value = expense.notes;
+      expenses.splice(index, 1);
+      renderExpenses();
+    }
+
+    function deleteExpense(index) {
+      expenses.splice(index, 1);
+      renderExpenses();
+    }
+
+    expenseForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const date = document.getElementById('date').value;
+      const item = document.getElementById('item').value;
+      const amount = document.getElementById('amount').value;
+      const notes = document.getElementById('notes').value;
+
+      const expense = { date, item, amount, notes };
+      expenses.push(expense);
+      renderExpenses();
+
+      expenseForm.reset();
+    });
+
+    renderExpenses();
   </script>
 </body>
 </html>
