@@ -7,54 +7,62 @@
 
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-
+  
   <style>
     body {
       font-family: 'Arial', sans-serif;
       padding: 20px;
-      background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
-      color: #333;
+      background: #f8f9fa;
     }
-
     h1 {
       font-size: 2.5rem;
-      color: #ff9800;
-      text-shadow: 2px 2px 5px #666;
-      animation: slideText 5s linear infinite;
+      color: #007bff;
+      text-align: center;
+      margin-bottom: 20px;
     }
-
     form {
       margin-bottom: 20px;
       padding: 15px;
       background: #ffffff;
-      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.15);
-      border-radius: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
     }
-
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
     input, textarea {
       width: 100%;
       padding: 10px;
       margin-bottom: 10px;
       border: 1px solid #ddd;
       border-radius: 5px;
-      box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
-
     button {
-      background: linear-gradient(145deg, #ff9800, #f57c00);
+      background: #007bff;
       color: white;
-      padding: 12px 20px;
+      padding: 10px 20px;
       border: none;
-      cursor: pointer;
       border-radius: 5px;
-      text-transform: uppercase;
-      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
-
+    button:hover {
+      background: #0056b3;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #007bff;
+      color: white;
     }
   </style>
 </head>
@@ -85,6 +93,7 @@
         <th>Item</th>
         <th>Amount</th>
         <th>Notes</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -101,24 +110,33 @@
 
     function renderExpenses() {
       expenseTableBody.innerHTML = '';
-      expenses.forEach(expense => {
+      expenses.forEach((expense, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${formatDate(expense.date)}</td>
           <td>${expense.item}</td>
           <td>${expense.amount}</td>
           <td>${expense.notes}</td>
+          <td>
+            <button onclick="deleteExpense(${index})">Delete</button>
+          </td>
         `;
         expenseTableBody.appendChild(row);
       });
 
       $('#expenseTable').DataTable().clear().destroy(); // Clear previous DataTables instance
       $('#expenseTable').DataTable(); // Reinitialize DataTable
+      localStorage.setItem('expenses', JSON.stringify(expenses));
     }
 
     function formatDate(dateStr) {
       const [year, month, day] = dateStr.split('-');
       return `${day}-${month}-${year}`; // দিন-মাস-বছর ফরম্যাট
+    }
+
+    function deleteExpense(index) {
+      expenses.splice(index, 1);
+      renderExpenses();
     }
 
     expenseForm.addEventListener('submit', (e) => {
@@ -131,7 +149,6 @@
 
       const expense = { date, item, amount, notes };
       expenses.push(expense);
-      localStorage.setItem('expenses', JSON.stringify(expenses));
       renderExpenses();
 
       expenseForm.reset();
