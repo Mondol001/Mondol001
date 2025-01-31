@@ -5,26 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Expense Tracker</title>
 
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
   <style>
-    /* Body Styling */
     body {
       font-family: 'Arial', sans-serif;
       padding: 20px;
       background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
       color: #333;
     }
+
     h1 {
       font-size: 2.5rem;
       color: #ff9800;
       text-shadow: 2px 2px 5px #666;
       animation: slideText 5s linear infinite;
-    }
-
-    /* Animation for Heading */
-    @keyframes slideText {
-      0% { transform: translateX(100%); opacity: 0; }
-      50% { opacity: 1; transform: translateX(0); }
-      100% { transform: translateX(-100%); opacity: 0; }
     }
 
     form {
@@ -33,12 +29,6 @@
       background: #ffffff;
       box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.15);
       border-radius: 10px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
     }
 
     input, textarea {
@@ -61,31 +51,10 @@
       box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
     }
 
-    button:hover {
-      background: #ff5722;
-      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-      box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
-    }
-
-    th {
-      background: #ff9800;
-      color: white;
-    }
-
-    td {
-      background: #ffffff;
     }
   </style>
 </head>
@@ -109,71 +78,47 @@
   </form>
 
   <h2>Expenses Report</h2>
-  <table id="expenseTable">
+  <table id="expenseTable" class="display">
     <thead>
       <tr>
         <th>Date</th>
         <th>Item</th>
         <th>Amount</th>
         <th>Notes</th>
-        <th>Actions</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
-  <h3 id="totalAmount">Total Amount: 0</h3>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
   <script>
     const expenseForm = document.getElementById('expenseForm');
-    const expenseTable = document.getElementById('expenseTable').querySelector('tbody');
-    const totalAmountEl = document.getElementById('totalAmount');
+    const expenseTableBody = document.querySelector('#expenseTable tbody');
 
     let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
     function renderExpenses() {
-      expenseTable.innerHTML = '';
-      let totalAmount = 0;
-
-      expenses.forEach((expense, index) => {
-        totalAmount += parseFloat(expense.amount);
-
+      expenseTableBody.innerHTML = '';
+      expenses.forEach(expense => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${formatDate(expense.date)}</td>
           <td>${expense.item}</td>
           <td>${expense.amount}</td>
           <td>${expense.notes}</td>
-          <td>
-            <button onclick="editExpense(${index})">Edit</button>
-            <button onclick="deleteExpense(${index})">Delete</button>
-          </td>
         `;
-        expenseTable.appendChild(row);
+        expenseTableBody.appendChild(row);
       });
 
-      totalAmountEl.textContent = `Total Amount: ${totalAmount}`;
-      localStorage.setItem('expenses', JSON.stringify(expenses));
+      $('#expenseTable').DataTable().clear().destroy(); // Clear previous DataTables instance
+      $('#expenseTable').DataTable(); // Reinitialize DataTable
     }
 
     function formatDate(dateStr) {
       const [year, month, day] = dateStr.split('-');
       return `${day}-${month}-${year}`; // দিন-মাস-বছর ফরম্যাট
-    }
-
-    function editExpense(index) {
-      const expense = expenses[index];
-      document.getElementById('date').value = expense.date;
-      document.getElementById('item').value = expense.item;
-      document.getElementById('amount').value = expense.amount;
-      document.getElementById('notes').value = expense.notes;
-      expenses.splice(index, 1);
-      renderExpenses();
-    }
-
-    function deleteExpense(index) {
-      expenses.splice(index, 1);
-      renderExpenses();
     }
 
     expenseForm.addEventListener('submit', (e) => {
@@ -186,6 +131,7 @@
 
       const expense = { date, item, amount, notes };
       expenses.push(expense);
+      localStorage.setItem('expenses', JSON.stringify(expenses));
       renderExpenses();
 
       expenseForm.reset();
