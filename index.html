@@ -284,31 +284,66 @@ function deleteExpense(index) {
     }
 }
 
-// Print Function
+<script>
+// Updated Print Function
 function printExpenses() {
     const printWindow = window.open('', '_blank');
+    const tableClone = document.querySelector('table').cloneNode(true);
+    
+    // Remove action column and receipt images from print
+    tableClone.querySelectorAll('.no-print, .receipt-preview').forEach(el => el.remove());
+    
+    // Add print-specific styling
     printWindow.document.write(`
         <html>
             <head>
                 <title>Expense Report</title>
                 <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
-                    .total { font-weight: bold; margin-top: 15px; }
+                    body { 
+                        font-family: Arial, sans-serif; 
+                        margin: 15px; 
+                        width: 100%;
+                    }
+                    table {
+                        width: 100% !important;
+                        border-collapse: collapse;
+                        table-layout: auto;
+                    }
+                    th, td {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: left;
+                        font-size: 13px;
+                        white-space: nowrap;
+                    }
+                    th { 
+                        background-color: #f2f2f2 !important;
+                        font-weight: bold;
+                    }
+                    .total {
+                        font-weight: bold;
+                        margin-top: 15px;
+                        font-size: 14px;
+                    }
+                    @page {
+                        size: auto;
+                        margin: 10mm;
+                    }
                 </style>
             </head>
             <body>
-                <h2>Expense Report</h2>
-                ${document.querySelector('table').outerHTML}
+                <h2 style="font-size: 18px; margin-bottom: 15px;">Expense Report</h2>
+                ${tableClone.outerHTML}
                 <div class="total">
                     Total Expenses: ${document.getElementById('totalAmount').textContent} ৳
                 </div>
-                <p class="print-only">Printed on: ${new Date().toLocaleString()}</p>
+                <p style="font-size: 12px; margin-top: 10px;">
+                    Printed on: ${new Date().toLocaleString()}
+                </p>
             </body>
         </html>
     `);
+    
     printWindow.document.close();
     printWindow.print();
 }
