@@ -1,3 +1,4 @@
+অবশ্যই, আমি ডেইলি এক্সপেন্স ট্র্যাকারের জন্য একটি উন্নত কোড দিতে পারি যাতে সমস্ত বৈশিষ্ট্য থাকবে:
 <!DOCTYPE html>
 <html lang="en">
 
@@ -207,5 +208,9 @@
                 if (confirm('Are you sure you want to delete this expense?')) {
                     expenses.splice(index, 1);
                     localStorage.setItem('expenses', JSON.stringify(expenses));
-                    load
+                    loadExpenses();
+                }
+            };
+
+            // Preview Receipt
 
