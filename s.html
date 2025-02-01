@@ -4,186 +4,253 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>সবুজ ইংলিশ একাডেমী</title>
+    <!-- বুটস্ট্রাপ CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ফন্ট অয়েসাম -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary-green: #2ecc71;
+            --dark-green: #27ae60;
+            --text-dark: #2c3e50;
         }
 
-        body {
-            background-color: #f0fff0;
-        }
-
-        header {
-            background-color: #228B22;
+        /* কাস্টম স্টাইল */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://via.placeholder.com/1920x1080') center/cover;
+            padding: 120px 0;
             color: white;
-            padding: 1rem;
-            text-align: center;
         }
 
-        nav {
-            background-color: #006400;
-            padding: 1rem;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s ease;
-        }
-
-        nav a:hover {
-            background-color: #228B22;
-            border-radius: 5px;
-        }
-
-        .hero {
-            background: url('https://via.placeholder.com/1920x600') no-repeat center/cover;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .courses {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        .nav-logo {
+            width: 60px;
+            height: auto;
         }
 
         .course-card {
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        footer {
-            background-color: #006400;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            background-color: #228B22;
-            color: white;
-            padding: 0.5rem 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        }
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        button:hover {
-            background-color: #006400;
+        .about-section {
+            background: #f8f9fa;
+            padding: 100px 0;
+        }
+
+        .achievement-box {
+            border: 2px solid var(--primary-green);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .contact-section {
+            background: url('https://via.placeholder.com/1920x800') center/cover;
+            padding: 80px 0;
+        }
+
+        .social-icon {
+            font-size: 28px;
+            color: var(--text-dark);
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        .social-icon:hover {
+            color: var(--primary-green);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>সবুজ ইংলিশ একাডেমী</h1>
-        <p>ইংরেজি শেখার বিশ্বস্ত সঙ্গী</p>
-    </header>
-
-    <nav>
-        <ul>
-            <li><a href="#home">হোম</a></li>
-            <li><a href="#about">আমাদের সম্পর্কে</a></li>
-            <li><a href="#courses">কোর্সসমূহ</a></li>
-            <li><a href="#contact">যোগাযোগ</a></li>
-        </ul>
+    <!-- নেভিগেশন বার -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://via.placeholder.com/60x60" class="nav-logo" alt="লোগো">
+                সবুজ ইংলিশ
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#home">হোম</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">আমাদের সম্পর্কে</a></li>
+                    <li class="nav-link"><a class="nav-link" href="#courses">কোর্স</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">যোগাযোগ</a></li>
+                    <li class="nav-item"><a class="btn btn-light ms-3" href="#register">ফ্রি ট্রায়াল</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
-    <section class="hero">
-        <div>
-            <h2>ইংরেজিতে দক্ষ হোন আত্মবিশ্বাসের সাথে</h2>
-            <button>আজই নিবন্ধন করুন</button>
+    <!-- হোম সেকশন -->
+    <section id="home" class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 mb-4">ইংরেজি শেখার আধুনিক প্ল্যাটফর্ম</h1>
+            <p class="lead mb-4">আমাদের সাথে যুক্ত হয়ে অর্জন করুন আন্তর্জাতিক মানের দক্ষতা</p>
+            <a href="#courses" class="btn btn-warning btn-lg px-5">শুরু করুন</a>
         </div>
     </section>
 
-    <div class="container">
-        <section id="courses">
-            <h2>আমাদের কোর্সসমূহ</h2>
-            <div class="courses">
-                <div class="course-card">
-                    <h3>বেসিক ইংলিশ</h3>
-                    <p>শূন্য থেকে ইংরেজি শেখা</p>
-                    <p>মেয়াদ: ৩ মাস</p>
+    <!-- কোর্স সেকশন -->
+    <section id="courses" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">আমাদের কোর্সসমূহ</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card course-card h-100">
+                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="কোর্স ইমেজ">
+                        <div class="card-body">
+                            <h5 class="card-title">বেসিক ইংলিশ</h5>
+                            <p class="card-text">গ্রামার ও বেসিক কমিউনিকেশন</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-success">৩ মাস</span>
+                                <span class="text-success fw-bold">৳ ৩,০০০</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="course-card">
-                    <h3>কমিউনিকেশন স্কিল</h3>
-                    <p>দৈনন্দিন কথোপকথনের দক্ষতা</p>
-                    <p>মেয়াদ: ২ মাস</p>
+                <!-- আরো ২টি কোর্স কার্ড যোগ করুন -->
+            </div>
+        </div>
+    </section>
+
+    <!-- আমাদের সম্পর্কে সেকশন -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="mb-4">আমাদের ইতিহাস</h2>
+                    <p>২০০৫ সাল থেকে আমরা প্রদান করে আসছি বিশ্বস্ত ইংরেজি শিক্ষা...</p>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="achievement-box">
+                                <h3>১৮K+</h3>
+                                <p>সফল শিক্ষার্থী</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="achievement-box">
+                                <h3>৯৫%</h3>
+                                <p>সাফল্যের হার</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="achievement-box">
+                                <h3>৫০+</h3>
+                                <p>বিষয়ভিত্তিক শিক্ষক</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="course-card">
-                    <h3>প্রফেশনাল ইংলিশ</h3>
-                    <p>ক্যারিয়ারের জন্য বিশেষায়িত ইংরেজি</p>
-                    <p>মেয়াদ: ৪ মাস</p>
+                <div class="col-md-6">
+                    <img src="https://via.placeholder.com/600x400" alt="আমাদের প্রতিষ্ঠান" class="img-fluid rounded-3">
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="contact">
-            <h2>যোগাযোগ</h2>
-            <div class="contact-form">
-                <form>
-                    <input type="text" placeholder="নাম" required>
-                    <input type="email" placeholder="ইমেইল" required>
-                    <textarea placeholder="বার্তা" rows="5" required></textarea>
-                    <button type="submit">পাঠান</button>
-                </form>
+    <!-- যোগাযোগ সেকশন -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-4">যোগাযোগ করুন</h2>
+                            <form class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="আপনার নাম" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="ইমেইল ঠিকানা" required>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="4" placeholder="বার্তা লিখুন" required></textarea>
+                                </div>
+                                <button class="btn btn-success w-100" type="submit">বার্তা পাঠান</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
-    <footer>
-        <p>© ২০২৪ সবুজ ইংলিশ একাডেমী</p>
-        <p>যোগাযোগ: ০১৭১১-২২৩৩৪৪ | ইমেইল: info@shobujenglish.com</p>
+    <!-- ফুটার -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>সবুজ ইংলিশ</h5>
+                    <p>ইংরেজি শিক্ষার বিশ্বস্ত সঙ্গী</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>যোগাযোগ</h5>
+                    <p>ইমেইল: info@example.com<br>ফোন: ০১৭১১-২২৩৩৪৪</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>সামাজিক মাধ্যম</h5>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <p class="text-center mb-0">&copy; ২০২৪ সবুজ ইংলিশ একাডেমী। সর্বস্বত্ব সংরক্ষিত।</p>
+        </div>
     </footer>
 
+    <!-- বুটস্ট্রাপ JS এবং কাস্টম JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Form submission handling
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('আপনার বার্তা সফলভাবে পাঠানো হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।');
-            this.reset();
-        });
+        // ফর্ম ভ্যালিডেশন
+        (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+        // স্ক্রোল এনিমেশন
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault()
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                })
+            })
+        })
+
+        // নোটিফিকেশন
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div')
+            alertDiv.className = `alert alert-${type} position-fixed top-0 end-0 m-3`
+            alertDiv.textContent = message
+            document.body.appendChild(alertDiv)
+            setTimeout(() => alertDiv.remove(), 3000)
+        }
     </script>
 </body>
 </html>
