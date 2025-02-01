@@ -1,102 +1,189 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Expense Tracker</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <!-- Firebase SDK (Latest Version) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
+    <title>সবুজ ইংলিশ একাডেমী</title>
     <style>
-        .receipt-preview { max-width: 60px; cursor: pointer; transition: transform 0.3s; }
-        .receipt-preview:hover { transform: scale(3); z-index: 1000; }
-        .auth-container { max-width: 400px; margin: 50px auto; }
-        .total-box { background: #e3f2fd; border-radius: 10px; padding: 15px; margin-top: 20px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0fff0;
+        }
+
+        header {
+            background-color: #228B22;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #006400;
+            padding: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #228B22;
+            border-radius: 5px;
+        }
+
+        .hero {
+            background: url('https://via.placeholder.com/1920x600') no-repeat center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background-color: #006400;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #228B22;
+            color: white;
+            padding: 0.5rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #006400;
+        }
     </style>
 </head>
-<body class="container py-4 bg-light">
+<body>
+    <header>
+        <h1>সবুজ ইংলিশ একাডেমী</h1>
+        <p>ইংরেজি শেখার বিশ্বস্ত সঙ্গী</p>
+    </header>
 
-<!-- Authentication Section -->
-<div id="authContainer" class="auth-container">
-    <div class="card shadow">
-        <div class="card-body text-center">
-            <h4 class="mb-4"><i class="bi bi-wallet2"></i> Expense Tracker</h4>
-            <button class="btn btn-danger w-100 mb-2" onclick="googleLogin()">
-                <i class="bi bi-google"></i> Continue with Google
-            </button>
-            <div id="errorMessage" class="text-danger mt-2"></div>
+    <nav>
+        <ul>
+            <li><a href="#home">হোম</a></li>
+            <li><a href="#about">আমাদের সম্পর্কে</a></li>
+            <li><a href="#courses">কোর্সসমূহ</a></li>
+            <li><a href="#contact">যোগাযোগ</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div>
+            <h2>ইংরেজিতে দক্ষ হোন আত্মবিশ্বাসের সাথে</h2>
+            <button>আজই নিবন্ধন করুন</button>
         </div>
+    </section>
+
+    <div class="container">
+        <section id="courses">
+            <h2>আমাদের কোর্সসমূহ</h2>
+            <div class="courses">
+                <div class="course-card">
+                    <h3>বেসিক ইংলিশ</h3>
+                    <p>শূন্য থেকে ইংরেজি শেখা</p>
+                    <p>মেয়াদ: ৩ মাস</p>
+                </div>
+                <div class="course-card">
+                    <h3>কমিউনিকেশন স্কিল</h3>
+                    <p>দৈনন্দিন কথোপকথনের দক্ষতা</p>
+                    <p>মেয়াদ: ২ মাস</p>
+                </div>
+                <div class="course-card">
+                    <h3>প্রফেশনাল ইংলিশ</h3>
+                    <p>ক্যারিয়ারের জন্য বিশেষায়িত ইংরেজি</p>
+                    <p>মেয়াদ: ৪ মাস</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>যোগাযোগ</h2>
+            <div class="contact-form">
+                <form>
+                    <input type="text" placeholder="নাম" required>
+                    <input type="email" placeholder="ইমেইল" required>
+                    <textarea placeholder="বার্তা" rows="5" required></textarea>
+                    <button type="submit">পাঠান</button>
+                </form>
+            </div>
+        </section>
     </div>
-</div>
 
-<!-- Main App Content (Same as Previous) -->
+    <footer>
+        <p>© ২০২৪ সবুজ ইংলিশ একাডেমী</p>
+        <p>যোগাযোগ: ০১৭১১-২২৩৩৪৪ | ইমেইল: info@shobujenglish.com</p>
+    </footer>
 
-<script>
-// Firebase Configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyDjutN8p9j4XdAi_I_3-oWqiD1AbmdSdnM",
-    authDomain: "online-data-6dcae.firebaseapp.com",
-    projectId: "online-data-6dcae",
-    storageBucket: "online-data-6dcae.firebasestorage.app",
-    messagingSenderId: "848937873609",
-    appId: "1:848937873609:web:51f1625a9ee7bf45bcdd18",
-    measurementId: "G-41Q88XT5J5"
-};
-
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// Enhanced Google Login Handler
-async function googleLogin() {
-    try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope('profile');
-        provider.addScope('email');
-        
-        const result = await auth.signInWithPopup(provider);
-        console.log("Successfully logged in:", result.user);
-        document.getElementById('errorMessage').textContent = '';
-    } catch (error) {
-        console.error("Login Error:", error);
-        document.getElementById('errorMessage').textContent = `Login failed: ${error.message}`;
-        
-        // Handle specific errors
-        if (error.code === 'auth/popup-closed-by-user') {
-            alert('Login popup was closed before completing');
-        }
-        if (error.code === 'auth/network-request-failed') {
-            alert('Network error. Please check your internet connection');
-        }
-    }
-}
-
-// Auth State Listener with Error Handling
-auth.onAuthStateChanged(user => {
-    try {
-        const authContainer = document.getElementById('authContainer');
-        const mainApp = document.getElementById('mainApp');
-
-        if (user) {
-            authContainer.style.display = 'none';
-            mainApp.style.display = 'block';
-            loadExpenses(user.uid);
-        } else {
-            authContainer.style.display = 'block';
-            mainApp.style.display = 'none';
-        }
-    } catch (error) {
-        console.error("Auth State Error:", error);
-    }
-});
-
-// Rest of the code remains same as previous version
-</script>
-
-<!-- Rest of your code -->
+    <script>
+        // Form submission handling
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('আপনার বার্তা সফলভাবে পাঠানো হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
