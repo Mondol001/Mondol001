@@ -1,195 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enhanced Expense Tracker</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #4CAF50;
-    }
-    form {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    .total-expense {
-      font-size: 1.2em;
-      margin-top: 10px;
-      color: #4CAF50;
-    }
-    .action-buttons {
-      display: flex;
-      gap: 5px;
-    }
-    .edit-btn, .delete-btn {
-      padding: 5px 10px;
-      border: none;
-      cursor: pointer;
-    }
-    .edit-btn {
-      background-color: #ffc107;
-      color: #000;
-    }
-    .delete-btn {
-      background-color: #f44336;
-      color: #fff;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker Dashboard</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: #2d3e50;
+            color: #fff;
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px; /* Initially hidden */
+            transition: left 0.3s ease;
+            padding: 20px;
+            z-index: 9999; /* Sidebar will be above everything */
+        }
+
+        .sidebar.active {
+            left: 0; /* When active, it will slide in */
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #1d2b38;
+            padding-left: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 0;
+            padding: 20px;
+            height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .menu-toggle {
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .settings {
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Balance Section */
+        .balance h2 {
+            color: #27ae60;
+        }
+
+        /* Transactions Table */
+        .recent-transactions table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .recent-transactions table th,
+        .recent-transactions table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .recent-transactions table th {
+            background-color: #34495e;
+            color: #fff;
+        }
+
+        .recent-transactions table td {
+            background-color: #ecf0f1;
+        }
+
+        /* Notices */
+        .notices ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .notices ul li {
+            background-color: #f39c12;
+            color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Enhanced Expense Tracker</h1>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <h2>Expense Tracker</h2>
+            <ul>
+                <li><a href="expense.html">Add Expense</a></li>
+                <li><a href="income.html">Add Income</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </div>
 
-  <form id="expense-form">
-    <label for="date">Date:</label>
-    <input type="date" id="date" required>
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <div class="menu-toggle" id="menu-toggle">&#9776;</div> <!-- Hamburger Icon -->
+                <h1>Dashboard</h1>
+                <div class="settings">&#9881;</div> <!-- Settings Icon -->
+            </header>
 
-    <label for="category">Category:</label>
-    <select id="category" required>
-      <option value="Food">Food</option>
-      <option value="Transport">Transport</option>
-      <option value="Entertainment">Entertainment</option>
-      <option value="Bills">Bills</option>
-      <option value="Other">Other</option>
-    </select>
+            <section class="balance">
+                <h2>Total Balance: <span id="totalBalance">0</span></h2>
+            </section>
 
-    <label for="amount">Amount:</label>
-    <input type="number" id="amount" min="1" required>
+            <section class="recent-transactions">
+                <h3>Recent Transactions</h3>
+                <table id="transactionTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Transactions will be added dynamically here -->
+                    </tbody>
+                </table>
+            </section>
 
-    <label for="description">Description:</label>
-    <input type="text" id="description" placeholder="Optional">
+            <section class="notices">
+                <h3>Notices</h3>
+                <ul id="noticeList">
+                    <!-- Notices will be added dynamically here -->
+                </ul>
+            </section>
+        </div>
+    </div>
 
-    <button type="submit">Add Expense</button>
-  </form>
+    <script>
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menu-toggle');
+        const settingsIcon = document.querySelector('.settings');
 
-  <div class="total-expense" id="total-expense">Total Expense: ৳0</div>
+        // Toggle sidebar visibility
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
+        });
 
-  <table id="expense-table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Category</th>
-        <th>Amount (৳)</th>
-        <th>Description</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
 
-  <script>
-    document.addEventListener('DOMContentLoaded', loadExpenses);
-    document.getElementById('expense-form').addEventListener('submit', addExpense);
+        // Function to calculate total balance
+        function calculateTotalBalance() {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            let totalBalance = 0;
 
-    function addExpense(e) {
-      e.preventDefault();
+            transactions.forEach(transaction => {
+                if (transaction.type === "expense") {
+                    totalBalance -= transaction.amount;
+                } else if (transaction.type === "income") {
+                    totalBalance += transaction.amount;
+                }
+            });
 
-      const date = document.getElementById('date').value;
-      const category = document.getElementById('category').value;
-      const amount = parseFloat(document.getElementById('amount').value);
-      const description = document.getElementById('description').value || '-';
+            document.getElementById('totalBalance').textContent = totalBalance;
+        }
 
-      if (!date || !category || !amount) return alert("Please fill in all required fields.");
+        // Function to add a transaction
+        function addTransaction(date, type, amount, description) {
+            let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const transaction = { date, type, amount, description };
+            transactions.push(transaction);
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            calculateTotalBalance();
+            loadTransactions();
+        }
 
-      const expense = { id: Date.now(), date, category, amount, description };
+        // Function to load recent transactions
+        function loadTransactions() {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const transactionTableBody = document.getElementById('transactionTable').getElementsByTagName('tbody')[0];
 
-      saveExpenseToLocalStorage(expense);
-      appendExpenseToTable(expense);
-      updateTotalExpense();
+            transactionTableBody.innerHTML = '';
 
-      document.getElementById('expense-form').reset();
-    }
+            transactions.forEach(transaction => {
+                const row = transactionTableBody.insertRow();
+                row.insertCell(0).textContent = transaction.date;
+                row.insertCell(1).textContent = transaction.type;
+                row.insertCell(2).textContent = transaction.amount;
+                row.insertCell(3).textContent = transaction.description;
+            });
+        }
 
-    function saveExpenseToLocalStorage(expense) {
-      let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-      expenses.push(expense);
-      localStorage.setItem('expenses', JSON.stringify(expenses));
-    }
+        // Function to load notices
+        function loadNotices() {
+            const notices = [
+                "Remember to save receipts for all transactions.",
+                "Check your balance daily to avoid overspending."
+            ];
+            const noticeList = document.getElementById('noticeList');
 
-    function loadExpenses() {
-      const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-      expenses.forEach(appendExpenseToTable);
-      updateTotalExpense();
-    }
+            notices.forEach(notice => {
+                const li = document.createElement('li');
+                li.textContent = notice;
+                noticeList.appendChild(li);
+            });
+        }
 
-    function appendExpenseToTable(expense) {
-      const tbody = document.querySelector('#expense-table tbody');
-      const row = document.createElement('tr');
-      row.dataset.id = expense.id;
-
-      row.innerHTML = `
-        <td>${expense.date}</td>
-        <td>${expense.category}</td>
-        <td>৳${expense.amount.toFixed(2)}</td>
-        <td>${expense.description}</td>
-        <td class="action-buttons">
-          <button class="edit-btn" onclick="editExpense(${expense.id})">Edit</button>
-          <button class="delete-btn" onclick="deleteExpense(${expense.id})">Delete</button>
-        </td>
-      `;
-
-      tbody.appendChild(row);
-    }
-
-    function updateTotalExpense() {
-      const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-      const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-      document.getElementById('total-expense').textContent = `Total Expense: ৳${total.toFixed(2)}`;
-    }
-
-    function deleteExpense(id) {
-      let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-      expenses = expenses.filter(expense => expense.id !== id);
-      localStorage.setItem('expenses', JSON.stringify(expenses));
-
-      document.querySelector(`tr[data-id="${id}"]`).remove();
-      updateTotalExpense();
-    }
-
-    function editExpense(id) {
-      const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-      const expense = expenses.find(exp => exp.id === id);
-
-      if (expense) {
-        document.getElementById('date').value = expense.date;
-        document.getElementById('category').value = expense.category;
-        document.getElementById('amount').value = expense.amount;
-        document.getElementById('description').value = expense.description;
-
-        deleteExpense(id);
-      }
-    }
-  </script>
+        // On page load
+        window.onload = function () {
+            calculateTotalBalance();
+            loadTransactions();
+            loadNotices();
+        };
+    </script>
 </body>
 </html>
